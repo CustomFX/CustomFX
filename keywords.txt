@@ -1,0 +1,74 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+CFX_AnimationController	KEYWORD1
+CFX_Button	KEYWORD1
+CFX_Color	KEYWORD1
+CFX_InputController	KEYWORD1
+CFX_Led	KEYWORD1
+CFX_LedAnimationBlink	KEYWORD1
+CFX_LedAnimationFadeInOut	KEYWORD1
+CFX_LedStrip	KEYWORD1
+CFX_LedStripAnimationSweep	KEYWORD1
+CFX_LedStripPixel	KEYWORD1
+CFX_RGBLed	KEYWORD1
+CFX_RGBLedAnimationColorBlink	KEYWORD1
+CFX_RGBLedAnimationFadeInOut	KEYWORD1
+CFX_RGBLedAnimationFadeToColor	KEYWORD1
+CFX_Servo	KEYWORD1
+CFX_ServoAnimationMoveToPosition	KEYWORD1
+CFX_ServoAnimationPath	KEYWORD1
+CFX_ServoAnimationSweep	KEYWORD1
+CFX_Timer	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+Start	KEYWORD2
+Stop	KEYWORD2
+IsActive	KEYWORD2
+UpdateAnimation	KEYWORD2
+Red	KEYWORD2
+Green	KEYWORD2
+Blue	KEYWORD2
+SetRed	KEYWORD2
+SetGreen	KEYWORD2
+SetBlue	KEYWORD2
+GetId	KEYWORD2
+ReadInputs	KEYWORD2
+SetBrightness	KEYWORD2
+GetBrightness	KEYWORD2
+SetTimes	KEYWORD2
+SetOutputDevice	KEYWORD2
+GetColor	KEYWORD2
+SetColor	KEYWORD2
+GetNrOfOutputs	KEYWORD2
+GetPixelColor	KEYWORD2
+GetPixelColorLong	KEYWORD2
+SetPixelColor	KEYWORD2
+GetColorLong	KEYWORD2
+SetDirection	KEYWORD2
+GetDirection	KEYWORD2
+FadeToColor	KEYWORD2
+SetAngle	KEYWORD2
+MoveToPosition	KEYWORD2
+AddPosition	KEYWORD2
+RestartAnimation	KEYWORD2
+SetTimer	KEYWORD2
+GetInstance	KEYWORD2
+DisableDoubleClick  KEYWORD2
+SetPixel  KEYWORD2
+
+
+#######################################
+# Constants
+#######################################
+
+CFX_CMD_BUTTON_CLICK  LITERAL1
+CFX_CMD_BUTTON_DOUBLE_CLICK  LITERAL1
+CFX_CMD_BUTTON_CLICK_AND_HOLD LITERAL1
+CFX_CMD_TIMER_EVENT LITERAL1
+
+
