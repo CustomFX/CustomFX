@@ -17,12 +17,12 @@
 
 CFX_RGBLed led1(11, 10, 9, true);             // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
 CFX_RGBLedAnimationFadeToColor fader(&led1);  // Create animation for fading
-CFX_Button button(7, 101);
+CFX_Button button(7, 101);                    // Connect button to pin 7
 
 void setup() 
 {
   CFX_Color color(12, 25, 115);   // initial color
-  fader.FadeToColor(color, 100);  // Start fader. The Led will fade to the color in 1 second
+  fader.FadeToColor(color, 100);  // Start fader. The Led will fade to the color in 100 milliseconds
 }
 
 void handleInput(int id, int command, int value)

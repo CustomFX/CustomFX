@@ -14,9 +14,9 @@
 
 #include <CustomFX.h>
 
-CFX_RGBLed led1(11, 10, 9, true);           // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
+CFX_RGBLed led1(11, 10, 9, true);             // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
 CFX_RGBLedAnimationFadeToColor fader(&led1);  // Create animation for fading
-CFX_Timer timer(101);
+CFX_Timer timer(101);                         // create timer with id 101
 bool led_on = false;
 CFX_Color no_color(0,0,0);
 

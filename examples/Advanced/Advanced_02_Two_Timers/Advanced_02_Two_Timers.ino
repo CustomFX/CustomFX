@@ -15,8 +15,8 @@
 #include <CustomFX.h>
 
 CFX_Led led1(3);              // Connect Led to pin 3
-CFX_Timer on_timer(101);
-CFX_Timer off_timer(102);
+CFX_Timer on_timer(101);      // create a timer with id 101
+CFX_Timer off_timer(102);     // create another timer with id 102
 
 void setup() 
 {

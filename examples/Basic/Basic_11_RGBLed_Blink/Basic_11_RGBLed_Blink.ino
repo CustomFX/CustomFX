@@ -14,13 +14,13 @@
 
 #include <CustomFX.h>
 
-CFX_RGBLed led1(11, 10, 9, true);                        // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
-CFX_RGBLedAnimationColorBlink blink1(1000, 500, &led1);  // Blink led for 1 second on and 0,5 seconds off
+CFX_RGBLed led1(11, 10, 9, true);                // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
+CFX_LedAnimationBlink blink1(1000, 500, &led1);  // Blink led for 1 second on and 0,5 seconds off
 
 void setup() 
 {
   CFX_Color color(0x005eff); // define color using hexadecimal representation. Alternatively use 3 color components (0,94,255)
-  blink1.SetColor(color);  // Set blinking color
+  led1.SetColor(color);  // Set color of the led
 }
 
 void handleInput(int id, int command, int value)

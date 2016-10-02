@@ -38,11 +38,9 @@ void CFX_AnimationBase::Start()
 void CFX_AnimationBase::Stop()
 {
   m_active = false;
-  
 }
 
 bool CFX_AnimationBase::IsActive() const
 {
   return m_active;
 }
-

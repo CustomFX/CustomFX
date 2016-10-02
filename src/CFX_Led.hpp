@@ -36,7 +36,7 @@ class CFX_Led: public CFX_OutputBase
     
     // additional
     virtual void SetBrightness(uint8_t brightness);
-    uint8_t GetBrightness() const;
+    virtual uint8_t GetBrightness() const;
     
     // inherited
     virtual void Commit();
@@ -45,7 +45,6 @@ class CFX_Led: public CFX_OutputBase
     CFX_Led();
 
   private:
-    bool     m_changed;
     int      m_pin;
     uint8_t  m_brightness;
 };

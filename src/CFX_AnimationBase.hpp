@@ -39,12 +39,10 @@ class CFX_AnimationBase
     
     virtual void Start();
     virtual void Stop();
-    virtual bool IsActive() const;
-    
+    bool IsActive() const;
     
   private:
     bool m_active;
-    
 };
 
 

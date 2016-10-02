@@ -23,16 +23,25 @@
 
 #include <CFX_LedStrip.hpp>
 
-CFX_LedStrip::CFX_LedStrip(int pinnumber, int leds, int type) : CFX_RGBLed()
+CFX_LedStrip::CFX_LedStrip(int pinnumber, uint16_t leds, int type) : CFX_RGBLed()
 {
   m_type = type;
   m_pinnumber = pinnumber;
-  m_nrleds = 1; // minimum length is 1
-  if (leds > 0) m_nrleds = leds;
-  m_changed = false;
+  SetChanged(false);
   m_initialised = false;
-  m_pixelcolors = new uint8_t[m_nrleds][3];
+  
+  //m_pixelcolors = new uint8_t[m_nrleds][4]; // TODO: check memory allocation
+  uint16_t numBytes = leds * 4;
+  
+  if((m_pixelcolors = (uint8_t *)malloc(numBytes))) {
+    memset(m_pixelcolors, 0, numBytes);
+    m_nrleds = leds;
+  } else {
+    m_nrleds = 0;
+  }
+
   SetColor(CFX_Color());
+  SetBrightness(255);
 }
 
 CFX_LedStrip::CFX_LedStrip() : CFX_RGBLed()
@@ -44,73 +53,112 @@ void CFX_LedStrip::Init()
 {
   m_initialised = true;
   m_pixels = Adafruit_NeoPixel(m_nrleds, m_pinnumber, m_type);
-
   m_pixels.begin();
 }
 
-int CFX_LedStrip::GetNrOfOutputs() const
+uint16_t CFX_LedStrip::GetNrOfOutputs() const
 {
   return m_nrleds;
 }
 
-const CFX_Color CFX_LedStrip::GetPixelColor(int pixel) const
+const CFX_Color CFX_LedStrip::GetPixelColor(uint16_t pixel) const
 {
   return CFX_Color(m_pixels.getPixelColor(pixel));
 }
 
-long CFX_LedStrip::GetPixelColorLong(int pixel) const
+long CFX_LedStrip::GetPixelColorLong(uint16_t pixel) const
 {
   return m_pixels.getPixelColor(pixel);
 }
 
-void CFX_LedStrip::SetPixelColor(int led, const CFX_Color& color)
+void CFX_LedStrip::SetPixelColor(uint16_t pixel, const CFX_Color& color)
 {
-  led = constrain(led, 0, m_nrleds - 1);
-  m_pixelcolors[led][0] = color.Red();
-  m_pixelcolors[led][1] = color.Green();
-  m_pixelcolors[led][2] = color.Blue();
-  m_changed = true;
+  uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
+  m_pixelcolors[pix*4+0] = color.Red();
+  m_pixelcolors[pix*4+1] = color.Green();
+  m_pixelcolors[pix*4+2] = color.Blue();
+  SetChanged(true);
 }
 
 const CFX_Color CFX_LedStrip::GetColor() const
 {
-  return m_pixels.getPixelColor(0);
+  if (m_nrleds > 0) return m_pixels.getPixelColor(0);
+  else return CFX_Color(0);
 } 
 
 long CFX_LedStrip::GetColorLong() const
 {
-  return m_pixels.getPixelColor(0);
+  if (m_nrleds > 0) return m_pixels.getPixelColor(0);
+  else return 0;
 } 
 
 void CFX_LedStrip::SetColor(const CFX_Color& color)
 {
-  for (int i = 0; i < m_nrleds; i++)
+  for (uint16_t i = 0; i < m_nrleds; i++)
   {
-    m_pixelcolors[i][0] = color.Red();
-    m_pixelcolors[i][1] = color.Green();
-    m_pixelcolors[i][2] = color.Blue();
+    m_pixelcolors[i*4+0] = color.Red();
+    m_pixelcolors[i*4+1] = color.Green();
+    m_pixelcolors[i*4+2] = color.Blue();
   }
-  m_changed = true;
+  SetChanged(true);
 }
 
 void CFX_LedStrip::SetBrightness(uint8_t brightness)
 {
-  SetColor(CFX_Color(brightness, brightness, brightness));  
+  for (uint16_t i = 0; i < m_nrleds; i++)
+  {
+    m_pixelcolors[i*4+3] = brightness;
+  }
+  SetChanged(true);
+}
+
+void CFX_LedStrip::SetPixelBrightness(uint16_t pixel, uint8_t brightness)
+{
+  if (m_nrleds > 0) 
+  {
+    uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
+    m_pixelcolors[pix*4+3] = brightness;
+    SetChanged(true);
+  }
+}
+
+uint8_t CFX_LedStrip::GetPixelBrightness(uint16_t pixel) const
+{
+  if (m_nrleds > 0) 
+  {
+    uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
+    return m_pixelcolors[pix*4+3];
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 void CFX_LedStrip::Commit()
 {
   if (!m_initialised) Init();
   
-  if (m_changed)
+  if (Changed())
   {
-    for (int i = 0; i< m_nrleds; i++)
+    for (uint16_t i = 0; i< m_nrleds; i++)
     {
-      m_pixels.setPixelColor(i, m_pixels.Color(m_pixelcolors[i][0], m_pixelcolors[i][1], m_pixelcolors[i][2]));
+      if (m_pixelcolors[i*4+3] == 255)
+      {
+        m_pixels.setPixelColor(i, m_pixels.Color(m_pixelcolors[i*4+0], m_pixelcolors[i*4+1], 
+          m_pixelcolors[i*4+2]));
+      }
+      else
+      {
+        m_pixels.setPixelColor(i, m_pixels.Color(
+          m_pixelcolors[i*4+0] * ((float)m_pixelcolors[i*4+3] / 255), 
+          m_pixelcolors[i*4+1] * ((float)m_pixelcolors[i*4+3] / 255), 
+          m_pixelcolors[i*4+2] * ((float)m_pixelcolors[i*4+3] / 255)));
+      }
     }
 
     m_pixels.show();
-    m_changed = false;
+    SetChanged(false);
   }
 }
 

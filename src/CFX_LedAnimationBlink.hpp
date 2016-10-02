@@ -33,6 +33,8 @@ class CFX_LedAnimationBlink: public CFX_AnimationBase
 
     CFX_LedAnimationBlink();
     CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, CFX_Led* output);
+    CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
+      unsigned long startdelay, CFX_Led* output);
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
     void SetOutputDevice(CFX_Led* output);
@@ -45,6 +47,7 @@ private:
     unsigned long m_previousUpdateTime;
     unsigned long m_blinkOnTime;
     unsigned long m_blinkOffTime;
+    unsigned long m_startDelay;
     CFX_Led* m_output;
     bool m_blinkon;
     uint8_t m_brightness;

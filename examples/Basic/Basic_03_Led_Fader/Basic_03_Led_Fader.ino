@@ -14,14 +14,12 @@
 #include <CustomFX.h>
 
 CFX_Led led1(3);                         // Connect Led to pin 3
-CFX_LedAnimationFadeInOut fader(&led1);  // Fade animation
+// Fade animation
+// Fade in in 500 ms, stay on for 1 second, fade out in 250 msec finally stay off for 500 msec
+CFX_LedAnimationFadeInOut fader(500, 1000, 250, 500, &led1);  
 
 void setup()
 {
-  // Set timging:
-  // Fade in in 500 ms, stay on for 1 second, fade out in 250 msec finally stay off for 500 msec
-  fader.SetTimes(500, 1000, 250, 500);
-  fader.SetBrightness(255);  // The brightness when LED is on
 }
 
 void handleInput(int id, int command, int value)

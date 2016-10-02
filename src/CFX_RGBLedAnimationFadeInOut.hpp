@@ -33,7 +33,8 @@ class CFX_RGBLedAnimationFadeInOut: public CFX_AnimationBase
   public:
     
     CFX_RGBLedAnimationFadeInOut();
-    CFX_RGBLedAnimationFadeInOut(CFX_RGBLed* output);
+    CFX_RGBLedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime, 
+      int offTime, CFX_Color color, CFX_RGBLed* output);
     
     void SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime);
     void SetColor(CFX_Color color);

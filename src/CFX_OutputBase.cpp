@@ -28,3 +28,13 @@ CFX_OutputBase::CFX_OutputBase()
 {
   CFX_AnimationController::GetInstance()->RegisterOutputDevice(this);
 }
+
+bool CFX_OutputBase::Changed()
+{
+  return m_changed;
+}
+
+void CFX_OutputBase::SetChanged(bool changed)
+{
+  m_changed = changed;
+}

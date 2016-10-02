@@ -31,14 +31,14 @@ class CFX_LedStripPixel: public CFX_RGBLed
   public:
     CFX_LedStripPixel(unsigned int pixel, CFX_LedStrip* ledstrip);
 
-    // additional
     void             SetPixel(unsigned int pixel, CFX_LedStrip* ledstrip);
+
+    // inherited
     virtual long     GetColorLong() const;
     const CFX_Color  GetColor() const;
     virtual void     SetColor(const CFX_Color& color);
-    
-    // inherited
     virtual void     SetBrightness(uint8_t brightness);
+    virtual uint8_t  GetBrightness() const;
     virtual void     Commit();
     
   protected:

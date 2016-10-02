@@ -33,7 +33,7 @@ class CFX_LedAnimationFadeInOut: public CFX_AnimationBase
   public:
     
     CFX_LedAnimationFadeInOut();
-    CFX_LedAnimationFadeInOut(CFX_Led* output);
+    CFX_LedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime, int offTime, CFX_Led* output);
     
     void SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime);
     void SetBrightness(uint8_t brightness);

@@ -19,8 +19,8 @@ CFX_RGBLed rgbled(11, 10, 9, true);
 
 void setup()
 {
-  CFX_Color color1(125, 125, 0); // yellow color
-  rgbled.SetColor(color1);
+  CFX_Color color1(125, 125, 0); // create a yellow color
+  rgbled.SetColor(color1);       // set color
 }
 
 void handleInput(int id, int command, int value)

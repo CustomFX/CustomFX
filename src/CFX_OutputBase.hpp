@@ -40,6 +40,13 @@ class CFX_OutputBase
     CFX_OutputBase();
 
     virtual void     Commit() = 0;
+    bool Changed();
+    
+  protected:
+    void SetChanged(bool changed);
+    
+  private:
+    bool m_changed;
 
 };
 

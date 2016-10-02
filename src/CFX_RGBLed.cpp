@@ -33,7 +33,8 @@ CFX_RGBLed::CFX_RGBLed(int redpin, int greenpin, int bluepin, bool commonAnode) 
   pinMode(m_bluepin, OUTPUT);
   m_commonAnode = commonAnode;
   SetColor(m_color);
-  m_changed = true;
+  SetBrightness(255);
+  SetChanged(true);
   Commit();
 }
 
@@ -55,31 +56,38 @@ const CFX_Color& CFX_RGBLed::GetColor() const
 void CFX_RGBLed::SetColor(const CFX_Color& color)
 {
   m_color = color;
-  m_changed = true;
-}
-
-void CFX_RGBLed::SetBrightness(uint8_t brightness)
-{
-  m_color = CFX_Color(brightness, brightness, brightness);
-  m_changed = true;  
+  SetChanged(true);
 }
 
 void CFX_RGBLed::Commit()
 {
-  if (m_changed)
+  if (Changed())
   {
-    if (m_commonAnode)
+    CFX_Color newcolor;
+    
+    uint8_t brightness = GetBrightness();
+    if (brightness == 255)
     {
-      analogWrite(m_redpin, 255 - m_color.Red());
-      analogWrite(m_greenpin, 255 - m_color.Green());
-      analogWrite(m_bluepin, 255 - m_color.Blue());
+      newcolor = m_color;
     }
     else
     {
-      analogWrite(m_redpin, m_color.Red());
-      analogWrite(m_greenpin, m_color.Green());
-      analogWrite(m_bluepin, m_color.Blue());
+      float factor = (float)brightness/255;
+      newcolor = m_color * factor;
     }
-    m_changed = false;
+    
+    if (m_commonAnode)
+    {
+      analogWrite(m_redpin, 255 - newcolor.Red());
+      analogWrite(m_greenpin, 255 - newcolor.Green());
+      analogWrite(m_bluepin, 255 - newcolor.Blue());
+    }
+    else
+    {
+      analogWrite(m_redpin, newcolor.Red());
+      analogWrite(m_greenpin, newcolor.Green());
+      analogWrite(m_bluepin, newcolor.Blue());
+    }
+    SetChanged(false);
   }
 }

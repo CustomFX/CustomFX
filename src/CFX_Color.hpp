@@ -51,6 +51,9 @@ class CFX_Color
     bool operator==(const CFX_Color& color) const;
     bool operator!=(const CFX_Color& color) const;
     
+    CFX_Color operator+(CFX_Color color);
+    CFX_Color operator*(float factor);
+    
   private:
     uint8_t m_red;
     uint8_t m_green;

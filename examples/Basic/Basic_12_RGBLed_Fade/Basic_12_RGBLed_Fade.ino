@@ -14,16 +14,14 @@
 
 #include <CustomFX.h>
 
-CFX_RGBLed led1(11, 10, 9, true);           // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
-CFX_RGBLedAnimationFadeInOut fader(&led1);  // Create color fader
+CFX_RGBLed led1(11, 10, 9, true);        // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
+// fade to color in 2 seconds, stay color for 0.5 seconds, fade out in 1 second, stay off for 0.5 seconds
+CFX_LedAnimationFadeInOut fader(2000, 500, 1000, 500, &led1);  
 
 void setup() 
 {
   CFX_Color color(50,10,125); // create color
-  fader.SetColor(color); // set fade color
-  // Set timging:
-  // fade to color in 2 seconds, stay color for 0 seconds, fade out in 1 second, stay off for 0 seconds
-  fader.SetTimes(2000, 0, 1000, 0); 
+  led1.SetColor(color); // set color of the led
 }
 
 void handleInput(int id, int command, int value)

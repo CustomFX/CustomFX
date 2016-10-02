@@ -32,7 +32,10 @@ class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
   public:
 
     CFX_RGBLedAnimationColorBlink();
-    CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, CFX_RGBLed* output);
+    CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
+      CFX_Color color, CFX_RGBLed* output);
+    CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
+      unsigned long startdelay, CFX_Color color, CFX_RGBLed* output);
     void SetColor(const CFX_Color& color);
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
@@ -45,6 +48,7 @@ private:
     unsigned long m_previousUpdateTime;
     unsigned long m_blinkOnTime;
     unsigned long m_blinkOffTime;
+    unsigned long m_startDelay;
     CFX_RGBLed* m_output;
     
     bool m_blinkon;

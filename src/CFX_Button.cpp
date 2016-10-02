@@ -33,14 +33,22 @@ CFX_Button::CFX_Button(int inputPin, int id) : CFX_InputBase(id)
   m_doubleClickEnabled = true;
   m_clicked = false;
   m_clicks = 0;
+  m_queuedEvent = 0;
   
-  m_doubleclickInterval = 400;
+  m_doubleclickInterval = 500;
   m_clickAndHoldThreshold = 750;
 
 }
 
 const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
 {
+  if (m_queuedEvent)
+  {
+    SetEvent(m_queuedEvent, m_clicks);
+    m_queuedEvent = 0;
+    return GetLastEvent(); 
+  }
+  
   int value = digitalRead(GetPinNumber());
   if (m_pressed)
   {
@@ -49,7 +57,7 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
       if (time - m_lastClick > m_clickAndHoldThreshold) // check press and hold
       {
         // generate press and hold event
-        SetEvent(CFX_CMD_BUTTON_CLICK_AND_HOLD, m_clicks+1);
+        SetEvent(CFX_CMD_BUTTON_CLICK_AND_HOLD, m_clicks);
         return GetLastEvent();
       }
     }
@@ -62,28 +70,23 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
           if (time - m_lastClick < m_doubleclickInterval) // check if release before double click time
           {
             // generate double click event
-            m_clicks++;
-            SetEvent(CFX_CMD_BUTTON_DOUBLE_CLICK, m_clicks);
             m_pressed = false;
             m_doubleClick = false;
             m_clicked = false;
-            return GetLastEvent();
+            m_queuedEvent = CFX_CMD_BUTTON_DOUBLE_CLICK;
           }
           else if (time - m_lastClick > m_clickAndHoldThreshold) // check if release after press and hold
           {
             m_pressed = false;
             m_doubleClick = false;
             m_clicked = false;
-            m_clicks++;
           }
           else
           {
             m_pressed = false;
             m_doubleClick = false;
             m_clicked = false;
-            m_clicks++;
-            SetEvent(CFX_CMD_BUTTON_CLICK, m_clicks);
-            return GetLastEvent();
+            m_queuedEvent = CFX_CMD_BUTTON_CLICK;
           }
         }
         else
@@ -92,16 +95,13 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
           {
             m_pressed = false;
             m_clicked = false;
-            m_clicks++;
           }
           else if (time - m_lastClick > m_doubleclickInterval)
           {
             // generate click event
-            m_clicks++;
-            SetEvent(CFX_CMD_BUTTON_CLICK, m_clicks);
             m_pressed = false;
             m_clicked = false;
-            return GetLastEvent();
+            m_queuedEvent = CFX_CMD_BUTTON_CLICK;
           }
           else //Release within doubleclick time
           {
@@ -115,19 +115,18 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
         if (time - m_lastClick < m_clickAndHoldThreshold) // check if release before press and hold time
         {
           // generate click event
-          m_clicks++;
-          SetEvent(CFX_CMD_BUTTON_CLICK, m_clicks);
           m_pressed = false;
           m_doubleClick = false;
-          return GetLastEvent();
+          m_queuedEvent = CFX_CMD_BUTTON_CLICK;
         }
         else
         {
           m_pressed = false;
           m_doubleClick = false;
-          m_clicks++;
         }
       }
+      SetEvent(CFX_CMD_BUTTON_RELEASED, m_clicks);
+      return GetLastEvent();
     }
   }
   else
@@ -152,13 +151,15 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
         m_lastClick = time;
         m_pressed = true;
       }
+      m_clicks++;
+      SetEvent(CFX_CMD_BUTTON_PRESSED, m_clicks);
+      return GetLastEvent();
     }
     else if (m_clicked)
     {
       if (time - m_lastClick > m_doubleclickInterval) // wait for doubleclick to end
       {
         // generate click event
-        m_clicks++;
         SetEvent(CFX_CMD_BUTTON_CLICK, m_clicks);
         m_pressed = false;
         m_doubleClick = false;

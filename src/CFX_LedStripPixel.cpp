@@ -56,7 +56,12 @@ void CFX_LedStripPixel::SetColor(const CFX_Color& color)
 
 void CFX_LedStripPixel::SetBrightness(uint8_t brightness)
 {
-  m_ledstrip->SetPixelColor(m_pixel, CFX_Color(brightness, brightness, brightness));
+  m_ledstrip->SetPixelBrightness(m_pixel, brightness);
+}
+
+uint8_t CFX_LedStripPixel::GetBrightness() const
+{
+  return m_ledstrip->GetPixelBrightness(m_pixel);
 }
 
 void CFX_LedStripPixel::Commit()

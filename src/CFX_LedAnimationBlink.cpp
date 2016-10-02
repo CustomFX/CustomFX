@@ -33,13 +33,20 @@ CFX_LedAnimationBlink::CFX_LedAnimationBlink() : CFX_AnimationBase()
   m_blinkon = false;
 }
 
-CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, CFX_Led* output)
-  : CFX_AnimationBase()
+CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
+  CFX_Led* output) : CFX_LedAnimationBlink(onTime, offTime, 0, output)
+{
+}
+
+
+CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
+  unsigned long startdelay, CFX_Led* output) : CFX_AnimationBase()
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
+  m_startDelay = startdelay;
   m_output = output;
-  m_previousUpdateTime = 0;
+  m_previousUpdateTime = millis() + startdelay - offTime;
   m_brightness = 255;
   m_blinkon = false;
 }

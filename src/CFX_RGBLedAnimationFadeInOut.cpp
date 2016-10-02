@@ -39,8 +39,8 @@ CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut()
   m_totalAnimationSteps = 0;
 }
 
-CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut(CFX_RGBLed* output)
-  : CFX_AnimationBase()
+CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime,
+  int offTime, CFX_Color color, CFX_RGBLed* output) : CFX_AnimationBase()
 {
   m_output = output;
 
@@ -53,6 +53,8 @@ CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut(CFX_RGBLed* output)
   
   m_animationStep = 0;
   m_totalAnimationSteps = 0;
+  m_color = color;
+  SetTimes(fadeInTime, onTime, fadeOutTime, offTime);
 }
 
 void CFX_RGBLedAnimationFadeInOut::SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime)

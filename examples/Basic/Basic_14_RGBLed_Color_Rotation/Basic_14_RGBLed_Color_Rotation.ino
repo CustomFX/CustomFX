@@ -16,12 +16,12 @@
 #include <CustomFX.h>
 
 CFX_RGBLed led1(11, 10, 9, true);  // Connect RGB Led to pin 11 (red), 10 (green and 9 (blue)
-CFX_Button button(7, 101);
+CFX_Button button(7, 101);         // Connect button to pin 7
 
 void setup() 
 {
-  CFX_Color color(0,94,255);
-  led1.SetColor(color);  // Set color
+  CFX_Color color(0,94,255); // create color
+  led1.SetColor(color);      // Set color
 }
 
 void handleInput(int id, int command, int value)

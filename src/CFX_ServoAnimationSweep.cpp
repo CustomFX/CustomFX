@@ -38,8 +38,8 @@ CFX_ServoAnimationSweep::CFX_ServoAnimationSweep()
 }
 
 
-CFX_ServoAnimationSweep::CFX_ServoAnimationSweep(int minAngle, int maxAngle, int duration, int offset, CFX_Servo* output)
-  : CFX_AnimationBase()
+CFX_ServoAnimationSweep::CFX_ServoAnimationSweep(int minAngle, int maxAngle, int duration, int offset,
+  CFX_Servo* output) : CFX_AnimationBase()
 {
   m_output = output;
   if (minAngle < maxAngle)

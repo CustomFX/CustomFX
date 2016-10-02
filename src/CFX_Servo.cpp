@@ -32,7 +32,7 @@ CFX_Servo::CFX_Servo(int pinnumber) : CFX_OutputBase()
   m_minpulse = 544;
   m_maxpulse = 2400;
   m_maxAngle = 180;
-  m_changed = false;
+  SetChanged(false);
   m_initialised = false;
 }
 
@@ -69,7 +69,7 @@ void CFX_Servo::SetAngle(int angle)
   if (angle != m_newAngle)
   {
     m_newAngle = angle;
-    m_changed = true;
+    SetChanged(true);
   }
 }
 
@@ -91,9 +91,9 @@ void CFX_Servo::Commit()
     Init();
   }
   
-  if (m_changed)
+  if (Changed())
   {
     m_servo.write(m_newAngle);
-    m_changed = false;
+    SetChanged(false);
   }
 }

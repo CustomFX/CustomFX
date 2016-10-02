@@ -14,9 +14,9 @@
 
 #include <CustomFX.h>
 
-CFX_Led led1(3);  // connect LED to pin 3
-CFX_Button button(7, 101);
-int led_on = false; // led is initially off
+CFX_Led led1(3);           // connect LED to pin 3
+CFX_Button button(7, 101); // connect button to pin 7
+int led_on = false;        // led is initially off
 
 void setup() 
 {

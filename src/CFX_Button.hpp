@@ -29,6 +29,8 @@
 #define CFX_CMD_BUTTON_CLICK            10
 #define CFX_CMD_BUTTON_DOUBLE_CLICK     11
 #define CFX_CMD_BUTTON_CLICK_AND_HOLD   12
+#define CFX_CMD_BUTTON_PRESSED          13
+#define CFX_CMD_BUTTON_RELEASED         14
 
 // Digital Input
 //
@@ -52,6 +54,7 @@ class CFX_Button: public CFX_InputBase
     bool m_doubleClick;
     bool m_clicked;
     unsigned long m_clicks;
+    int m_queuedEvent;
 };
 
 

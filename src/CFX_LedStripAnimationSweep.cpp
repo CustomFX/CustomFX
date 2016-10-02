@@ -32,24 +32,26 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep()
 
 CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(CFX_Color color, unsigned long time_on, 
   unsigned long fadeouttime, CFX_LedStrip* output)
-  : CFX_LedStripAnimationSweep(0, 1, color, time_on, fadeouttime, true, true, output)
+  : CFX_LedStripAnimationSweep(0, 1, color, time_on, fadeouttime, output)
 {
 }
 
 
-CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(int startled, int8_t direction, CFX_Color color,
-  unsigned long time_on, unsigned long fadeouttime, bool loop, bool repeat, CFX_LedStrip* output) 
+CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint8_t startled, int8_t direction, CFX_Color color,
+  unsigned long time_on, unsigned long fadeouttime, CFX_LedStrip* output) 
   : CFX_AnimationBase()
 {
   m_output = output;
   m_color = color;
   m_fadeouttime = fadeouttime;
   m_currentStep = 0;
+  m_stopped = false;
+  m_stoppedSteps = 0;
   m_onSteps = time_on / ANIMATION_UPDATE_INTERVAL;
   if (m_onSteps == 0) m_onSteps = 1;
   
   CalculateFadeOutSteps(fadeouttime);
-  m_trailLength = 0; // initially there is no trail
+  m_trailLength = 1;
 
   if (m_output)
   {
@@ -59,8 +61,9 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(int startled, int8_t dire
   {
     m_activeLed = 0;
   }
-  m_loop = loop;
-  m_repeat = repeat;
+  m_output->SetPixelColor(m_activeLed, m_color);
+  m_output->SetPixelBrightness(m_activeLed, 255);
+
   if (direction == 1) m_direction = 1;
   else m_direction = -1;
 }
@@ -92,91 +95,103 @@ int8_t CFX_LedStripAnimationSweep::GetDirection() const
 void CFX_LedStripAnimationSweep::CalculateFadeOutSteps(unsigned long fadeouttime)
 {
   m_fadeouttime = fadeouttime;
-  if (fadeouttime == 0)
+  m_fadeOutStepSize = (float)255 / (fadeouttime / ANIMATION_UPDATE_INTERVAL);
+}
+
+void CFX_LedStripAnimationSweep::Start()
+{
+  m_stopped = false;
+  m_stoppedSteps = 0;
+  CFX_AnimationBase::Start();
+}
+
+void CFX_LedStripAnimationSweep::Stop(bool fadeout)
+{
+  m_stopped = true;
+  if (!fadeout)
   {
-    m_fadeOutStepSize[0] = (float)m_color.Red();
-    m_fadeOutStepSize[1] = (float)m_color.Green();
-    m_fadeOutStepSize[2] = (float)m_color.Blue();
-  }
-  else
-  {
-    m_fadeOutStepSize[0] = (float)m_color.Red() / (fadeouttime / ANIMATION_UPDATE_INTERVAL);
-    m_fadeOutStepSize[1] = (float)m_color.Green() / (fadeouttime / ANIMATION_UPDATE_INTERVAL);
-    m_fadeOutStepSize[2] = (float)m_color.Blue() / (fadeouttime / ANIMATION_UPDATE_INTERVAL);
+    CFX_AnimationBase::Stop();
   }
 }
 
+bool CFX_LedStripAnimationSweep::IsActive() const
+{
+  return !m_stopped;
+}
 
 void CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
 {
   if (m_output)
   {
-    if (m_currentStep >= m_onSteps) // progress to next led?
+    if (!m_stopped)
     {
-      m_activeLed += m_direction;
-      if (m_activeLed >= m_output->GetNrOfOutputs())
+      if (m_currentStep >= m_onSteps) // progress to next led?
       {
-        m_activeLed = 0;
+        m_activeLed += m_direction;
+        if (m_activeLed - (int8_t) m_output->GetNrOfOutputs() >= 0)
+        {
+          m_activeLed = 0;
+        }
+        else if (m_activeLed < 0)
+        {
+          m_activeLed = m_output->GetNrOfOutputs() - 1;
+        }
+        
+        // turn on current led
+        m_output->SetPixelColor(m_activeLed, m_color);
+        m_output->SetPixelBrightness(m_activeLed, 255);
+        // update trail length
+        m_trailLength++;
+        if (m_trailLength >= m_output->GetNrOfOutputs())
+        {
+          m_trailLength = m_output->GetNrOfOutputs();
+        }
+    
+        m_currentStep = 0;
       }
-      else if (m_activeLed < 0)
+      else
       {
-        m_activeLed = m_output->GetNrOfOutputs();
-      }
-      m_currentStep = 0;
-      
-      // update trail lenght
-      m_trailLength++;
-      if (m_trailLength >= m_output->GetNrOfOutputs())
-      {
-        m_trailLength = m_output->GetNrOfOutputs();
+        m_currentStep++;
       }
     }
     else
     {
-      m_currentStep++;
+      m_stoppedSteps++;
     }
-   
-    // turn on current led 
-    m_output->SetPixelColor(m_activeLed, m_color);
-
     // set trail
-    int trail = m_trailLength;
-    int led = m_activeLed;
+    uint8_t trail = m_trailLength;
+    int8_t led = m_activeLed;
+    uint8_t newbrightness = 255;
     while (trail > 0)
     {
-      // todo: check direction
+      int elapsedSteps = (m_trailLength - trail) * m_onSteps + m_currentStep + m_stoppedSteps;
+      int correction = elapsedSteps * m_fadeOutStepSize;
+      if (correction > 255)
+      {
+        correction = 255;
+        m_trailLength--;
+      }
+      uint8_t currentBrightness = 255;
+      if (currentBrightness < correction)
+      {
+        newbrightness = 0;
+      }
+      else
+      {
+        newbrightness = currentBrightness - correction;
+      }
+      m_output->SetPixelBrightness(led, newbrightness);
+      trail--;
+
       led -= m_direction;
       if (led < 0)
       {
         led = m_output->GetNrOfOutputs() - 1;
       }
-      else if (led >= m_output->GetNrOfOutputs())
+      else if (led - (int8_t) m_output->GetNrOfOutputs() >= 0)
       {
         led = 0;
       }
-      int factor = (m_trailLength - trail) * m_onSteps + m_currentStep;
-      CFX_Color colorCorrection(factor * m_fadeOutStepSize[0], 
-                                factor * m_fadeOutStepSize[1],
-                                factor * m_fadeOutStepSize[2]);
-      
-      if (colorCorrection.Red() > m_color.Red()) colorCorrection.SetRed(m_color.Red());
-      if (colorCorrection.Green() > m_color.Green()) colorCorrection.SetGreen(m_color.Green());
-      if (colorCorrection.Blue() > m_color.Blue()) colorCorrection.SetBlue(m_color.Blue());
-      
-      if (colorCorrection == m_color) m_trailLength--;
-      //CFX_Color newColor = m_color - colorCorrection;
-      CFX_Color newColor(m_color.Red() - colorCorrection.Red(), 
-                         m_color.Green() - colorCorrection.Green(), 
-                         m_color.Blue() - colorCorrection.Blue());
-      /*Serial.print("m_color: ");
-      Serial.print(m_color.toString());
-      Serial.print(" color correction: ");
-      Serial.print(colorCorrection.toString());
-      Serial.print(" new color: ");
-      Serial.println(newColor.toString());
-      */
-      m_output->SetPixelColor(led, newColor);
-      trail--;
     }
   }
 }

@@ -27,7 +27,7 @@ CFX_LedStripAnimationSweep sweep(color, 50, 500, &ledstrip);
 
 void setup()
 {
-  button1.DisableDoubleClick(true);
+  button1.DisableDoubleClick(true); // disable the double click function for button 1
 }
 
 void handleInput(int id, int command, int value)

@@ -104,3 +104,21 @@ bool CFX_Color::operator!=(const CFX_Color& color) const
 {
   return !(*this == color);
 }
+
+CFX_Color CFX_Color::operator+(CFX_Color color)
+{
+  CFX_Color c;
+  c.SetRed(m_red + color.Red());
+  c.SetGreen(m_green + color.Green());
+  c.SetBlue(m_blue + color.Blue());
+  return c;
+}
+
+CFX_Color CFX_Color::operator*(float factor)
+{
+  CFX_Color c;
+  c.SetRed(m_red * factor);
+  c.SetGreen(m_green * factor);
+  c.SetBlue(m_blue * factor);
+  return c;  
+}

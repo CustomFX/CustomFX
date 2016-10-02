@@ -14,11 +14,11 @@
 #include <CustomFX.h>
 
 CFX_LedStrip ledstrip(2, 20);   // Connect ledstrip to pin 2
-CFX_Color color(12, 25, 115);    // create color
+CFX_Color color(12, 25, 115);   // Create color
 
 void setup() 
 {
-  ledstrip.SetColor(color);
+  ledstrip.SetColor(color); // set color
 }
 
 void handleInput(int id, int command, int value)

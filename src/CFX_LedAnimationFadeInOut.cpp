@@ -37,15 +37,16 @@ CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut()
 }
 
 
-CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut(CFX_Led* output)
-  : CFX_AnimationBase()
+CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut(int fadeInTime, int onTime, 
+  int fadeOutTime, int offTime, CFX_Led* output) : CFX_AnimationBase()
 {
   m_output = output;
-  m_brightness = 0;
+  m_brightness = 255; // default brightness
   m_fadeInStep = 0;
   m_fadeOutStep = 0;
   m_animationStep = 0;
   m_totalAnimationSteps = 0;
+  SetTimes(fadeInTime, onTime, fadeOutTime, offTime);
 }
 
 void CFX_LedAnimationFadeInOut::SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime)
@@ -81,7 +82,6 @@ void CFX_LedAnimationFadeInOut::SetStepSizes()
   else
   {
     m_fadeInStep = (float)m_brightness;
-
   }
   
   if (m_fadeOutSteps > 0)

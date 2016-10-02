@@ -16,9 +16,10 @@
 
 CFX_RGBLed led1(11, 10, 9, true);                 // Connect RGB Led to pin 11 (red), 10 (green) and 9 (blue)
 CFX_RGBLedAnimationFadeToColor colorfade(&led1);  // fade animation
-CFX_Timer timer(101);
-int color = 0;
-const int maxcolors = 8;
+CFX_Timer timer(101);                             // create a time with id 101
+int color = 0;            // variable to indicate the current color
+const int maxcolors = 8;  // constant to indicate the total number of colors
+// create an array of colors
 CFX_Color colors[maxcolors] = { CFX_Color(   0,   0,   0 ), 
                                 CFX_Color( 255,   0,   0 ),
                                 CFX_Color( 125, 125,   0 ),

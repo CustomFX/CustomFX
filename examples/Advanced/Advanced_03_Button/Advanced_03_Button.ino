@@ -4,9 +4,10 @@
 // Advanced example 03: Button
 //
 // This example shows hoe to use all commands received from a button:
-// - single click: turn LED on
-// - double click: turn LED off
-// - click and hold: fade LED on and off
+// - single click: turn LED 1 on
+// - double click: turn LED 1 off
+// - click and hold: fade LED 1 on and off
+// - when pressing and releaseing the button, LED 2 will be turned on and off
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -16,10 +17,11 @@
 
 #include <CustomFX.h>
 
-CFX_Button button1(7, 101);  // Connect button to pin 10 with id 101
+CFX_Button button1(7, 101);  // Connect button to pin 7 with id 101
 CFX_Led led1(3);             // Connect Led to pin 3
-int brightness;
-bool led_on = false;
+CFX_Led led2(5);             // Connect second Led to pin 5
+int brightness;              // variable to store the brightness
+bool led_on = false;         // led is initially off
 
 void setup() 
 {
@@ -32,6 +34,14 @@ void handleInput(int id, int command, int value)
     case 101: // handle input events from button1
     switch(command)
     {
+      case CFX_CMD_BUTTON_PRESSED: // turn led 2 on
+      led2.SetBrightness(255);
+      break;
+
+      case CFX_CMD_BUTTON_RELEASED: // turn led 2 off
+      led2.SetBrightness(0);
+      break;
+      
       case CFX_CMD_BUTTON_CLICK: // turn led on
       brightness = 255;
       led_on = true;

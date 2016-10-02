@@ -47,7 +47,6 @@ class CFX_Servo: public CFX_OutputBase
     void Init();
 
   private:
-    bool     m_changed;
     int      m_pin;
     Servo    m_servo;
     int      m_minAngle;

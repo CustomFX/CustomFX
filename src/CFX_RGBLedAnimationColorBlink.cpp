@@ -32,14 +32,21 @@ CFX_RGBLedAnimationColorBlink::CFX_RGBLedAnimationColorBlink() : CFX_AnimationBa
   m_blinkon = false;
 }
 
-CFX_RGBLedAnimationColorBlink::CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, CFX_RGBLed* output)
-  : CFX_AnimationBase()
+CFX_RGBLedAnimationColorBlink::CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime,
+  CFX_Color color, CFX_RGBLed* output) : CFX_RGBLedAnimationColorBlink(onTime, offTime, 0, color, output)
+{
+}
+
+CFX_RGBLedAnimationColorBlink::CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
+  unsigned long startdelay, CFX_Color color, CFX_RGBLed* output) : CFX_AnimationBase()
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
+  m_startDelay = startdelay;
   m_output = output;
-  m_previousUpdateTime = 0;
+  m_previousUpdateTime = millis() + startdelay - offTime;
   m_blinkon = false;
+  m_color = color;
 }
 
 void CFX_RGBLedAnimationColorBlink::SetColor(const CFX_Color& color)

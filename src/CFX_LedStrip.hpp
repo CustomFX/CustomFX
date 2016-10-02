@@ -33,17 +33,21 @@
 class CFX_LedStrip: public CFX_RGBLed
 {
   public:
-    CFX_LedStrip(int pinnumber, int leds, int type = NEO_RGB + NEO_KHZ800);
+    CFX_LedStrip(int pinnumber, uint16_t leds, int type = NEO_GRB + NEO_KHZ800);
 
     // additional
-    virtual int  GetNrOfOutputs() const;
-    virtual const CFX_Color GetPixelColor(int pixel) const;
-    virtual long GetPixelColorLong(int pixel) const;
-    virtual void SetPixelColor(int led, const CFX_Color& color);
-    virtual long GetColorLong() const;
+    virtual uint16_t GetNrOfOutputs() const;
+    virtual const CFX_Color GetPixelColor(uint16_t pixel) const;
+    virtual void SetPixelColor(uint16_t pixel, const CFX_Color& color);
+    virtual long GetPixelColorLong(uint16_t pixel) const;
+    
+    virtual void SetPixelBrightness(uint16_t pixel, uint8_t brightness);
+    virtual uint8_t GetPixelBrightness(uint16_t pixel) const;
+  
     
     // inherited
     virtual const CFX_Color GetColor() const;
+    virtual long GetColorLong() const;
     virtual void SetColor(const CFX_Color& color);
     virtual void SetBrightness(uint8_t brightness);
     virtual void Commit();
@@ -54,11 +58,11 @@ class CFX_LedStrip: public CFX_RGBLed
     
   private:
     int m_type;
-    bool m_changed;
     int m_pinnumber;
-    int m_nrleds;
+    uint16_t m_nrleds;
     Adafruit_NeoPixel m_pixels;
-    uint8_t (*m_pixelcolors)[3];  
+//    uint8_t (*m_pixelcolors)[4]; 
+    uint8_t *m_pixelcolors; 
     bool m_initialised;
 };
 

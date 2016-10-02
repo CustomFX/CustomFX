@@ -15,7 +15,7 @@
 #include <CustomFX.h>
 
 CFX_Led led(3);              // Connect Led to pin 3
-CFX_Timer timer(101);
+CFX_Timer timer(101);        // create timer with id 101
 
 void setup() 
 {
@@ -28,11 +28,11 @@ void handleInput(int id, int command, int value)
   {  
     if (led.GetBrightness() == 0)
     {
-      led.SetBrightness(255);
+      led.SetBrightness(255); // turn led on
     }
     else
     {
-      led.SetBrightness(0);
+      led.SetBrightness(0); // turn led off
     }
   }
 }

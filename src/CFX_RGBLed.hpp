@@ -38,7 +38,6 @@ class CFX_RGBLed: public CFX_Led
     virtual void     SetColor(const CFX_Color& color);
     
     // inherited
-    virtual void     SetBrightness(uint8_t brightness);
     virtual void     Commit();
     
   protected:
@@ -49,7 +48,6 @@ class CFX_RGBLed: public CFX_Led
     int m_greenpin;
     int m_bluepin;
     
-    bool      m_changed;
     CFX_Color m_color;
     bool      m_commonAnode;
 };

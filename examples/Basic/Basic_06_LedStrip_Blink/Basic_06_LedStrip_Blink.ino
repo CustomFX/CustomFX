@@ -15,12 +15,12 @@
 #include <CustomFX.h>
 
 CFX_LedStrip ledstrip(2, 20);   // Connect ledstrip to pin 2
-CFX_RGBLedAnimationColorBlink blink1(250, 250, &ledstrip);
+CFX_LedAnimationBlink blink1(250, 250, &ledstrip); // blink for 250 milliseconds on and off
 
 void setup() 
 {
-  CFX_Color color(12, 25, 115);   // create color
-  blink1.SetColor(color);
+  CFX_Color color(12, 25, 115);  // create color
+  ledstrip.SetColor(color);      // set color
 }
 
 void handleInput(int id, int command, int value)

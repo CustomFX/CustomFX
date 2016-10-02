@@ -33,8 +33,8 @@ CFX_ServoAnimationMoveToPosition::CFX_ServoAnimationMoveToPosition()
   m_stepSize = 0;
 }
 
-CFX_ServoAnimationMoveToPosition::CFX_ServoAnimationMoveToPosition(int newPosition, int duration, CFX_Servo* output)
-  : CFX_AnimationBase()
+CFX_ServoAnimationMoveToPosition::CFX_ServoAnimationMoveToPosition(int newPosition, int duration,
+ CFX_Servo* output) : CFX_AnimationBase()
 {
   m_output = output;
   MoveToPosition(newPosition, duration);

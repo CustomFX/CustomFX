@@ -17,8 +17,8 @@
 
 CFX_LedStrip ledstrip(2, 20);    // Connect ledstrip to pin 2
 CFX_Color color(12, 25, 115);    // initial color
-CFX_LedStripAnimationSweep sweep(color, 20, 350, &ledstrip); // setup sweep, speed 20 msec per led, trail is 350 msec
-CFX_Button button(7, 101);
+CFX_LedStripAnimationSweep sweep(color, 20, 350, &ledstrip); // setup sweep, speed 20 msec per led, fade out time is 350 msec
+CFX_Button button(7, 101);      // connect button to pin 7
 
 void setup() 
 {

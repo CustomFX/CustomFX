@@ -14,15 +14,15 @@
 
 #include <CustomFX.h>
 
-CFX_RGBLed rgbled(11, 10, 9, true);
-CFX_RGBLedAnimationFadeToColor fader(&rgbled);
-CFX_Button button(7, 100);
-bool faded_in = false;
-CFX_Color color(125, 125, 0); // target color to fade to
+CFX_RGBLed rgbled(11, 10, 9, true);            // connect RGB led to pin 11, 10 and 9
+CFX_RGBLedAnimationFadeToColor fader(&rgbled); // create fade animation
+CFX_Button button(7, 100);                     // connect button to pin 7
+bool faded_in = false;                         // led is initially off
+CFX_Color color(125, 125, 0);                  // target color to fade to
 
 void setup() 
 {
-  fader.FadeToColor(CFX_Color(0), 0);
+  fader.FadeToColor(CFX_Color(0), 0); // set the color of the animation to 0 (fade to black in 0 seconds)
 }
 
 void handleInput(int id, int command, int value)
@@ -31,8 +31,8 @@ void handleInput(int id, int command, int value)
   {
     if (faded_in)
     {
-      // fade to 0 in 2 seconds
-      fader.FadeToColor(CFX_Color(0, 0, 0), 2000);
+      // fade to no color (off) in 2 seconds
+      fader.FadeToColor(CFX_Color(0, 0, 0), 2000); 
       faded_in = false;
     }
     else
