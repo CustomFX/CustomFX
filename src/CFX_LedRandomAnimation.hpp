@@ -21,29 +21,35 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CFX_LEDANIMATIONBLINK_H
-#define CFX_LEDANIMATIONBLINK_H
+#ifndef CFX_LedRandomAnimation_H
+#define CFX_LedRandomAnimation_H
 
-#include <CFX_Led.hpp>
-#include <CFX_LedAnimationSequence.hpp>
+#include <CFX_AnimationBase.hpp>
 
-class CFX_LedAnimationBlink: public CFX_LedAnimationSequence
+class CFX_LedRandomAnimation: public CFX_AnimationBase
 {
   public:
+    CFX_LedRandomAnimation(uint8_t minvalue, uint8_t maxvalue, 
+  uint16_t mindelay, uint16_t maxdelay, CFX_Led* output);
+      
+    virtual bool UpdateAnimation(int timestep);
 
-    //CFX_LedAnimationBlink();
-    CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, CFX_Led* output);
-    CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
-      unsigned long startdelay, CFX_Led* output);
+  private:
+    void NextStep();
+    void SetStepSizes(uint8_t brightness, uint16_t duration);
+ 
+  private:
+    CFX_Led* m_output;
+    uint8_t m_minvalue;
+    uint8_t m_maxvalue;
+    uint16_t m_mindelay;
+    uint16_t m_maxdelay;
     
-    void SetTimes(unsigned long onTime, unsigned long offTime);
-    void SetBrightness(uint8_t brightness);
-
-private:
-    // private variables for function blink
-    uint16_t m_blinkOnTime;
-    uint16_t m_blinkOffTime;
-    uint8_t m_brightness;
+    float m_brightness;      // stores the actual brightrness of the LED
+    
+    uint16_t m_stepIncrement;
+    uint16_t m_totalIncrements;
+    float m_brightnessIncrement;
 };
 
-#endif // CFX_ANIMATIONBLINK_H
+#endif // CFX_LedRandomAnimation_H

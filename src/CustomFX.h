@@ -44,6 +44,7 @@
 
 #include <CFX_InputBase.hpp>
 #include <CFX_Button.hpp>
+#include <CFX_Potentiometer.hpp>
 #include <CFX_Timer.hpp>
 
 #include <CFX_OutputBase.hpp>
@@ -58,6 +59,8 @@
 
 #include <CFX_AnimationBase.hpp>
 
+#include <CFX_LedAnimationSequence.hpp>
+#include <CFX_LedRandomAnimation.hpp>
 #include <CFX_LedAnimationBlink.hpp>
 #include <CFX_LedAnimationFadeInOut.hpp>
 
@@ -70,5 +73,8 @@
 #include <CFX_ServoAnimationMoveToPosition.hpp>
 #include <CFX_ServoAnimationPath.hpp>
 #include <CFX_ServoAnimationSweep.hpp>
+
+#define CFX_Run() CFX_InputController::GetInstance()->ReadInputs();CFX_AnimationController::GetInstance()->UpdateAnimation();
+
 
 #endif // CUSTOM_FX_H

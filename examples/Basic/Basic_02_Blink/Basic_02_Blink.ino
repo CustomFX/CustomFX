@@ -14,7 +14,7 @@
 #include <CustomFX.h>
 
 CFX_Led led1(3);                                 // Connect Led to pin 3
-CFX_LedAnimationBlink blink1(1500, 500, &led1);  // Blink led for 1 second on and 0,5 seconds off
+CFX_LedAnimationBlink blink1(1500, 500, &led1);  // Blink led for 1,5 second on and 0,5 seconds off
 
 void setup() 
 {
@@ -26,6 +26,5 @@ void handleInput(int id, int command, int value)
 
 void loop() 
 {
-  CFX_InputController::GetInstance()->ReadInputs();
-  CFX_AnimationController::GetInstance()->UpdateAnimation();
+  CFX_Run();
 }

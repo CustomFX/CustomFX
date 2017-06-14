@@ -30,8 +30,7 @@ CFX_LedStrip::CFX_LedStrip(int pinnumber, uint16_t leds, int type) : CFX_RGBLed(
   SetChanged(false);
   m_initialised = false;
   
-  //m_pixelcolors = new uint8_t[m_nrleds][4]; // TODO: check memory allocation
-  uint16_t numBytes = leds * 4;
+  uint16_t numBytes = (uint16_t)leds * 4;
   
   if((m_pixelcolors = (uint8_t *)malloc(numBytes))) {
     memset(m_pixelcolors, 0, numBytes);
@@ -110,6 +109,12 @@ void CFX_LedStrip::SetBrightness(uint8_t brightness)
     m_pixelcolors[i*4+3] = brightness;
   }
   SetChanged(true);
+}
+
+uint8_t CFX_LedStrip::GetBrightness()
+{
+  if (m_nrleds > 0) return GetPixelBrightness(0);
+  else return 0;
 }
 
 void CFX_LedStrip::SetPixelBrightness(uint16_t pixel, uint8_t brightness)

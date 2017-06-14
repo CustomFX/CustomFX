@@ -34,7 +34,7 @@ class CFX_ServoAnimationSweep: public CFX_AnimationBase
     CFX_ServoAnimationSweep();
     CFX_ServoAnimationSweep(int minAngle, int maxAngle, int duration, int offset, CFX_Servo* output);
     
-    virtual void UpdateAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
  
   private:
     CFX_Servo* m_output;
@@ -43,8 +43,7 @@ class CFX_ServoAnimationSweep: public CFX_AnimationBase
     int m_duration;
     int m_offset;
     bool m_directionUp;
-    bool m_repeat;
-    
+     
     int m_angle;
     int m_stepsize;
 };

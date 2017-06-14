@@ -73,8 +73,9 @@ void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
   this->Start();
 }
 
-void CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)
+bool CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)
 {
+  bool returnval = false;
   if (m_output)
   {
     if (m_targetColor.Red() != (uint8_t)m_colorRed)
@@ -103,6 +104,8 @@ void CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)
     {
       // target reached
       this->Stop();
-   }
+      returnval = true;
+    }
   }
+  return returnval;
 }

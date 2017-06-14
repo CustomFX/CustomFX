@@ -72,8 +72,9 @@ void CFX_ServoAnimationPath::MoveToPosition(int newPosition, int duration)
   }
 }
 
-void CFX_ServoAnimationPath::UpdateAnimation(int timeStep)
+bool CFX_ServoAnimationPath::UpdateAnimation(int timeStep)
 {
+  bool returnval = false;
   if (m_output)
   {
     if (fabs((float)m_targetPosition - m_position) < fabs(m_stepSize))
@@ -86,6 +87,7 @@ void CFX_ServoAnimationPath::UpdateAnimation(int timeStep)
       else
       {
         this->Stop();
+        returnval = true;
       }
     }
     else
@@ -93,6 +95,6 @@ void CFX_ServoAnimationPath::UpdateAnimation(int timeStep)
       m_position += m_stepSize;
       m_output->SetAngle((int)m_position);
     }
-    
   }
+  return returnval;
 }

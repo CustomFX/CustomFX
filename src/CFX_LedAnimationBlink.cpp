@@ -23,65 +23,32 @@
 
 #include <CFX_LedAnimationBlink.hpp>
 
-CFX_LedAnimationBlink::CFX_LedAnimationBlink() : CFX_AnimationBase()
-{
-  m_blinkOnTime = 0;
-  m_blinkOffTime = 0;
-  m_output = 0;
-  m_previousUpdateTime = 0;
-  m_brightness = 255;
-  m_blinkon = false;
-}
-
 CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
   CFX_Led* output) : CFX_LedAnimationBlink(onTime, offTime, 0, output)
 {
 }
 
-
 CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
-  unsigned long startdelay, CFX_Led* output) : CFX_AnimationBase()
+  unsigned long startdelay, CFX_Led* output) : CFX_LedAnimationSequence(2, output)
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
-  m_startDelay = startdelay;
-  m_output = output;
-  m_previousUpdateTime = millis() + startdelay - offTime;
   m_brightness = 255;
-  m_blinkon = false;
+  AddStep(m_brightness, m_blinkOnTime, CFX_Transition_Block);
+  AddStep(0, m_blinkOffTime, CFX_Transition_Block);
+  SetDelay(startdelay);
 }
 
 void CFX_LedAnimationBlink::SetBrightness(uint8_t brightness)
 {
   m_brightness = brightness;
+  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_Transition_Block);
 }
 
 void CFX_LedAnimationBlink::SetTimes(unsigned long onTime, unsigned long offTime)
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
-}
-
-void CFX_LedAnimationBlink::SetOutputDevice(CFX_Led* output)
-{
-  m_output = output;
-}
-
-void CFX_LedAnimationBlink::UpdateAnimation(int timeStep)
-{
-  if (m_output)
-  {
-    if ((!m_blinkon) && (millis() - m_previousUpdateTime >= m_blinkOffTime))
-    {
-      m_previousUpdateTime = millis();
-      m_output->SetBrightness(m_brightness);
-      m_blinkon = true;
-    }
-    else if (millis() - m_previousUpdateTime >= m_blinkOnTime)
-    {
-      m_previousUpdateTime = millis();
-      m_output->SetBrightness(0);
-      m_blinkon = false;
-    }
-  }
+  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_Transition_Block);
+  ChangeStep(1, 0, m_blinkOffTime, CFX_Transition_Block);
 }

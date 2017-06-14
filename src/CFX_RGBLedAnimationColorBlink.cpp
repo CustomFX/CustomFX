@@ -44,9 +44,10 @@ CFX_RGBLedAnimationColorBlink::CFX_RGBLedAnimationColorBlink(unsigned long onTim
   m_blinkOffTime = offTime;
   m_startDelay = startdelay;
   m_output = output;
-  m_previousUpdateTime = millis() + startdelay - offTime;
+  m_previousUpdateTime = millis();
   m_blinkon = false;
   m_color = color;
+  SetDelay(m_startDelay);
 }
 
 void CFX_RGBLedAnimationColorBlink::SetColor(const CFX_Color& color)
@@ -65,8 +66,9 @@ void CFX_RGBLedAnimationColorBlink::SetOutputDevice(CFX_RGBLed* output)
   m_output = output;
 }
 
-void CFX_RGBLedAnimationColorBlink::UpdateAnimation(int timeStep)
+bool CFX_RGBLedAnimationColorBlink::UpdateAnimation(int timeStep)
 {
+  bool returnval = false;
   if (m_output)
   {
     if ((!m_blinkon) && (millis() - m_previousUpdateTime >= m_blinkOffTime))
@@ -80,7 +82,9 @@ void CFX_RGBLedAnimationColorBlink::UpdateAnimation(int timeStep)
       m_previousUpdateTime = millis();
       m_output->SetColor(CFX_Color(0));
       m_blinkon = false;
+      returnval = true;
     }
   }
+  return returnval;
 }
     

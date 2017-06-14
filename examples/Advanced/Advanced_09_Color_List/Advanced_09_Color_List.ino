@@ -50,6 +50,5 @@ void handleInput(int id, int command, int value)
 
 void loop() 
 {
-  CFX_InputController::GetInstance()->ReadInputs();
-  CFX_AnimationController::GetInstance()->UpdateAnimation();
+  CFX_Run();
 }

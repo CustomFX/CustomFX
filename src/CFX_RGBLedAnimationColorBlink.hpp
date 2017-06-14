@@ -41,7 +41,7 @@ class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
     void SetTimes(unsigned long onTime, unsigned long offTime);
     void SetOutputDevice(CFX_RGBLed* output);
 
-    void UpdateAnimation(int timeStep);
+    bool UpdateAnimation(int timeStep);
 
 private:
     // private variables for function blink

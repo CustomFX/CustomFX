@@ -55,19 +55,21 @@ void CFX_ServoAnimationMoveToPosition::MoveToPosition(int newPosition, int durat
   this->Start();
 }
 
-void CFX_ServoAnimationMoveToPosition::UpdateAnimation(int timeStep)
+bool CFX_ServoAnimationMoveToPosition::UpdateAnimation(int timeStep)
 {
+  bool returnval = false;
   if (m_output)
   {
     if (fabs((float)m_targetPosition - m_position) < fabs(m_stepSize))
     {
       this->Stop();
+      returnval = true;
     }
     else
     {
       m_position += m_stepSize;
       m_output->SetAngle((int)m_position);
     }
-    
   }
+  return returnval;
 }

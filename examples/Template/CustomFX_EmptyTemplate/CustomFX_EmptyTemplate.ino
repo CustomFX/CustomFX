@@ -33,6 +33,5 @@ void handleInput(int id, int command, int value)
 void loop() 
 {
   // If you stick to the Custom FX library, you do not need to add any code here
-  CFX_InputController::GetInstance()->ReadInputs();
-  CFX_AnimationController::GetInstance()->UpdateAnimation();
+  CFX_Run();
 }

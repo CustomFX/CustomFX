@@ -111,8 +111,9 @@ void CFX_RGBLedAnimationFadeInOut::SetStepSizes()
   }
 }
 
-void CFX_RGBLedAnimationFadeInOut::UpdateAnimation(int timeStep)
+bool CFX_RGBLedAnimationFadeInOut::UpdateAnimation(int timeStep)
 {
+  bool returnval = false;
   if (m_output)
   {
     if (m_animationStep < m_fadeInSteps)
@@ -140,6 +141,8 @@ void CFX_RGBLedAnimationFadeInOut::UpdateAnimation(int timeStep)
     if (m_animationStep > m_totalAnimationSteps)
     {
       m_animationStep = 0;
+      returnval = true;
     }
   }
+  return returnval;
 }

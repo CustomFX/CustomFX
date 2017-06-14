@@ -25,6 +25,7 @@
 #define CFX_LEDSTRIP_H
 
 #include <CFX_RGBLed.hpp>
+
 #include "Adafruit_NeoPixel.h"
 #ifdef __AVR__
 #include "avr/power.h"
@@ -50,6 +51,7 @@ class CFX_LedStrip: public CFX_RGBLed
     virtual long GetColorLong() const;
     virtual void SetColor(const CFX_Color& color);
     virtual void SetBrightness(uint8_t brightness);
+    virtual uint8_t GetBrightness();
     virtual void Commit();
 
   protected:
@@ -61,7 +63,6 @@ class CFX_LedStrip: public CFX_RGBLed
     int m_pinnumber;
     uint16_t m_nrleds;
     Adafruit_NeoPixel m_pixels;
-//    uint8_t (*m_pixelcolors)[4]; 
     uint8_t *m_pixelcolors; 
     bool m_initialised;
 };

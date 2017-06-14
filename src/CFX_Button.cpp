@@ -26,7 +26,7 @@
 CFX_Button::CFX_Button(int inputPin, int id) : CFX_InputBase(id)
 {
   SetPinNumber(inputPin);
-  pinMode(inputPin, INPUT);
+  
   m_lastClick = 0;
   m_pressed = false;
   m_doubleClick = false;
@@ -49,7 +49,7 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
     return GetLastEvent(); 
   }
   
-  int value = digitalRead(GetPinNumber());
+  int value = ReadDigitalInput();
   if (m_pressed)
   {
     if (value == HIGH) // button (still) pressed

@@ -27,20 +27,99 @@
 CFX_AnimationBase::CFX_AnimationBase()
 {
  	CFX_AnimationController::GetInstance()->RegisterAnimation(this);
-  m_active = true;
+  //m_active = true;
+  m_state = cfx_animation_initializing;
+  m_repetitions = -1;
+  m_delay = 0;
+}
+
+void CFX_AnimationBase::Animate(int timestep)
+{
+  if (m_delay > 0)
+  {
+    if (m_delay - timestep > 0)
+    {
+      m_delay -= timestep;
+    }
+    else
+    {
+      m_delay = 0;
+      Serial.print(millis());
+      Serial.println(" start...");
+    }
+  }
+  else
+  {
+    switch (m_state)
+    {
+      case cfx_animation_initializing:
+        if (InitializeAnimation(timestep) == true)
+        {
+          m_state = cfx_animation_running;
+        }
+      break;
+      
+      case cfx_animation_running:
+        if (UpdateAnimation(timestep) == true)
+        {
+          if (m_repetitions > 0)
+          {
+            m_repetitions--;
+            if (m_repetitions == 0)
+            {
+              m_state = cfx_animation_shuttingdown;
+            }
+          }
+        }
+      break;
+      
+      case cfx_animation_shuttingdown:
+        if (FinishAnimation(timestep) == true)
+        {
+          m_state = cfx_animation_stopped;
+        }
+      break;
+      
+      case cfx_animation_stopped:
+        // do nothing
+      break;
+    }
+  }
+}
+
+bool CFX_AnimationBase::InitializeAnimation(int timestep)
+{
+  return true;
+}
+
+bool CFX_AnimationBase::FinishAnimation(int timestep)
+{
+  return true;
+}
+
+void CFX_AnimationBase::SetDelay(long delay)
+{
+  m_delay = delay;
+}
+
+void CFX_AnimationBase::SetRepetitions(int repetitions)
+{
+  m_repetitions = repetitions;
 }
 
 void CFX_AnimationBase::Start()
 {
-  m_active = true;
+  //m_active = true;
+  m_state = cfx_animation_initializing;
 }
 
 void CFX_AnimationBase::Stop()
 {
-  m_active = false;
+  //m_active = false;
+  m_state = cfx_animation_shuttingdown;
 }
 
 bool CFX_AnimationBase::IsActive() const
 {
-  return m_active;
+  return m_state != cfx_animation_stopped;
 }

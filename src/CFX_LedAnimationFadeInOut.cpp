@@ -25,99 +25,39 @@
 
    
 
-CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut()
-  : CFX_AnimationBase()
+CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut(uint16_t fadeInTime, uint16_t onTime, 
+  uint16_t fadeOutTime, uint16_t offTime, CFX_Led* output) : CFX_LedAnimationSequence(4, output)
 {
-  m_output = 0;
-  m_brightness = 0;
-  m_fadeInStep = 0;
-  m_fadeOutStep = 0;
-  m_animationStep = 0;
-  m_totalAnimationSteps = 0;
-}
-
-
-CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut(int fadeInTime, int onTime, 
-  int fadeOutTime, int offTime, CFX_Led* output) : CFX_AnimationBase()
-{
-  m_output = output;
+  m_fadeInTime = fadeInTime;
+  m_onTime = onTime;
+  m_offTime = offTime;
+  m_fadeOutTime = fadeOutTime;
   m_brightness = 255; // default brightness
-  m_fadeInStep = 0;
-  m_fadeOutStep = 0;
-  m_animationStep = 0;
-  m_totalAnimationSteps = 0;
-  SetTimes(fadeInTime, onTime, fadeOutTime, offTime);
+
+  AddStep(m_brightness, m_fadeInTime, CFX_Transition_Lineair);
+  AddStep(m_brightness, m_onTime, CFX_Transition_Block);
+  AddStep(0, m_fadeOutTime, CFX_Transition_Lineair);
+  AddStep(0, m_offTime, CFX_Transition_Block);
 }
 
-void CFX_LedAnimationFadeInOut::SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime)
+void CFX_LedAnimationFadeInOut::SetTimes(uint16_t fadeInTime, uint16_t onTime, uint16_t fadeOutTime,
+  uint16_t offTime)
 {
-  m_fadeInSteps = fadeInTime / ANIMATION_UPDATE_INTERVAL;
-  m_onSteps = onTime / ANIMATION_UPDATE_INTERVAL;
-  m_fadeOutSteps = fadeOutTime / ANIMATION_UPDATE_INTERVAL;
-  m_offSteps = offTime / ANIMATION_UPDATE_INTERVAL;
-  
-  m_totalAnimationSteps = m_fadeInSteps + m_onSteps + m_fadeOutSteps + m_offSteps;
-  
-  SetStepSizes();
+  m_fadeInTime = fadeInTime;
+  m_onTime = onTime;
+  m_offTime = offTime;
+  m_fadeOutTime = fadeOutTime;
+
+  ChangeStep(0, m_brightness, m_fadeInTime, CFX_Transition_Lineair);
+  ChangeStep(1, m_brightness, m_onTime, CFX_Transition_Block);
+  ChangeStep(2, 0, m_fadeOutTime, CFX_Transition_Lineair);
+  ChangeStep(3, 0, m_offTime, CFX_Transition_Block);  
 }
 
 void CFX_LedAnimationFadeInOut::SetBrightness(uint8_t brightness)
 {
   m_brightness = brightness;
-  
-  SetStepSizes();
+  ChangeStep(0, m_brightness, m_fadeInTime, CFX_Transition_Lineair);
+  ChangeStep(1, m_brightness, m_onTime, CFX_Transition_Block);
 }
 
-void CFX_LedAnimationFadeInOut::SetOutputDevice(CFX_Led* output)
-{
-  m_output = output;
-}
-
-void CFX_LedAnimationFadeInOut::SetStepSizes()
-{
-  if (m_fadeInSteps > 0)
-  {
-    m_fadeInStep = (float)m_brightness / m_fadeInSteps;
-  }
-  else
-  {
-    m_fadeInStep = (float)m_brightness;
-  }
-  
-  if (m_fadeOutSteps > 0)
-  {
-    m_fadeOutStep = (float)m_brightness / m_fadeOutSteps;
-  }
-  else
-  {
-    m_fadeOutStep = (float)m_brightness;
-  }
-}
-
-void CFX_LedAnimationFadeInOut::UpdateAnimation(int timeStep)
-{
-  if (m_output)
-  {
-    if (m_animationStep < m_fadeInSteps)
-    {
-      m_output->SetBrightness(uint8_t(m_animationStep * m_fadeInStep));
-    }
-    else if (m_animationStep < m_onSteps + m_fadeInSteps)
-    {
-      m_output->SetBrightness(m_brightness);
-    }
-    else if (m_animationStep < m_fadeOutSteps + m_onSteps + m_fadeInSteps)
-    {
-      m_output->SetBrightness(m_brightness - uint8_t((m_animationStep - m_onSteps - m_fadeInSteps) * m_fadeInStep));
-    }
-    else
-    {
-      m_output->SetBrightness(0);
-    }
-    m_animationStep++;
-    if (m_animationStep > m_totalAnimationSteps)
-    {
-      m_animationStep = 0;
-    }
-  }
-}

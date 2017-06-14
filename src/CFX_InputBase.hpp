@@ -48,6 +48,7 @@ class CFX_InputBase
     virtual int GetId();
 	
   protected:
+    int  ReadDigitalInput();
     int  GetPinNumber();
     void SetPinNumber(int pinnumber);
     void SetEvent(int command, unsigned long value);

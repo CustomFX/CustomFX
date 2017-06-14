@@ -36,7 +36,7 @@ class CFX_ServoAnimationMoveToPosition: public CFX_AnimationBase
     
     void MoveToPosition(int newPosition, int duration);
     
-    virtual void UpdateAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
  
   private:
     CFX_Servo* m_output;

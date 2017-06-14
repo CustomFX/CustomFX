@@ -9,6 +9,7 @@ CFX_InputController	KEYWORD1
 CFX_Led	KEYWORD1
 CFX_LedAnimationBlink	KEYWORD1
 CFX_LedAnimationFadeInOut	KEYWORD1
+CFX_LedAnimationSequence KEYWORD1
 CFX_LedStrip	KEYWORD1
 CFX_LedStripAnimationSweep	KEYWORD1
 CFX_LedStripPixel	KEYWORD1
@@ -60,6 +61,7 @@ SetTimer	KEYWORD2
 GetInstance	KEYWORD2
 DisableDoubleClick  KEYWORD2
 SetPixel  KEYWORD2
+CFX_Run    KEYWORD2
 
 
 #######################################

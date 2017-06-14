@@ -28,36 +28,22 @@
 #include <CFX_Led.hpp>
 #include <CustomFX.h>
 
-class CFX_LedAnimationFadeInOut: public CFX_AnimationBase
+class CFX_LedAnimationFadeInOut: public CFX_LedAnimationSequence
 {
   public:
     
-    CFX_LedAnimationFadeInOut();
-    CFX_LedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime, int offTime, CFX_Led* output);
+    CFX_LedAnimationFadeInOut(uint16_t fadeInTime, uint16_t onTime, uint16_t fadeOutTime, 
+      uint16_t offTime, CFX_Led* output);
     
-    void SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime);
+    void SetTimes(uint16_t fadeInTime, uint16_t onTime, uint16_t fadeOutTime, uint16_t offTime);
     void SetBrightness(uint8_t brightness);
-    void SetOutputDevice(CFX_Led* output);
-
-    virtual void UpdateAnimation(int timestep);
-
-  private: // private functions
-    void SetStepSizes();
-  
+ 
   private: // private member variables
-    CFX_Led* m_output;
     uint8_t m_brightness;
-    
-    int m_fadeInSteps;
-    int m_onSteps;
-    int m_fadeOutSteps;
-    int m_offSteps;
-    
-    float m_fadeInStep;
-    float m_fadeOutStep;
-        
-    int m_animationStep; // counter to keep track of the current step in the animation
-    int m_totalAnimationSteps;
+    uint16_t m_fadeInTime;
+    uint16_t m_onTime;
+    uint16_t m_offTime;
+    uint16_t m_fadeOutTime;
 };
 
 #endif // CFX_LEDANIMATIONFADEINOUT_H

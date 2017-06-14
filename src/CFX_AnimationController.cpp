@@ -72,10 +72,7 @@ void CFX_AnimationController::UpdateAnimation()
     m_previousUpdateTime = millis();
     for (int i = 0; i < m_nrOfAnimations; i++)
     {
-      if (m_animations[i]->IsActive())
-      {
-        m_animations[i]->UpdateAnimation(timeelapsed);
-      }
+      m_animations[i]->Animate(timeelapsed);
     }
     for (int i = 0; i < m_nrOfOutputDevices; i++)
     {

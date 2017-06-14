@@ -40,7 +40,7 @@ class CFX_RGBLedAnimationFadeInOut: public CFX_AnimationBase
     void SetColor(CFX_Color color);
     void SetOutputDevice(CFX_RGBLed* output);
 
-    virtual void UpdateAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
 
   private: // private functions
     void SetStepSizes();

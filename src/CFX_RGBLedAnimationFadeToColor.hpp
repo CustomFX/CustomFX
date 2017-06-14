@@ -38,7 +38,7 @@ class CFX_RGBLedAnimationFadeToColor: public CFX_AnimationBase
     void FadeToColor(CFX_Color color, int duration);
     void SetOutputDevice(CFX_RGBLed* output);
 
-    virtual void UpdateAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
 
   private: // private member variables
     CFX_RGBLed* m_output;

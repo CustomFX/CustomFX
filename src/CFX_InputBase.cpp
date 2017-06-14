@@ -38,6 +38,12 @@ int CFX_InputBase::GetId()
 //
 // Protected functions
 //
+
+int CFX_InputBase::ReadDigitalInput()
+{
+  return digitalRead(m_pinnumber);
+}
+
 int CFX_InputBase::GetPinNumber()
 {
 	return m_pinnumber;
@@ -46,6 +52,7 @@ int CFX_InputBase::GetPinNumber()
 void CFX_InputBase::SetPinNumber(int pinnumber)
 {
 	m_pinnumber = pinnumber;
+  pinMode(m_pinnumber, INPUT);
 }
 
 void CFX_InputBase::SetEvent(int command, unsigned long value)

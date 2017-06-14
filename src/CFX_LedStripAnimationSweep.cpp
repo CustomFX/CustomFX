@@ -37,7 +37,7 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(CFX_Color color, unsigned
 }
 
 
-CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint8_t startled, int8_t direction, CFX_Color color,
+CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint16_t startled, int8_t direction, CFX_Color color,
   unsigned long time_on, unsigned long fadeouttime, CFX_LedStrip* output) 
   : CFX_AnimationBase()
 {
@@ -119,7 +119,7 @@ bool CFX_LedStripAnimationSweep::IsActive() const
   return !m_stopped;
 }
 
-void CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
+bool CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
 {
   if (m_output)
   {
@@ -128,7 +128,7 @@ void CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
       if (m_currentStep >= m_onSteps) // progress to next led?
       {
         m_activeLed += m_direction;
-        if (m_activeLed - (int8_t) m_output->GetNrOfOutputs() >= 0)
+        if (m_activeLed - (int16_t) m_output->GetNrOfOutputs() >= 0)
         {
           m_activeLed = 0;
         }
@@ -159,8 +159,8 @@ void CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
       m_stoppedSteps++;
     }
     // set trail
-    uint8_t trail = m_trailLength;
-    int8_t led = m_activeLed;
+    uint16_t trail = m_trailLength;
+    int16_t led = m_activeLed;
     uint8_t newbrightness = 255;
     while (trail > 0)
     {
@@ -188,10 +188,11 @@ void CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
       {
         led = m_output->GetNrOfOutputs() - 1;
       }
-      else if (led - (int8_t) m_output->GetNrOfOutputs() >= 0)
+      else if (led - (int16_t) m_output->GetNrOfOutputs() >= 0)
       {
         led = 0;
       }
     }
   }
+  return false;
 }

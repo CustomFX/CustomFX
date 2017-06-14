@@ -37,7 +37,6 @@ CFX_ServoAnimationSweep::CFX_ServoAnimationSweep()
   m_directionUp = true;
 }
 
-
 CFX_ServoAnimationSweep::CFX_ServoAnimationSweep(int minAngle, int maxAngle, int duration, int offset,
   CFX_Servo* output) : CFX_AnimationBase()
 {
@@ -57,10 +56,9 @@ CFX_ServoAnimationSweep::CFX_ServoAnimationSweep(int minAngle, int maxAngle, int
   m_offset = constrain(offset, m_minAngle, m_maxAngle);
   m_angle = m_offset;
   m_directionUp = true;
-  m_repeat = true;
 }
 
-void CFX_ServoAnimationSweep::UpdateAnimation(int timeStep)
+bool CFX_ServoAnimationSweep::UpdateAnimation(int timeStep)
 {
   if (m_output)
   {
@@ -71,11 +69,6 @@ void CFX_ServoAnimationSweep::UpdateAnimation(int timeStep)
         if (m_angle < m_offset)
         {
           m_angle += m_stepsize;
-          if (!m_repeat && m_angle >= m_offset)
-          {
-            // check if with this step the animations reaches the startingpoint
-            Stop();
-          }
         }
         else
         {
@@ -102,4 +95,5 @@ void CFX_ServoAnimationSweep::UpdateAnimation(int timeStep)
     }
     m_output->SetAngle(m_angle);
   }
+  return false;
 }

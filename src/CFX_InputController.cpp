@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <CFX_InputController.hpp>
+#include <limits.h>
 
 // forward declaration of callback function
 void handleInput(int id, int command, int value);
@@ -66,6 +67,7 @@ void CFX_InputController::ReadInputs()
   if (time - m_previousUpdateTime > m_timeStep)
   {
     m_previousUpdateTime = time;
+    
     for (int i = 0; i < m_nrOfInputDevices; i++)
     {
       const CFX_InputEvent* inputEvent = m_inputDevices[i]->GetEvent(time);
