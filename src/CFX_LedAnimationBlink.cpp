@@ -24,18 +24,19 @@
 #include <CFX_LedAnimationBlink.hpp>
 
 CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
-  CFX_Led* output) : CFX_LedAnimationBlink(onTime, offTime, 0, output)
+  CFX_LedBase* output) : CFX_LedAnimationBlink(onTime, offTime, 0, output)
 {
 }
 
 CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
-  unsigned long startdelay, CFX_Led* output) : CFX_LedAnimationSequence(2, output)
+  unsigned long startdelay, CFX_LedBase* output) : CFX_LedAnimationSequence(2, output)
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
   m_brightness = 255;
-  AddStep(m_brightness, m_blinkOnTime, CFX_Transition_Block);
-  AddStep(0, m_blinkOffTime, CFX_Transition_Block);
+  output->SetBrightness(m_brightness);
+  AddStep(0, m_blinkOnTime, CFX_Transition_Block);
+  AddStep(m_brightness, m_blinkOffTime, CFX_Transition_Block);
   SetDelay(startdelay);
 }
 

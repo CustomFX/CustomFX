@@ -34,6 +34,7 @@ class CFX_Timer: public CFX_InputBase
     CFX_Timer(int id);
     void SetTimer(unsigned long value, bool recurring);
     const CFX_InputEvent* GetEvent(unsigned long time);
+    virtual bool IsAnalog() const;
     
   private:
     unsigned long m_lastEvent;

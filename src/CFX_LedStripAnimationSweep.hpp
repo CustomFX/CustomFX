@@ -25,7 +25,7 @@
 #define CFX_LEDSTRIPANIMATIONSWEEP_H
 
 #include <CFX_AnimationBase.hpp>
-#include <CFX_LedStrip.hpp>
+#include <CFX_LedStripBase.hpp>
 
 class CFX_LedStripAnimationSweep: public CFX_AnimationBase
 {
@@ -33,12 +33,14 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     
     CFX_LedStripAnimationSweep();
     CFX_LedStripAnimationSweep(CFX_Color color, unsigned long time_on, unsigned long fadeouttime,
-      CFX_LedStrip* output);
+      CFX_LedStripBase* output);
     CFX_LedStripAnimationSweep(uint16_t startled, int8_t direction, CFX_Color color, unsigned long time_on, 
-      unsigned long fadeouttime, CFX_LedStrip* output);
-    
+      unsigned long fadeouttime, CFX_LedStripBase* output);
+    void SetOutputDevice(CFX_LedStripBase* output);
+
     void SetTimes(unsigned long time_on, unsigned long fadeouttime);
     void SetColor(CFX_Color color);
+    void DisableColor();
     void SetDirection(int8_t direction);
     int8_t GetDirection() const;
     
@@ -46,14 +48,16 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     virtual void Stop(bool fadeout = false);
     bool IsActive() const;
     
+    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
     
     private:
     void CalculateFadeOutSteps(unsigned long fadeouttime);
  
   private:
-    CFX_LedStrip* m_output;
+    CFX_LedStripBase* m_output;
     CFX_Color m_color;
+    bool m_useColor;
     bool m_stopped;
     int8_t m_direction;           // indicates the direction of the sweep. 1 or -1
     unsigned long m_fadeouttime;

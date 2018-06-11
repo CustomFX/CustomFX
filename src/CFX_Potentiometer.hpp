@@ -25,24 +25,19 @@
 #define CFX_Potentiometer_H
 
 #include <CFX_InputBase.hpp>
-//
-//
-//
 
 // events
-// Increasing
-// Decreading
-//const uint_8 CFX_EVENT_
-
 #define CFX_CMD_VALUE_CHANGED 30
 
 class CFX_Potentiometer : public CFX_InputBase
 {
   public:
-    CFX_Potentiometer(int inputPin, int id);
+    CFX_Potentiometer(int inputPin, int id, uint8_t samples = 1);
     void SetInputRange(int minRange, int maxRange);
     void SetOutputRange(int minRange, int maxRange);
     virtual const CFX_InputEvent* GetEvent(unsigned long time);
+    virtual bool IsAnalog() const;
+    virtual uint8_t GetRemainingReads() const;
 
   private:
     int m_lastRawValue;
@@ -53,6 +48,10 @@ class CFX_Potentiometer : public CFX_InputBase
     int m_maxOutputRange;
     int m_threshold;
     int m_signalDirection;
+    
+    uint8_t m_samples;         // defines the number of samples to average
+    uint8_t m_remainingReads;  // remaining samples to take before returning the value
+    int m_totalValue;          // buffer to hold the samples
 };
 
 

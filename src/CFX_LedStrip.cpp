@@ -23,7 +23,7 @@
 
 #include <CFX_LedStrip.hpp>
 
-CFX_LedStrip::CFX_LedStrip(int pinnumber, uint16_t leds, int type) : CFX_RGBLed()
+CFX_LedStrip::CFX_LedStrip(int pinnumber, uint16_t leds, int type) : CFX_LedStripBase()
 {
   m_type = type;
   m_pinnumber = pinnumber;
@@ -43,7 +43,7 @@ CFX_LedStrip::CFX_LedStrip(int pinnumber, uint16_t leds, int type) : CFX_RGBLed(
   SetBrightness(255);
 }
 
-CFX_LedStrip::CFX_LedStrip() : CFX_RGBLed()
+CFX_LedStrip::CFX_LedStrip() : CFX_LedStripBase()
 {
   
 }
@@ -62,12 +62,13 @@ uint16_t CFX_LedStrip::GetNrOfOutputs() const
 
 const CFX_Color CFX_LedStrip::GetPixelColor(uint16_t pixel) const
 {
-  return CFX_Color(m_pixels.getPixelColor(pixel));
+  uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
+  return CFX_Color(m_pixelcolors[pix*4+0], m_pixelcolors[pix*4+1], m_pixelcolors[pix*4+2]);
 }
 
 long CFX_LedStrip::GetPixelColorLong(uint16_t pixel) const
 {
-  return m_pixels.getPixelColor(pixel);
+  return GetPixelColor(pixel).toLong();
 }
 
 void CFX_LedStrip::SetPixelColor(uint16_t pixel, const CFX_Color& color)
@@ -81,13 +82,13 @@ void CFX_LedStrip::SetPixelColor(uint16_t pixel, const CFX_Color& color)
 
 const CFX_Color CFX_LedStrip::GetColor() const
 {
-  if (m_nrleds > 0) return m_pixels.getPixelColor(0);
+  if (m_nrleds > 0) return GetPixelColor(0);
   else return CFX_Color(0);
 } 
 
 long CFX_LedStrip::GetColorLong() const
 {
-  if (m_nrleds > 0) return m_pixels.getPixelColor(0);
+  if (m_nrleds > 0) return GetPixelColorLong(0);
   else return 0;
 } 
 
@@ -102,6 +103,14 @@ void CFX_LedStrip::SetColor(const CFX_Color& color)
   SetChanged(true);
 }
 
+void CFX_LedStrip::SetColorRange(const CFX_ColorRange& colorrange, uint16_t index)
+{
+  for (uint16_t i = 0; i < m_nrleds; i++)
+  {
+    SetPixelColor(i, colorrange.GetColor(i + index));
+  }
+}
+
 void CFX_LedStrip::SetBrightness(uint8_t brightness)
 {
   for (uint16_t i = 0; i < m_nrleds; i++)
@@ -111,7 +120,7 @@ void CFX_LedStrip::SetBrightness(uint8_t brightness)
   SetChanged(true);
 }
 
-uint8_t CFX_LedStrip::GetBrightness()
+uint8_t CFX_LedStrip::GetBrightness() const
 {
   if (m_nrleds > 0) return GetPixelBrightness(0);
   else return 0;

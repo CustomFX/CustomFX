@@ -31,18 +31,19 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep()
 }
 
 CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(CFX_Color color, unsigned long time_on, 
-  unsigned long fadeouttime, CFX_LedStrip* output)
+  unsigned long fadeouttime, CFX_LedStripBase* output)
   : CFX_LedStripAnimationSweep(0, 1, color, time_on, fadeouttime, output)
 {
 }
 
 
 CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint16_t startled, int8_t direction, CFX_Color color,
-  unsigned long time_on, unsigned long fadeouttime, CFX_LedStrip* output) 
+  unsigned long time_on, unsigned long fadeouttime, CFX_LedStripBase* output) 
   : CFX_AnimationBase()
 {
   m_output = output;
   m_color = color;
+  m_useColor = true;
   m_fadeouttime = fadeouttime;
   m_currentStep = 0;
   m_stopped = false;
@@ -55,17 +56,26 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint16_t startled, int8_t
 
   if (m_output)
   {
-    m_activeLed = constrain(startled, 0, m_output->GetNrOfOutputs()); // todo limit
+    m_activeLed = constrain(startled, 0, m_output->GetNrOfOutputs());
   }
   else
   {
     m_activeLed = 0;
   }
-  m_output->SetPixelColor(m_activeLed, m_color);
+  if (m_useColor)
+  {
+    m_output->SetPixelColor(m_activeLed, m_color);
+  }
   m_output->SetPixelBrightness(m_activeLed, 255);
 
   if (direction == 1) m_direction = 1;
   else m_direction = -1;
+}
+
+void CFX_LedStripAnimationSweep::SetOutputDevice(CFX_LedStripBase* output)
+{
+  m_output = output;
+  RestartAnimation();
 }
 
 void CFX_LedStripAnimationSweep::SetTimes(unsigned long time_on, unsigned long fadeouttime)
@@ -79,6 +89,12 @@ void CFX_LedStripAnimationSweep::SetColor(CFX_Color color)
 {
   m_color = color;
   CalculateFadeOutSteps(m_fadeouttime);
+  m_useColor = true;
+}
+
+void CFX_LedStripAnimationSweep::DisableColor()
+{
+  m_useColor = false;
 }
 
 void CFX_LedStripAnimationSweep::SetDirection(int8_t direction)
@@ -119,6 +135,12 @@ bool CFX_LedStripAnimationSweep::IsActive() const
   return !m_stopped;
 }
 
+void CFX_LedStripAnimationSweep::RestartAnimation()
+{
+  m_activeLed = 0;
+  this->Start();
+}
+
 bool CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
 {
   if (m_output)
@@ -138,7 +160,10 @@ bool CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)
         }
         
         // turn on current led
-        m_output->SetPixelColor(m_activeLed, m_color);
+        if (m_useColor)
+        {
+          m_output->SetPixelColor(m_activeLed, m_color);
+        }
         m_output->SetPixelBrightness(m_activeLed, 255);
         // update trail length
         m_trailLength++;

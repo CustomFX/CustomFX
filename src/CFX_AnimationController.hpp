@@ -27,6 +27,7 @@
 #include <CustomFX.h>
 #include <CFX_OutputBase.hpp>
 #include <CFX_AnimationBase.hpp>
+#include <CFX_List.hpp>
 
 class CFX_AnimationController;
 
@@ -43,10 +44,9 @@ class CFX_AnimationController
     CFX_AnimationController();
     
   private:
-    int m_nrOfOutputDevices;
-    CFX_OutputBase* m_outputDevices[MAX_OUTPUT_DEVICES];
-    int m_nrOfAnimations;
-    CFX_AnimationBase* m_animations[MAX_ANIMATIONS];
+    CFX_List<CFX_OutputBase*> m_outputDevices;
+    CFX_List<CFX_AnimationBase*> m_animations;
+
     unsigned long m_previousUpdateTime;
     unsigned int m_timeStep;
 };

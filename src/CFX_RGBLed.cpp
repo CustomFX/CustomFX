@@ -48,7 +48,7 @@ long CFX_RGBLed::GetColorLong() const
   return m_color.toLong();
 }
 
-const CFX_Color& CFX_RGBLed::GetColor() const
+const CFX_Color CFX_RGBLed::GetColor() const
 {
   return m_color;
 }

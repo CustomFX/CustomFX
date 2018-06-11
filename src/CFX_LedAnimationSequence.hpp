@@ -38,12 +38,12 @@ struct CFX_LedAnimationSequenceStep
 class CFX_LedAnimationSequence: public CFX_AnimationBase
 {
   public:
-    CFX_LedAnimationSequence(uint16_t steps, CFX_Led* output);
+    CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* output);
     
-    void AddStep(uint8_t brightness, uint16_t duration, CFX_TransitionType type = CFX_Transition_Lineair);void ChangeStep(uint16_t step, uint8_t brightness, uint16_t duration, CFX_TransitionType type);
+    void AddStep(uint8_t brightness, uint16_t duration, CFX_TransitionType type = CFX_Transition_Lineair);
+    void ChangeStep(uint16_t step, uint8_t brightness, uint16_t duration, CFX_TransitionType type);
         
-    void RestartAnimation();
-    
+    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
   private:
@@ -53,7 +53,7 @@ class CFX_LedAnimationSequence: public CFX_AnimationBase
                    uint8_t startvalue, uint8_t targetvalue, CFX_TransitionType type);
  
   private:
-    CFX_Led* m_output;
+    CFX_LedBase* m_output;
     CFX_LedAnimationSequenceStep* m_steps;
     uint16_t   m_totalSteps;      // the total number of staps in the animation
     uint16_t   m_definedSteps;    // the number of defined (non empty) steps

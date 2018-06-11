@@ -37,15 +37,14 @@
 class CFX_Button: public CFX_InputBase
 {
   public:
-    CFX_Button(int inputPin, int id);
+    CFX_Button(int inputPin, int id, CFX_InputType type = CFX_InputTypeDigitalLow);
     virtual const CFX_InputEvent* GetEvent(unsigned long time);
     void DisableDoubleClick(bool disabled = true);
     
     void SetDoubleclickInterval(unsigned int doubleclickinterval);
     void SetClickAndHoldThreshold(unsigned int thresholdvalue);
-
+    
   private:
-    int m_command; // pressed, released, double click, click and hold
     unsigned int m_doubleclickInterval; // time between clicks to be recognised as double click
     unsigned int m_clickAndHoldThreshold; // time before a click and hold signals is given
     bool m_doubleClickEnabled;
@@ -54,7 +53,7 @@ class CFX_Button: public CFX_InputBase
     bool m_doubleClick;
     bool m_clicked;
     unsigned long m_clicks;
-    int m_queuedEvent;
+    uint8_t m_queuedEvent;
 };
 
 

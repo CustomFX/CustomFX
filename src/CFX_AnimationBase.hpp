@@ -53,17 +53,17 @@ class CFX_AnimationBase
     void Animate(int timestep);
     
     void SetDelay(long delay);
-    void SetRepetitions(int repetitions);
+    void SetRepetitions(int16_t repetitions);
     
     virtual void Start();
     virtual void Stop();
     bool IsActive() const;
+    virtual void RestartAnimation() = 0;
     
   private:
     CFX_Animation_State m_state;
-    bool m_active;
     long m_delay;
-    int m_repetitions;
+    int16_t m_repetitions;
 };
 
 

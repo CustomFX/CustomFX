@@ -23,10 +23,9 @@
 
 #include <CFX_Potentiometer.hpp>
 
-CFX_Potentiometer::CFX_Potentiometer(int inputPin, int id) : CFX_InputBase(id)
+CFX_Potentiometer::CFX_Potentiometer(int inputPin, int id, uint8_t samples) 
+  : CFX_InputBase(id, inputPin, CFX_InputTypeAnalog)
 {
-  SetPinNumber(inputPin);
-  
   m_minInputRange = 0;
   m_maxInputRange = 1023;
   m_minOutputRange = 0;
@@ -34,6 +33,9 @@ CFX_Potentiometer::CFX_Potentiometer(int inputPin, int id) : CFX_InputBase(id)
   m_threshold = 5;
   m_signalDirection = 1;
   m_lastRawValue = 0;
+  m_samples = samples;
+  m_remainingReads = m_samples;
+  m_totalValue = 0;
 }
 
 void CFX_Potentiometer::SetInputRange(int minRange, int maxRange)
@@ -62,17 +64,40 @@ void CFX_Potentiometer::SetOutputRange(int minRange, int maxRange)
 
 const CFX_InputEvent* CFX_Potentiometer::GetEvent(unsigned long time)
 {
-  int value = analogRead(GetPinNumber());
-  if (abs(value - m_lastRawValue) > m_threshold)
+  if (m_remainingReads == 0)
   {
-    m_lastRawValue = value;
-    if (value < m_minInputRange) value = m_minInputRange;
-    if (value > m_maxInputRange) value = m_maxInputRange;
+    m_remainingReads = m_samples; // reset samples
+  }
+  
+  m_totalValue += ReadInput();
+  m_remainingReads--;
+  
+  if (m_remainingReads == 0)
+  {
+    int value = m_totalValue / m_samples;
+    m_totalValue = 0;
     
-    value = map(value, m_minInputRange, m_maxInputRange, m_minOutputRange, m_maxOutputRange);
-
-    SetEvent(CFX_CMD_VALUE_CHANGED, value);
-    return GetLastEvent();
+    if (abs(value - m_lastRawValue) > m_threshold)
+    {
+      m_lastRawValue = value;
+      if (value < m_minInputRange) value = m_minInputRange;
+      if (value > m_maxInputRange) value = m_maxInputRange;
+      
+      value = map(value, m_minInputRange, m_maxInputRange, m_minOutputRange, m_maxOutputRange);
+      if (GetLastEvent()->value != value)
+      {
+        SetEvent(CFX_CMD_VALUE_CHANGED, value);
+        return GetLastEvent();
+      }
+      else
+      {
+        return 0;
+      }
+    }
+    else
+    {
+      return 0;
+    }
   }
   else
   {
@@ -80,3 +105,12 @@ const CFX_InputEvent* CFX_Potentiometer::GetEvent(unsigned long time)
   }
 }
 
+bool CFX_Potentiometer::IsAnalog() const
+{
+  return true;
+}
+
+uint8_t CFX_Potentiometer::GetRemainingReads() const
+{
+  return m_remainingReads;
+}

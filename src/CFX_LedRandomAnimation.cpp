@@ -45,9 +45,15 @@ void CFX_LedRandomAnimation::SetStepSizes(uint8_t brightness, uint16_t duration)
   m_totalIncrements = duration / ANIMATION_UPDATE_INTERVAL;
   if (m_totalIncrements == 0) m_totalIncrements = 1; // a minimum of 1 increment is required
   m_stepIncrement = 0;
-  //todo use transitions
+
   m_brightnessIncrement = 
     (float)(brightness - m_output->GetBrightness()) / m_totalIncrements;
+}
+
+void CFX_LedRandomAnimation::RestartAnimation()
+{
+  m_stepIncrement = 0;
+  m_brightness = m_output->GetBrightness();
 }
 
 bool CFX_LedRandomAnimation::UpdateAnimation(int timeStep)
@@ -62,7 +68,6 @@ bool CFX_LedRandomAnimation::UpdateAnimation(int timeStep)
   else if (m_brightness < 0)
   {
     m_output->SetBrightness(0);
-    
   }
   else
   {

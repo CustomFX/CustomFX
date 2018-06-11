@@ -58,6 +58,10 @@ CFX_ServoAnimationSweep::CFX_ServoAnimationSweep(int minAngle, int maxAngle, int
   m_directionUp = true;
 }
 
+void CFX_ServoAnimationSweep::RestartAnimation()
+{
+}
+
 bool CFX_ServoAnimationSweep::UpdateAnimation(int timeStep)
 {
   if (m_output)

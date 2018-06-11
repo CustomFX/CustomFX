@@ -34,8 +34,8 @@ class CFX_ServoAnimationPath: public CFX_AnimationBase
     CFX_ServoAnimationPath(int pathSegments, CFX_Servo* output);
     
     void AddPosition(int position, int duration);    
-    void RestartAnimation();
     
+    virtual void RestartAnimation();    
     virtual bool UpdateAnimation(int timestep);
 
   private:

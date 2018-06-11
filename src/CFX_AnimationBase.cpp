@@ -27,7 +27,6 @@
 CFX_AnimationBase::CFX_AnimationBase()
 {
  	CFX_AnimationController::GetInstance()->RegisterAnimation(this);
-  //m_active = true;
   m_state = cfx_animation_initializing;
   m_repetitions = -1;
   m_delay = 0;
@@ -44,8 +43,6 @@ void CFX_AnimationBase::Animate(int timestep)
     else
     {
       m_delay = 0;
-      Serial.print(millis());
-      Serial.println(" start...");
     }
   }
   else
@@ -102,20 +99,18 @@ void CFX_AnimationBase::SetDelay(long delay)
   m_delay = delay;
 }
 
-void CFX_AnimationBase::SetRepetitions(int repetitions)
+void CFX_AnimationBase::SetRepetitions(int16_t repetitions)
 {
   m_repetitions = repetitions;
 }
 
 void CFX_AnimationBase::Start()
 {
-  //m_active = true;
   m_state = cfx_animation_initializing;
 }
 
 void CFX_AnimationBase::Stop()
 {
-  //m_active = false;
   m_state = cfx_animation_shuttingdown;
 }
 

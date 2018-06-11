@@ -37,7 +37,7 @@ CFX_RGBLedAnimationFadeToColor::CFX_RGBLedAnimationFadeToColor()
   m_stepBlue = 0;
 }
 
-CFX_RGBLedAnimationFadeToColor::CFX_RGBLedAnimationFadeToColor(CFX_RGBLed* output)
+CFX_RGBLedAnimationFadeToColor::CFX_RGBLedAnimationFadeToColor(CFX_LedBase* output)
   : CFX_AnimationBase()
 {
   m_output = output;
@@ -52,7 +52,7 @@ CFX_RGBLedAnimationFadeToColor::CFX_RGBLedAnimationFadeToColor(CFX_RGBLed* outpu
 
 }
 
-void CFX_RGBLedAnimationFadeToColor::SetOutputDevice(CFX_RGBLed* output)
+void CFX_RGBLedAnimationFadeToColor::SetOutputDevice(CFX_LedBase* output)
 {
   m_output = output;
 }
@@ -60,8 +60,12 @@ void CFX_RGBLedAnimationFadeToColor::SetOutputDevice(CFX_RGBLed* output)
 void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
 {
   m_targetColor = color;
-  
+  const CFX_Color currentcolor = m_output->GetColor();
+  m_colorRed = currentcolor.Red();
+  m_colorGreen = currentcolor.Green();
+  m_colorBlue = currentcolor.Blue();
   int steps = 1;
+  m_duration = duration;
   if (duration > 0)
   {
     steps = duration / ANIMATION_UPDATE_INTERVAL;
@@ -71,6 +75,11 @@ void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
   m_stepBlue = (float)(m_targetColor.Blue() - m_colorBlue) / steps;
 
   this->Start();
+}
+
+void CFX_RGBLedAnimationFadeToColor::RestartAnimation()
+{
+  FadeToColor(m_targetColor, m_duration);
 }
 
 bool CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)

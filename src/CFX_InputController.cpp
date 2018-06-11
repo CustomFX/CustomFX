@@ -26,16 +26,16 @@
 
 // forward declaration of callback function
 void handleInput(int id, int command, int value);
-static CFX_InputController* s_inputControler = 0;
 
+static CFX_InputController* s_inputControler = 0;
 
 CFX_InputController::CFX_InputController()
 {
-  m_nrOfInputDevices = 0;
   m_handleInputFunctionCallback = NULL;
   RegisterHandleInputCallback(handleInput);
   m_previousUpdateTime = 0;
   m_timeStep = INPUT_UPDATE_INTERVAL;
+  m_analogDevice = 0;
 }
 
 CFX_InputController* CFX_InputController::GetInstance()
@@ -49,10 +49,13 @@ CFX_InputController* CFX_InputController::GetInstance()
 
 void CFX_InputController::RegisterInputDevice(CFX_InputBase* inputDevice)
 {
-  if (m_nrOfInputDevices < MAX_INPUT_DEVICES - 1)
+  if (inputDevice->GetType() == CFX_InputTypeAnalog)
   {
-    m_inputDevices[m_nrOfInputDevices] = inputDevice;
-    m_nrOfInputDevices++;
+    m_analogInputList.Add(inputDevice);
+  }
+  else
+  {
+    m_digitalInputList.Add(inputDevice);
   }
 }
 
@@ -67,13 +70,42 @@ void CFX_InputController::ReadInputs()
   if (time - m_previousUpdateTime > m_timeStep)
   {
     m_previousUpdateTime = time;
-    
-    for (int i = 0; i < m_nrOfInputDevices; i++)
+
+    // handle all digital inputs
+    for (int i = 0; i < m_digitalInputList.Size(); i++)
     {
-      const CFX_InputEvent* inputEvent = m_inputDevices[i]->GetEvent(time);
-      if (inputEvent)
+      CFX_InputBase* input = m_digitalInputList.Get(i);
+      if (input)
       {
-        m_handleInputFunctionCallback(m_inputDevices[i]->GetId(), inputEvent->command, inputEvent->value);
+        const CFX_InputEvent* inputEvent = input->GetEvent(time);
+        if (inputEvent)
+        {
+          m_handleInputFunctionCallback(input->GetId(), inputEvent->command, inputEvent->value);
+        }
+      }
+    }
+    
+    // handle next analog input
+    if (m_analogInputList.Size() > 0)
+    {
+      CFX_InputBase* input = m_analogInputList.Get(m_analogDevice);
+      if (input)
+      {
+        const CFX_InputEvent* inputEvent = input->GetEvent(time);
+        if (inputEvent)
+        {
+          m_handleInputFunctionCallback(input->GetId(), inputEvent->command, inputEvent->value);
+        }
+      
+        // check if enough samples have been read
+        if (input->GetRemainingSamples() == 0)
+        {
+          m_analogDevice++;  // proceed to the next analog input
+          if (m_analogDevice  >= m_analogInputList.Size())
+          {
+            m_analogDevice = 0;
+          }
+        }
       }
     }
   }

@@ -24,13 +24,29 @@
 #include <CFX_InputBase.hpp>
 #include <CFX_InputController.hpp>
 
-CFX_InputBase::CFX_InputBase(int id)
+CFX_InputBase::CFX_InputBase(uint8_t id, uint8_t pinnumber, CFX_InputType type)
 {
   m_id = id;
+  m_pinnumber = pinnumber;
+  m_type = type;
+
+  if (type == CFX_InputTypeDigitalHigh)
+    pinMode(m_pinnumber, INPUT_PULLUP);
+  else if (type == CFX_InputTypeDigitalLow)
+    pinMode(m_pinnumber, INPUT);
+
 	CFX_InputController::GetInstance()->RegisterInputDevice(this);
 }
 
-int CFX_InputBase::GetId()
+CFX_InputBase::CFX_InputBase(uint8_t id, CFX_InputType type)
+{
+  m_id = id;
+  m_pinnumber = 0;
+  m_type = type;
+	CFX_InputController::GetInstance()->RegisterInputDevice(this);
+}
+
+uint8_t CFX_InputBase::GetId() const
 {
 	return m_id;
 }
@@ -39,23 +55,23 @@ int CFX_InputBase::GetId()
 // Protected functions
 //
 
-int CFX_InputBase::ReadDigitalInput()
+int CFX_InputBase::ReadInput()
 {
-  return digitalRead(m_pinnumber);
+  if (m_type == CFX_InputTypeDigitalHigh)
+    return (digitalRead(m_pinnumber) == HIGH?LOW:HIGH);
+  if (m_type == CFX_InputTypeDigitalLow)
+    return digitalRead(m_pinnumber);
+  if (m_type == CFX_InputTypeAnalog)
+    return analogRead(m_pinnumber);
+  return 0;
 }
 
-int CFX_InputBase::GetPinNumber()
+uint8_t CFX_InputBase::GetPinNumber()
 {
 	return m_pinnumber;
 }
 
-void CFX_InputBase::SetPinNumber(int pinnumber)
-{
-	m_pinnumber = pinnumber;
-  pinMode(m_pinnumber, INPUT);
-}
-
-void CFX_InputBase::SetEvent(int command, unsigned long value)
+void CFX_InputBase::SetEvent(uint8_t command, unsigned long value)
 {
   m_lastEvent.command = command;
   m_lastEvent.value = value;
@@ -64,4 +80,14 @@ void CFX_InputBase::SetEvent(int command, unsigned long value)
 const CFX_InputEvent* CFX_InputBase::GetLastEvent()
 {
   return &m_lastEvent;
+}
+
+const CFX_InputType CFX_InputBase::GetType() const
+{
+  return m_type;
+}
+
+uint8_t CFX_InputBase::GetRemainingSamples() const
+{
+  return 0;
 }

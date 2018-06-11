@@ -23,17 +23,17 @@
 
 #include <CFX_LedStripPixel.hpp>
 
-CFX_LedStripPixel::CFX_LedStripPixel(unsigned int pixel, CFX_LedStrip* ledstrip) : CFX_RGBLed()
+CFX_LedStripPixel::CFX_LedStripPixel(uint16_t pixel, CFX_LedStripBase* ledstrip) : CFX_Led()
 {
   m_pixel = pixel;
   m_ledstrip = ledstrip;
 }
 
-CFX_LedStripPixel::CFX_LedStripPixel() : CFX_RGBLed()
+CFX_LedStripPixel::CFX_LedStripPixel() : CFX_Led()
 {  
 }
 
-void CFX_LedStripPixel::SetPixel(unsigned int pixel, CFX_LedStrip* ledstrip)
+void CFX_LedStripPixel::SetPixel(uint16_t pixel, CFX_LedStripBase* ledstrip)
 {
   m_pixel = pixel;
   m_ledstrip = ledstrip;  

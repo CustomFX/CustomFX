@@ -26,8 +26,6 @@ static CFX_AnimationController* s_animationController = 0;
 
 CFX_AnimationController::CFX_AnimationController()
 {
-  m_nrOfOutputDevices = 0;
-  m_nrOfAnimations = 0;
   m_previousUpdateTime = 0;
   m_timeStep = ANIMATION_UPDATE_INTERVAL;
 }
@@ -43,20 +41,12 @@ CFX_AnimationController* CFX_AnimationController::GetInstance()
 
 void CFX_AnimationController::RegisterOutputDevice(CFX_OutputBase* outputDevice)
 {
-  if (m_nrOfOutputDevices < MAX_OUTPUT_DEVICES - 1)
-  {
-    m_outputDevices[m_nrOfOutputDevices] = outputDevice;
-    m_nrOfOutputDevices++;
-  }
+  m_outputDevices.Add(outputDevice);
 }
 
 void CFX_AnimationController::RegisterAnimation(CFX_AnimationBase* animation)
 {
-  if (m_nrOfAnimations < MAX_ANIMATIONS - 1)
-  {
-    m_animations[m_nrOfAnimations] = animation;
-    m_nrOfAnimations++;
-  }
+  m_animations.Add(animation);
 }
 
 void CFX_AnimationController::SetAnimationSpeed(int timeStep)
@@ -70,13 +60,13 @@ void CFX_AnimationController::UpdateAnimation()
   if (timeelapsed > m_timeStep)
   {
     m_previousUpdateTime = millis();
-    for (int i = 0; i < m_nrOfAnimations; i++)
+    for (unsigned int i = 0; i < m_animations.Size(); i++)
     {
-      m_animations[i]->Animate(timeelapsed);
+      m_animations.Get(i)->Animate(timeelapsed);
     }
-    for (int i = 0; i < m_nrOfOutputDevices; i++)
+    for (unsigned int i = 0; i < m_outputDevices.Size(); i++)
     {
-      m_outputDevices[i]->Commit();
+      m_outputDevices.Get(i)->Commit();
     }
   }
 }

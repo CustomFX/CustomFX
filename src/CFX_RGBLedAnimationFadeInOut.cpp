@@ -40,7 +40,7 @@ CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut()
 }
 
 CFX_RGBLedAnimationFadeInOut::CFX_RGBLedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime,
-  int offTime, CFX_Color color, CFX_RGBLed* output) : CFX_AnimationBase()
+  int offTime, CFX_Color color, CFX_LedBase* output) : CFX_AnimationBase()
 {
   m_output = output;
 
@@ -76,7 +76,7 @@ void CFX_RGBLedAnimationFadeInOut::SetColor(CFX_Color color)
   SetStepSizes();
 }
 
-void CFX_RGBLedAnimationFadeInOut::SetOutputDevice(CFX_RGBLed* output)
+void CFX_RGBLedAnimationFadeInOut::SetOutputDevice(CFX_LedBase* output)
 {
   m_output = output;
 }
@@ -109,6 +109,10 @@ void CFX_RGBLedAnimationFadeInOut::SetStepSizes()
     m_fadeOutStepGreen = (float)m_color.Green();
     m_fadeOutStepBlue = (float)m_color.Blue();
   }
+}
+
+void CFX_RGBLedAnimationFadeInOut::RestartAnimation()
+{
 }
 
 bool CFX_RGBLedAnimationFadeInOut::UpdateAnimation(int timeStep)

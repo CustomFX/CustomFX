@@ -24,14 +24,15 @@
 #ifndef CFX_LEDSTRIP_H
 #define CFX_LEDSTRIP_H
 
-#include <CFX_RGBLed.hpp>
+#include <CFX_LedStripBase.hpp>
+#include <CFX_ColorRange.hpp>
 
 #include "Adafruit_NeoPixel.h"
 #ifdef __AVR__
 #include "avr/power.h"
 #endif
 
-class CFX_LedStrip: public CFX_RGBLed
+class CFX_LedStrip: public CFX_LedStripBase
 {
   public:
     CFX_LedStrip(int pinnumber, uint16_t leds, int type = NEO_GRB + NEO_KHZ800);
@@ -50,8 +51,9 @@ class CFX_LedStrip: public CFX_RGBLed
     virtual const CFX_Color GetColor() const;
     virtual long GetColorLong() const;
     virtual void SetColor(const CFX_Color& color);
+    virtual void SetColorRange(const CFX_ColorRange& colorrange, uint16_t index = 0);
     virtual void SetBrightness(uint8_t brightness);
-    virtual uint8_t GetBrightness();
+    virtual uint8_t GetBrightness() const;
     virtual void Commit();
 
   protected:

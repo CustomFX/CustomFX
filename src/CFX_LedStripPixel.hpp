@@ -24,18 +24,19 @@
 #ifndef CFX_LedStripPixel_H
 #define CFX_LedStripPixel_H
 
-#include <CFX_LedStrip.hpp>
+#include <CFX_Led.hpp>
+#include <CFX_LedStripBase.hpp>
 
-class CFX_LedStripPixel: public CFX_RGBLed
+class CFX_LedStripPixel: public CFX_Led
 {
   public:
-    CFX_LedStripPixel(unsigned int pixel, CFX_LedStrip* ledstrip);
+    CFX_LedStripPixel(uint16_t pixel, CFX_LedStripBase* ledstrip);
 
-    void             SetPixel(unsigned int pixel, CFX_LedStrip* ledstrip);
+    void             SetPixel(uint16_t pixel, CFX_LedStripBase* ledstrip);
 
     // inherited
     virtual long     GetColorLong() const;
-    const CFX_Color  GetColor() const;
+    virtual const CFX_Color  GetColor() const;
     virtual void     SetColor(const CFX_Color& color);
     virtual void     SetBrightness(uint8_t brightness);
     virtual uint8_t  GetBrightness() const;
@@ -45,8 +46,8 @@ class CFX_LedStripPixel: public CFX_RGBLed
     CFX_LedStripPixel();
     
   private:
-    unsigned int m_pixel;
-    CFX_LedStrip* m_ledstrip;
+    uint16_t m_pixel;
+    CFX_LedStripBase* m_ledstrip;
 };
 
 

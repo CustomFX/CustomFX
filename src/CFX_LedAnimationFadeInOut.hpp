@@ -25,7 +25,7 @@
 #define CFX_LEDANIMATIONFADEINOUT_H
 
 #include <CFX_AnimationBase.hpp>
-#include <CFX_Led.hpp>
+#include <CFX_LedBase.hpp>
 #include <CustomFX.h>
 
 class CFX_LedAnimationFadeInOut: public CFX_LedAnimationSequence
@@ -33,7 +33,7 @@ class CFX_LedAnimationFadeInOut: public CFX_LedAnimationSequence
   public:
     
     CFX_LedAnimationFadeInOut(uint16_t fadeInTime, uint16_t onTime, uint16_t fadeOutTime, 
-      uint16_t offTime, CFX_Led* output);
+      uint16_t offTime, CFX_LedBase* output);
     
     void SetTimes(uint16_t fadeInTime, uint16_t onTime, uint16_t fadeOutTime, uint16_t offTime);
     void SetBrightness(uint8_t brightness);

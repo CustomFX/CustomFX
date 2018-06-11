@@ -23,7 +23,7 @@
 
 #include <CFX_Timer.hpp>
  
-CFX_Timer::CFX_Timer(int id): CFX_InputBase(id)
+CFX_Timer::CFX_Timer(int id): CFX_InputBase(id, CFX_InputTypeOther)
 {
    m_lastEvent = 0;
    m_timerValue = 0;
@@ -61,4 +61,9 @@ const CFX_InputEvent* CFX_Timer::GetEvent(unsigned long time)
   {
     return 0;
   }
+}
+
+bool CFX_Timer::IsAnalog() const
+{
+  return false;
 }

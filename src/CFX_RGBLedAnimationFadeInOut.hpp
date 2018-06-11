@@ -25,7 +25,7 @@
 #define CFX_RGBLEDANIMATIONFADEINOUT_H
 
 #include <CFX_AnimationBase.hpp>
-#include <CFX_RGBLed.hpp>
+#include <CFX_LedBase.hpp>
 #include <CustomFX.h>
 
 class CFX_RGBLedAnimationFadeInOut: public CFX_AnimationBase
@@ -34,19 +34,20 @@ class CFX_RGBLedAnimationFadeInOut: public CFX_AnimationBase
     
     CFX_RGBLedAnimationFadeInOut();
     CFX_RGBLedAnimationFadeInOut(int fadeInTime, int onTime, int fadeOutTime, 
-      int offTime, CFX_Color color, CFX_RGBLed* output);
+      int offTime, CFX_Color color, CFX_LedBase* output);
     
     void SetTimes(int fadeInTime, int onTime, int fadeOutTime, int offTime);
     void SetColor(CFX_Color color);
-    void SetOutputDevice(CFX_RGBLed* output);
+    void SetOutputDevice(CFX_LedBase* output);
 
+    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
   private: // private functions
     void SetStepSizes();
   
   private: // private member variables
-    CFX_RGBLed* m_output;
+    CFX_LedBase* m_output;
     CFX_Color m_color;
     
     int m_fadeInSteps;

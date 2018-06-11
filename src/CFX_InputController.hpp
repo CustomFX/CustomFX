@@ -26,6 +26,7 @@
 
 #include <CustomFX.h>
 #include <CFX_InputBase.hpp>
+#include <CFX_List.hpp>
 
 class CFX_InputController;
 
@@ -41,8 +42,10 @@ class CFX_InputController
     CFX_InputController();
 
   private:
-    CFX_InputBase* m_inputDevices[MAX_INPUT_DEVICES];
-    int m_nrOfInputDevices;
+    CFX_List<CFX_InputBase*> m_digitalInputList;
+    CFX_List<CFX_InputBase*> m_analogInputList;
+    uint8_t m_analogDevice;
+
     void (*m_handleInputFunctionCallback)(int, int, int);
     unsigned long m_previousUpdateTime;
     unsigned int m_timeStep;

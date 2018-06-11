@@ -23,7 +23,7 @@
 
 #include <CFX_Led.hpp>
 
-CFX_Led::CFX_Led(int pinnumber) : CFX_OutputBase()
+CFX_Led::CFX_Led(uint8_t pinnumber):  CFX_LedBase()
 {
   m_pin = pinnumber;
   pinMode(pinnumber, OUTPUT);
@@ -32,9 +32,9 @@ CFX_Led::CFX_Led(int pinnumber) : CFX_OutputBase()
   Commit();
 }
 
-CFX_Led::CFX_Led() : CFX_OutputBase()
+CFX_Led::CFX_Led():  CFX_LedBase()
 {
-}
+  }
 
 void CFX_Led::SetBrightness(uint8_t brightness)
 {
@@ -47,9 +47,23 @@ uint8_t CFX_Led::GetBrightness() const
   return m_brightness;
 }
 
+void CFX_Led::SetColor(const CFX_Color& color)
+{
+}
+
+long CFX_Led::GetColorLong() const
+{
+  return 0;
+}
+
+const CFX_Color CFX_Led::GetColor() const
+{
+    return CFX_Color(0);
+}
 
 void CFX_Led::Commit()
 {
+  
   if (Changed())
   {
     analogWrite(m_pin, m_brightness);

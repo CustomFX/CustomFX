@@ -35,28 +35,33 @@
 //
 struct CFX_InputEvent
 {
-  int command;
+  uint8_t command;
   unsigned long value;
 };
+enum CFX_InputType {CFX_InputTypeAnalog, CFX_InputTypeDigitalHigh, 
+CFX_InputTypeDigitalLow, CFX_InputTypeOther};
 
 class CFX_InputBase
 {
   public:
-    CFX_InputBase(int id);
+    CFX_InputBase(uint8_t id, uint8_t pinnumber, CFX_InputType type);
+    CFX_InputBase(uint8_t id, CFX_InputType type);
     virtual const CFX_InputEvent* GetEvent(unsigned long time) = 0;
     
-    virtual int GetId();
+    virtual uint8_t GetId() const;
+    const CFX_InputType GetType() const;
+    virtual uint8_t GetRemainingSamples() const;
 	
   protected:
-    int  ReadDigitalInput();
-    int  GetPinNumber();
-    void SetPinNumber(int pinnumber);
-    void SetEvent(int command, unsigned long value);
+    int      ReadInput();
+    uint8_t  GetPinNumber();
+    void SetEvent(uint8_t command, unsigned long value);
     const CFX_InputEvent* GetLastEvent();
 	
   private:
-    int m_pinnumber;
-    int m_id;
+    uint8_t m_pinnumber;
+    uint8_t m_id;
+    CFX_InputType m_type;
     CFX_InputEvent m_lastEvent;
 };
 

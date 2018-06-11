@@ -24,17 +24,16 @@
 #ifndef CFX_LEDANIMATIONBLINK_H
 #define CFX_LEDANIMATIONBLINK_H
 
-#include <CFX_Led.hpp>
+#include <CFX_LedBase.hpp>
 #include <CFX_LedAnimationSequence.hpp>
 
 class CFX_LedAnimationBlink: public CFX_LedAnimationSequence
 {
   public:
 
-    //CFX_LedAnimationBlink();
-    CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, CFX_Led* output);
+    CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, CFX_LedBase* output);
     CFX_LedAnimationBlink(unsigned long onTime, unsigned long offTime, 
-      unsigned long startdelay, CFX_Led* output);
+      unsigned long startdelay, CFX_LedBase* output);
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
     void SetBrightness(uint8_t brightness);

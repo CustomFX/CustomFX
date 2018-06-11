@@ -23,10 +23,9 @@
 
 #include <CFX_Button.hpp>
 
-CFX_Button::CFX_Button(int inputPin, int id) : CFX_InputBase(id)
+CFX_Button::CFX_Button(int inputPin, int id, CFX_InputType type)
+ : CFX_InputBase(id, inputPin, type)
 {
-  SetPinNumber(inputPin);
-  
   m_lastClick = 0;
   m_pressed = false;
   m_doubleClick = false;
@@ -37,7 +36,6 @@ CFX_Button::CFX_Button(int inputPin, int id) : CFX_InputBase(id)
   
   m_doubleclickInterval = 500;
   m_clickAndHoldThreshold = 750;
-
 }
 
 const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
@@ -49,7 +47,7 @@ const CFX_InputEvent* CFX_Button::GetEvent(unsigned long time)
     return GetLastEvent(); 
   }
   
-  int value = ReadDigitalInput();
+  int value = ReadInput();
   if (m_pressed)
   {
     if (value == HIGH) // button (still) pressed

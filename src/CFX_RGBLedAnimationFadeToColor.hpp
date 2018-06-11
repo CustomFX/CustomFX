@@ -25,7 +25,7 @@
 #define CFX_RGBLedAnimationFadeToColor_H
 
 #include <CFX_AnimationBase.hpp>
-#include <CFX_RGBLed.hpp>
+#include <CFX_LedBase.hpp>
 #include <CustomFX.h>
 
 class CFX_RGBLedAnimationFadeToColor: public CFX_AnimationBase
@@ -33,15 +33,17 @@ class CFX_RGBLedAnimationFadeToColor: public CFX_AnimationBase
   public:
     
     CFX_RGBLedAnimationFadeToColor();
-    CFX_RGBLedAnimationFadeToColor(CFX_RGBLed* output);
+    CFX_RGBLedAnimationFadeToColor(CFX_LedBase* output);
     
     void FadeToColor(CFX_Color color, int duration);
-    void SetOutputDevice(CFX_RGBLed* output);
+    void SetOutputDevice(CFX_LedBase* output);
 
+    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
   private: // private member variables
-    CFX_RGBLed* m_output;
+    int m_duration;
+    CFX_LedBase* m_output;
     float m_colorRed;
     float m_colorGreen;
     float m_colorBlue;

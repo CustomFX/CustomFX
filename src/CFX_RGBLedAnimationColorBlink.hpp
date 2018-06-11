@@ -24,7 +24,7 @@
 #ifndef CFX_RGBLEDANIMATIONCOLORBLINK_H
 #define CFX_RGBLEDANIMATIONCOLORBLINK_H
 
-#include <CFX_RGBLed.hpp>
+#include <CFX_LedBase.hpp>
 #include <CFX_AnimationBase.hpp>
 
 class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
@@ -33,15 +33,17 @@ class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
 
     CFX_RGBLedAnimationColorBlink();
     CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
-      CFX_Color color, CFX_RGBLed* output);
+      CFX_Color color, CFX_LedBase* output);
     CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
-      unsigned long startdelay, CFX_Color color, CFX_RGBLed* output);
+      unsigned long startdelay, CFX_Color color, CFX_LedBase* output);
     void SetColor(const CFX_Color& color);
+    void DisableColor();
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
-    void SetOutputDevice(CFX_RGBLed* output);
+    void SetOutputDevice(CFX_LedBase* output);
 
-    bool UpdateAnimation(int timeStep);
+    virtual void RestartAnimation();
+    virtual bool UpdateAnimation(int timeStep);
 
 private:
     // private variables for function blink
@@ -49,10 +51,11 @@ private:
     unsigned long m_blinkOnTime;
     unsigned long m_blinkOffTime;
     unsigned long m_startDelay;
-    CFX_RGBLed* m_output;
+    CFX_LedBase* m_output;
     
     bool m_blinkon;
     CFX_Color m_color;
+    bool m_useColor;
 };
 
 

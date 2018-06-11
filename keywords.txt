@@ -2,17 +2,19 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-CFX_AnimationController	KEYWORD1
 CFX_Button	KEYWORD1
 CFX_Color	KEYWORD1
-CFX_InputController	KEYWORD1
+CFX_ColorRange	KEYWORD1
 CFX_Led	KEYWORD1
 CFX_LedAnimationBlink	KEYWORD1
 CFX_LedAnimationFadeInOut	KEYWORD1
-CFX_LedAnimationSequence KEYWORD1
+CFX_LedAnimationSequence	KEYWORD1
+CFX_LedRandomAnimation	KEYWORD1
 CFX_LedStrip	KEYWORD1
+CFX_LedStripAnimationFadeInOut	KEYWORD1
 CFX_LedStripAnimationSweep	KEYWORD1
 CFX_LedStripPixel	KEYWORD1
+CFX_Potentiometer	KEYWORD1
 CFX_RGBLed	KEYWORD1
 CFX_RGBLedAnimationColorBlink	KEYWORD1
 CFX_RGBLedAnimationFadeInOut	KEYWORD1
@@ -23,14 +25,13 @@ CFX_ServoAnimationPath	KEYWORD1
 CFX_ServoAnimationSweep	KEYWORD1
 CFX_Timer	KEYWORD1
 
-#######################################
+####################################### 
 # Methods and Functions 
 #######################################	
 
 Start	KEYWORD2
 Stop	KEYWORD2
 IsActive	KEYWORD2
-UpdateAnimation	KEYWORD2
 Red	KEYWORD2
 Green	KEYWORD2
 Blue	KEYWORD2
@@ -58,19 +59,26 @@ MoveToPosition	KEYWORD2
 AddPosition	KEYWORD2
 RestartAnimation	KEYWORD2
 SetTimer	KEYWORD2
-GetInstance	KEYWORD2
-DisableDoubleClick  KEYWORD2
-SetPixel  KEYWORD2
-CFX_Run    KEYWORD2
+DisableDoubleClick	KEYWORD2
+SetPixel	KEYWORD2
+CFX_Run	KEYWORD2
+AddStep	KEYWORD2
+ChangeStep	KEYWORD2
 
 
 #######################################
 # Constants
 #######################################
 
-CFX_CMD_BUTTON_CLICK  LITERAL1
-CFX_CMD_BUTTON_DOUBLE_CLICK  LITERAL1
-CFX_CMD_BUTTON_CLICK_AND_HOLD LITERAL1
-CFX_CMD_TIMER_EVENT LITERAL1
+CFX_CMD_BUTTON_CLICK	LITERAL1
+CFX_CMD_BUTTON_DOUBLE_CLICK	LITERAL1
+CFX_CMD_BUTTON_CLICK_AND_HOLD	LITERAL1
+CFX_CMD_BUTTON_PRESSED	LITERAL1
+CFX_CMD_BUTTON_RELEASED	LITERAL1
+CFX_CMD_TIMER_EVENT	LITERAL1
+CFX_CMD_VALUE_CHANGED	LITERAL1
+CFX_Transition_Lineair	LITERAL1
+CFX_Transition_Block	LITERAL1
+CFX_Transition_Curve	LITERAL1
 
 

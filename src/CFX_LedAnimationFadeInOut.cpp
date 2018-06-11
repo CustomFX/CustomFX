@@ -26,7 +26,7 @@
    
 
 CFX_LedAnimationFadeInOut::CFX_LedAnimationFadeInOut(uint16_t fadeInTime, uint16_t onTime, 
-  uint16_t fadeOutTime, uint16_t offTime, CFX_Led* output) : CFX_LedAnimationSequence(4, output)
+  uint16_t fadeOutTime, uint16_t offTime, CFX_LedBase* output) : CFX_LedAnimationSequence(4, output)
 {
   m_fadeInTime = fadeInTime;
   m_onTime = onTime;

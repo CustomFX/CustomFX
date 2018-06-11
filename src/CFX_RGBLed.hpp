@@ -34,7 +34,7 @@ class CFX_RGBLed: public CFX_Led
 
     // additional
     virtual long     GetColorLong() const;
-    const CFX_Color& GetColor() const;
+    virtual const CFX_Color GetColor() const;
     virtual void     SetColor(const CFX_Color& color);
     
     // inherited

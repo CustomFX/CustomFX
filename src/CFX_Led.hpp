@@ -24,29 +24,33 @@
 #ifndef CFX_LED_H
 #define CFX_LED_H
 
-#include <CFX_OutputBase.hpp>
+#include <CFX_LedBase.hpp>
 
 //
 // The Led class represents a single led connected directly to the Arduino using a resistor
 //
-class CFX_Led: public CFX_OutputBase
+class CFX_Led: public CFX_LedBase
 {
   public:
-    CFX_Led(int pinnumber);
+    CFX_Led(uint8_t pinnumber);
     
     // additional
     virtual void SetBrightness(uint8_t brightness);
     virtual uint8_t GetBrightness() const;
     
     // inherited
+    virtual void SetColor(const CFX_Color& color);
+    virtual const CFX_Color GetColor() const;
+    virtual long GetColorLong() const;
     virtual void Commit();
     
   protected:
     CFX_Led();
 
   private:
-    int      m_pin;
+    uint8_t  m_pin;
     uint8_t  m_brightness;
+    uint8_t*  m_brightnessref;
 };
 
 

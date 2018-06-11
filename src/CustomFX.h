@@ -24,40 +24,40 @@
 #ifndef CUSTOM_FX_H
 #define CUSTOM_FX_H
 
-#ifndef MAX_INPUT_DEVICES
-#define MAX_INPUT_DEVICES 15
-#endif
 #ifndef INPUT_UPDATE_INTERVAL
 #define INPUT_UPDATE_INTERVAL 10
-#endif
-#ifndef MAX_OUTPUT_DEVICES
-#define MAX_OUTPUT_DEVICES 15
-#endif
-#ifndef MAX_ANIMATIONS
-#define MAX_ANIMATIONS 20
 #endif
 #ifndef ANIMATION_UPDATE_INTERVAL
 #define ANIMATION_UPDATE_INTERVAL 10
 #endif
 
 #include <CFX_Color.hpp>
+#include <CFX_ColorRange.hpp>
 
 #include <CFX_InputBase.hpp>
+#include <CFX_DigitalInput.hpp>
 #include <CFX_Button.hpp>
-#include <CFX_Potentiometer.hpp>
 #include <CFX_Timer.hpp>
+#include <CFX_Potentiometer.hpp>
+#include <CFX_Menu.hpp>
+#include <CFX_MenuItem.hpp>
 
 #include <CFX_OutputBase.hpp>
+#include <CFX_LedBase.hpp>
 #include <CFX_Led.hpp>
 #include <CFX_RGBLed.hpp>
+#include <CFX_LedStripBase.hpp>
 #include <CFX_LedStrip.hpp>
+#include <CFX_LedStripSegment.hpp>
 #include <CFX_LedStripPixel.hpp>
 #include <CFX_Servo.hpp>
 
+#include <CFX_List.hpp>
 #include <CFX_InputController.hpp>
-#include <CFX_AnimationController.hpp>
 
+#include <CFX_AnimationController.hpp>
 #include <CFX_AnimationBase.hpp>
+#include <CFX_AnimationList.hpp>
 
 #include <CFX_LedAnimationSequence.hpp>
 #include <CFX_LedRandomAnimation.hpp>
@@ -69,6 +69,8 @@
 #include <CFX_RGBLedAnimationFadeToColor.hpp>
 
 #include <CFX_LedStripAnimationSweep.hpp>
+#include <CFX_LedStripAnimationFadeInOut.hpp>
+#include <CFX_LedStripAnimationTwinkle.hpp>
 
 #include <CFX_ServoAnimationMoveToPosition.hpp>
 #include <CFX_ServoAnimationPath.hpp>
