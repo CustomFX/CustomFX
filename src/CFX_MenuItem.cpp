@@ -24,7 +24,7 @@
 #include <CFX_MenuItem.hpp>
 
 CFX_MenuItem::CFX_MenuItem(int id)
- : CFX_InputBase(id, CFX_InputTypeOther)
+ : CFX_InputBase(id, CFX_Other_Input)
 {
   m_event = 0;
   m_queuedevent = 0;

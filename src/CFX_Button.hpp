@@ -37,7 +37,7 @@
 class CFX_Button: public CFX_InputBase
 {
   public:
-    CFX_Button(int inputPin, int id, CFX_InputType type = CFX_InputTypeDigitalLow);
+    CFX_Button(int inputPin, int id, CFX_InputType inputtype = CFX_High_Input);
     virtual const CFX_InputEvent* GetEvent(unsigned long time);
     void DisableDoubleClick(bool disabled = true);
     

@@ -30,10 +30,10 @@ CFX_InputBase::CFX_InputBase(uint8_t id, uint8_t pinnumber, CFX_InputType type)
   m_pinnumber = pinnumber;
   m_type = type;
 
-  if (type == CFX_InputTypeDigitalHigh)
-    pinMode(m_pinnumber, INPUT_PULLUP);
-  else if (type == CFX_InputTypeDigitalLow)
+  if (type == CFX_High_Input)
     pinMode(m_pinnumber, INPUT);
+  else if (type == CFX_Low_Input)
+    pinMode(m_pinnumber, INPUT_PULLUP);
 
 	CFX_InputController::GetInstance()->RegisterInputDevice(this);
 }
@@ -57,11 +57,11 @@ uint8_t CFX_InputBase::GetId() const
 
 int CFX_InputBase::ReadInput()
 {
-  if (m_type == CFX_InputTypeDigitalHigh)
+  if (m_type == CFX_Low_Input)
     return (digitalRead(m_pinnumber) == HIGH?LOW:HIGH);
-  if (m_type == CFX_InputTypeDigitalLow)
+  if (m_type == CFX_High_Input)
     return digitalRead(m_pinnumber);
-  if (m_type == CFX_InputTypeAnalog)
+  if (m_type == CFX_Analog_Input)
     return analogRead(m_pinnumber);
   return 0;
 }

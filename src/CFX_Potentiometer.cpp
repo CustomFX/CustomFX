@@ -24,7 +24,7 @@
 #include <CFX_Potentiometer.hpp>
 
 CFX_Potentiometer::CFX_Potentiometer(int inputPin, int id, uint8_t samples) 
-  : CFX_InputBase(id, inputPin, CFX_InputTypeAnalog)
+  : CFX_InputBase(id, inputPin, CFX_Analog_Input)
 {
   m_minInputRange = 0;
   m_maxInputRange = 1023;

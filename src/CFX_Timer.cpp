@@ -23,7 +23,7 @@
 
 #include <CFX_Timer.hpp>
  
-CFX_Timer::CFX_Timer(int id): CFX_InputBase(id, CFX_InputTypeOther)
+CFX_Timer::CFX_Timer(int id): CFX_InputBase(id, CFX_Other_Input)
 {
    m_lastEvent = 0;
    m_timerValue = 0;

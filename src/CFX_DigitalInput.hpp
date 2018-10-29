@@ -34,7 +34,7 @@
 class CFX_DigitalInput: public CFX_InputBase
 {
   public:
-    CFX_DigitalInput(int inputPin, int id, CFX_InputType type = CFX_InputTypeDigitalLow);
+    CFX_DigitalInput(int inputPin, int id, CFX_InputType type =  CFX_High_Input);
     virtual const CFX_InputEvent* GetEvent(unsigned long time);
     virtual bool IsAnalog() const;
 

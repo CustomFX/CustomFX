@@ -49,7 +49,7 @@ CFX_InputController* CFX_InputController::GetInstance()
 
 void CFX_InputController::RegisterInputDevice(CFX_InputBase* inputDevice)
 {
-  if (inputDevice->GetType() == CFX_InputTypeAnalog)
+  if (inputDevice->GetType() == CFX_Analog_Input)
   {
     m_analogInputList.Add(inputDevice);
   }

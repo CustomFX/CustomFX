@@ -38,8 +38,8 @@ struct CFX_InputEvent
   uint8_t command;
   unsigned long value;
 };
-enum CFX_InputType {CFX_InputTypeAnalog, CFX_InputTypeDigitalHigh, 
-CFX_InputTypeDigitalLow, CFX_InputTypeOther};
+enum CFX_InputType {CFX_Analog_Input, CFX_High_Input, 
+  CFX_Low_Input, CFX_Other_Input};
 
 class CFX_InputBase
 {
