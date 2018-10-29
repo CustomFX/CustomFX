@@ -37,12 +37,14 @@ class CFX_LedAnimationBlink: public CFX_LedAnimationSequence
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
     void SetBrightness(uint8_t brightness);
+    void SetMinBrightness(uint8_t brightness);
 
 private:
     // private variables for function blink
     uint16_t m_blinkOnTime;
     uint16_t m_blinkOffTime;
     uint8_t m_brightness;
+    uint8_t m_minbrightness;
 };
 
 #endif // CFX_ANIMATIONBLINK_H

@@ -34,22 +34,28 @@ CFX_LedAnimationBlink::CFX_LedAnimationBlink(unsigned long onTime, unsigned long
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
   m_brightness = 255;
-  output->SetBrightness(m_brightness);
-  AddStep(0, m_blinkOnTime, CFX_Transition_Block);
-  AddStep(m_brightness, m_blinkOffTime, CFX_Transition_Block);
+  m_minbrightness = 0;
+  AddStep(m_brightness, m_blinkOnTime, CFX_No_Transition);
+  AddStep(m_minbrightness, m_blinkOffTime, CFX_No_Transition);
   SetDelay(startdelay);
 }
 
 void CFX_LedAnimationBlink::SetBrightness(uint8_t brightness)
 {
   m_brightness = brightness;
-  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_Transition_Block);
+  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_No_Transition);
+}
+
+void CFX_LedAnimationBlink::SetMinBrightness(uint8_t brightness)
+{
+  m_minbrightness = brightness;
+  ChangeStep(1, m_minbrightness, m_blinkOffTime, CFX_No_Transition);
 }
 
 void CFX_LedAnimationBlink::SetTimes(unsigned long onTime, unsigned long offTime)
 {
   m_blinkOnTime = onTime;
   m_blinkOffTime = offTime;
-  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_Transition_Block);
-  ChangeStep(1, 0, m_blinkOffTime, CFX_Transition_Block);
+  ChangeStep(0, m_brightness, m_blinkOnTime, CFX_No_Transition);
+  ChangeStep(1, m_minbrightness, m_blinkOffTime, CFX_No_Transition);
 }

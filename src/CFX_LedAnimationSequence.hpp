@@ -26,7 +26,7 @@
 
 #include <CFX_AnimationBase.hpp>
 
-enum CFX_TransitionType { CFX_Transition_Block, CFX_Transition_Lineair, CFX_Transition_Curve };
+enum CFX_TransitionType { CFX_Transition_Block, CFX_Transition_Lineair, CFX_Transition_Curve, CFX_No_Transition };
 // struct for step definitions
 struct CFX_LedAnimationSequenceStep
 {
@@ -42,7 +42,9 @@ class CFX_LedAnimationSequence: public CFX_AnimationBase
     
     void AddStep(uint8_t brightness, uint16_t duration, CFX_TransitionType type = CFX_Transition_Lineair);
     void ChangeStep(uint16_t step, uint8_t brightness, uint16_t duration, CFX_TransitionType type);
-        
+    void SetInitialBrightness(uint8_t brightness);
+    
+    virtual bool InitializeAnimation(int timestep);
     virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
@@ -59,6 +61,7 @@ class CFX_LedAnimationSequence: public CFX_AnimationBase
     uint16_t   m_definedSteps;    // the number of defined (non empty) steps
     uint16_t   m_activeStep;      // the current step in the animation
     uint8_t m_startBrightness;
+    uint8_t m_initialBrightness;
     uint16_t m_stepIncrement;
     uint16_t m_totalIncrements;
 };

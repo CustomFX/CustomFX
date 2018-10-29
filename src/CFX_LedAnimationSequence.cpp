@@ -34,6 +34,7 @@ CFX_LedAnimationSequence::CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* 
   m_definedSteps = 0;
   m_activeStep = 0;
   m_startBrightness = 0;
+  m_initialBrightness = 0;
   m_stepIncrement = 0;
   m_totalIncrements = 0;
 }
@@ -64,14 +65,26 @@ void CFX_LedAnimationSequence::ChangeStep(uint16_t step, uint8_t brightness, uin
   }
 }
 
+void CFX_LedAnimationSequence::SetInitialBrightness(uint8_t brightness)
+{
+  m_initialBrightness = brightness;
+}    
+
+bool CFX_LedAnimationSequence::InitializeAnimation(int timestep)
+{
+  RestartAnimation();
+  return true;
+}
+
 void CFX_LedAnimationSequence::RestartAnimation()
 {
   m_activeStep = 0;
   if (m_activeStep < m_definedSteps)
   {
     SetStepSizes(m_activeStep);
+    m_startBrightness = m_initialBrightness;
   }
-  this->Start();
+  //this->Start();
 }
 
 bool CFX_LedAnimationSequence::NextStep()
@@ -84,7 +97,10 @@ bool CFX_LedAnimationSequence::NextStep()
   }
   else
   {
-    RestartAnimation();
+    m_activeStep = 0;
+    SetStepSizes(m_activeStep);
+
+    //RestartAnimation();
     return true;
   }
 }
@@ -148,6 +164,10 @@ uint8_t CFX_LedAnimationSequence::CalculateValue(uint16_t increment, uint16_t to
       {
         return sin((double)increment / totalincrements) * ((int)targetvalue - startvalue);
       }
+    break;
+    
+    case CFX_No_Transition:
+      return targetvalue;
     break;
     
   }
