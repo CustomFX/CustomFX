@@ -84,7 +84,6 @@ void CFX_LedAnimationSequence::RestartAnimation()
     SetStepSizes(m_activeStep);
     m_startBrightness = m_initialBrightness;
   }
-  //this->Start();
 }
 
 bool CFX_LedAnimationSequence::NextStep()
@@ -100,7 +99,6 @@ bool CFX_LedAnimationSequence::NextStep()
     m_activeStep = 0;
     SetStepSizes(m_activeStep);
 
-    //RestartAnimation();
     return true;
   }
 }
@@ -139,7 +137,7 @@ uint8_t CFX_LedAnimationSequence::CalculateValue(uint16_t increment, uint16_t to
       }
       else
       {
-        int value = (float)increment/totalincrements * ((int)targetvalue - startvalue);
+        int value = startvalue + ((float)increment/totalincrements) * ((int)targetvalue - startvalue);
         return value;
       }
     break;
@@ -162,7 +160,7 @@ uint8_t CFX_LedAnimationSequence::CalculateValue(uint16_t increment, uint16_t to
       }
       else
       {
-        return sin((double)increment / totalincrements) * ((int)targetvalue - startvalue);
+        return startvalue + sin((double)increment / totalincrements) * ((int)targetvalue - startvalue);
       }
     break;
     
