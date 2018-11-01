@@ -74,10 +74,10 @@ const CFX_InputEvent* CFX_Potentiometer::GetEvent(unsigned long time)
   
   if (m_remainingReads == 0)
   {
-    int value = m_totalValue / m_samples;
+    unsigned long value = m_totalValue / m_samples;
     m_totalValue = 0;
     
-    if (abs(value - m_lastRawValue) > m_threshold)
+    if (abs((long)value - m_lastRawValue) > m_threshold)
     {
       m_lastRawValue = value;
       if (value < m_minInputRange) value = m_minInputRange;

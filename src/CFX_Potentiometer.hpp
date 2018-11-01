@@ -42,16 +42,16 @@ class CFX_Potentiometer : public CFX_InputBase
   private:
     int m_lastRawValue;
     
-    int m_minInputRange;
-    int m_maxInputRange;
-    int m_minOutputRange;
-    int m_maxOutputRange;
-    int m_threshold;
+    unsigned int m_minInputRange;
+    unsigned int m_maxInputRange;
+    unsigned int m_minOutputRange;
+    unsigned int m_maxOutputRange;
+    unsigned int m_threshold;
     int m_signalDirection;
     
     uint8_t m_samples;         // defines the number of samples to average
     uint8_t m_remainingReads;  // remaining samples to take before returning the value
-    int m_totalValue;          // buffer to hold the samples
+    unsigned int m_totalValue;          // buffer to hold the samples
 };
 
 

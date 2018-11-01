@@ -22,7 +22,7 @@ uint8_t CFX_LedStripSegment::GetBrightness() const
 {
   if (m_ledstrip)
   {
-    m_ledstrip->GetPixelBrightness(m_startled);
+    return m_ledstrip->GetPixelBrightness(m_startled);
   }
   else
   {
@@ -83,7 +83,7 @@ uint8_t CFX_LedStripSegment::GetPixelBrightness(uint16_t pixel) const
 {
   if ((m_ledstrip) && (pixel < m_length))
   {
-    m_ledstrip->GetPixelBrightness(m_startled + pixel);
+    return m_ledstrip->GetPixelBrightness(m_startled + pixel);
   }
   else
   {
@@ -95,7 +95,7 @@ const CFX_Color CFX_LedStripSegment::GetPixelColor(uint16_t pixel) const
 {
   if ((m_ledstrip) && (pixel < m_length))
   {
-    m_ledstrip->GetPixelColor(m_startled + pixel);
+    return m_ledstrip->GetPixelColor(m_startled + pixel);
   }
   else
   {

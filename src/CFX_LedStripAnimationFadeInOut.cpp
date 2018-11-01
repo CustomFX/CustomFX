@@ -159,5 +159,6 @@ bool CFX_LedStripAnimationFadeInOut::UpdateAnimation(int timeStep)
       m_step++;
       return false;
     }
-  }  
+  }
+  return false;
 }
