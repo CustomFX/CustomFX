@@ -81,5 +81,5 @@ const CFX_InputEvent* CFX_MenuItem::GetEvent(unsigned long time)
 
 bool CFX_MenuItem::IsAnalog() const
 {
-  false;
+  return false;
 }

@@ -37,11 +37,11 @@ class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
     CFX_RGBLedAnimationColorBlink(unsigned long onTime, unsigned long offTime, 
       unsigned long startdelay, CFX_Color color, CFX_LedBase* output);
     void SetColor(const CFX_Color& color);
-    void DisableColor();
     
     void SetTimes(unsigned long onTime, unsigned long offTime);
     void SetOutputDevice(CFX_LedBase* output);
 
+    virtual bool InitializeAnimation(int timestep);
     virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timeStep);
 
@@ -50,12 +50,10 @@ private:
     unsigned long m_previousUpdateTime;
     unsigned long m_blinkOnTime;
     unsigned long m_blinkOffTime;
-    unsigned long m_startDelay;
     CFX_LedBase* m_output;
     
     bool m_blinkon;
     CFX_Color m_color;
-    bool m_useColor;
 };
 
 

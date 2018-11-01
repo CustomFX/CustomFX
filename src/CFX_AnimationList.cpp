@@ -75,4 +75,5 @@ void CFX_AnimationList::RestartAnimation()
 
 bool CFX_AnimationList::UpdateAnimation(int timeStep)
 {
+  return true;
 }

@@ -72,7 +72,7 @@ void CFX_InputController::ReadInputs()
     m_previousUpdateTime = time;
 
     // handle all digital inputs
-    for (int i = 0; i < m_digitalInputList.Size(); i++)
+    for (unsigned int i = 0; i < m_digitalInputList.Size(); i++)
     {
       CFX_InputBase* input = m_digitalInputList.Get(i);
       if (input)
