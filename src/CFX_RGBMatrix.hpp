@@ -20,14 +20,3 @@
 // The Custom FX library. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
-
-
-class CFX_Sprite : public CFX_OutputBase
-{
-  public:
-    CFX_Sprite();
-    SetColorPalette();
-    Draw(&RGBMatrix matrix);
-    SetOrigin();
-
-};
