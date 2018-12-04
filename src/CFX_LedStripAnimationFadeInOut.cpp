@@ -84,6 +84,20 @@ void CFX_LedStripAnimationFadeInOut::SetFadeInTime(unsigned long fadeInTime)
   m_fadeInTime = fadeInTime;
 }
 
+bool CFX_LedStripAnimationFadeInOut::InitializeAnimation(int timestep)
+{
+  m_totallevels = m_brightness * m_length;
+  m_totalsteps = m_fadeInTime / ANIMATION_UPDATE_INTERVAL;
+  
+  if (m_totalsteps == 0)
+  { 
+    m_totalsteps = 1;
+  }
+  
+  m_step = 0;
+  return true;
+}
+
 void CFX_LedStripAnimationFadeInOut::RestartAnimation()
 {
   m_step = 1;
@@ -102,40 +116,86 @@ void CFX_LedStripAnimationFadeInOut::RestartAnimation()
 
 bool CFX_LedStripAnimationFadeInOut::UpdateAnimation(int timeStep)
 {
-  if (m_output)
+  if (m_fadingIn)
   {
-    uint32_t totallevels = m_brightness * m_length;
-    uint32_t totalsteps = m_fadeInTime / ANIMATION_UPDATE_INTERVAL;
-    uint32_t value;
-    if (totalsteps == 0)
+    if (UpdateFadeIn(timeStep))
     {
-        value = totallevels;
+      m_fadingIn == false;
     }
     else
-    {  
-      value = m_step * totallevels / totalsteps;
-    }
-    uint16_t ledsOn = value / m_brightness;
-    uint8_t lastBrightness = value % m_brightness;
-     
-    for (uint16_t led = 0; led < ledsOn; led++)
     {
-      uint16_t pixel;
-      if (m_startLed == 0)
-      {
-        pixel = led;
-      }
-      else
-      {
-        pixel = m_length - led - 1;
-      }
-        
-      if (m_useColor)
-      {
-        m_output->SetPixelColor(pixel, m_color);
-      }
-      m_output->SetPixelBrightness(pixel, m_brightness);
+      // calculate fade out steps
+      m_totalsteps = m_fadeOutTime / ANIMATION_UPDATE_INTERVAL;
     }
+  }
+  else
+  {
+    if (UpdateFadeOut(timeStep))
+    {
+      m_fadingIn == true;
+      return true;
+    }
+  }
+  return false;
+}
+
+bool CFX_LedStripAnimationFadeInOut::UpdateFadeIn(timeStep)
+{
+  uint32_t value = m_step * m_totallevels / m_totalsteps;
+  uint8_t  lastBrightness = value % m_brightness;
+  uint16_t ledsOn = value / m_brightness;
+
+  if (m_fadeInType == CFX_FadeLeftRight)
+  {
+    UpdatePixels(0, ledsOn, m_brightness, lastbrightness);
+  }
+  else if (m_fadeInType == CFX_FadeLeftRight)
+  {
+    UpdatePixels(m_length - ledsOn, ledsOn, lastbrightness, m_brightness);
+  }
+  else if (m_fadeInType == CFX_FadeCenterOut)
+  {
+    
+  }
+  else if (m_fadeInType == CFX_FadeOutCenter)
+  {
+    
+  }
+}
+
+bool CFX_LedStripAnimationFadeInOut::UpdateFadeOut(timeStep)
+{
+  
+}
+
+void CFX_LedStripAnimationFadeInOut::UpdatePixels(uint16_t first_led, uint16_t length, 
+  uint8_t firstBrightness, uint8_t lastBrightness)
+{
+  
+  for (uint16_t led = first; led < last; led++)
+  {
+    uint16_t pixel;
+    if (m_startLed == 0)
+    {
+      pixel = led;
+    }
+    else
+    {
+      pixel = m_length - led - 1;
+    }
+      
+    if (m_useColor)
+    {
+      m_output->SetPixelColor(pixel, m_color);
+    }
+    m_output->SetPixelBrightness(pixel, m_brightness);
+  }
+  
+}
+
+void bl()
+{
+     
     if (ledsOn == m_length)
     {
       return true; // done

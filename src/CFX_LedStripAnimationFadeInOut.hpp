@@ -27,7 +27,7 @@
 #include <CFX_AnimationBase.hpp>
 #include <CFX_LedStripBase.hpp>
 
-enum CFX_FadeType { CFX_FadeLeftRight, CFX_FadeRightLeft };
+enum CFX_FadeType { CFX_FadeLeftRight, CFX_FadeRightLeft, CFX_FadeCenterOut, CFX_FadeOutCenter };
 
 
 class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
@@ -44,10 +44,13 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
     void SetType(CFX_FadeType type);
     void SetFadeInTime(unsigned long fadeInTime);
     
+    virtual bool InitializeAnimation(int timestep);
     virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
     
-    private:
+  private:
+    bool UpdateFadeIn(timeStep);
+    bool UpdateFadeOut(timeStep);
     
   private:
     CFX_LedStripBase* m_output;
@@ -56,9 +59,13 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
     bool    m_useColor;
     uint8_t m_brightness;
     
-    CFX_FadeType m_type;
+    CFX_FadeType m_fadeInType;
+    CFX_FadeType m_fadeOutType;
+    bool     m_fadingIn;
     uint16_t m_startLed;
     uint16_t m_length;
+    uint32_t m_totallevels;
+    uint32_t m_totalsteps;
     
     uint16_t m_step;
     unsigned long m_fadeInTime;
