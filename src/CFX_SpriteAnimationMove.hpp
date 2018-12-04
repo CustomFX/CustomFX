@@ -21,13 +21,33 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifndef CFX_SpriteAnimationMove_H
+#define CFX_SpriteAnimationMove_H
 
-class CFX_Sprite : public CFX_OutputBase
+#include <CFX_AnimationBase.hpp>
+#include <CFX_Sprite.hpp>
+
+class CFX_SpriteAnimationMove : public CFX_AnimationBase
 {
   public:
-    CFX_Sprite();
-    SetColorPalette();
-    Draw(&RGBMatrix matrix);
-    SetOrigin();
+    CFX_SpriteAnimationMove(int16_t deltaX, int16_t deltaY, uint16_t duration, CFX_Sprite &sprite);
+    
+    virtual bool InitializeAnimation(int timestep);
+    virtual bool FinishAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
+
+  private:
+    void CalculateSteps();
+    
+  private:
+    uint16_t m_step;
+    uint16_t m_totalSteps;
+
+    CFX_Sprite& m_sprite;
+    uint16_t m_duration;
+    int16_t m_deltaX, m_deltaY;
+    float m_incrementX, m_incrementY;
 
 };
+
+#endif // CFX_SpriteAnimationMove_H

@@ -21,13 +21,40 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifndef CFX_SpriteAnimationSequence_H
+#define CFX_SpriteAnimationSequence_H
 
-class CFX_Sprite : public CFX_OutputBase
+#include <CFX_AnimationBase.hpp>
+#include <CFX_Sprite.hpp>
+#include <CFX_List.hpp>
+
+enum CFX_SpriteTransition {CFX_SpriteFadeInOut, CFX_SpriteCrossFade, CFX_SpriteAppear};
+
+
+class CFX_SpriteAnimationSequence : public CFX_AnimationBase
 {
   public:
-    CFX_Sprite();
-    SetColorPalette();
-    Draw(&RGBMatrix matrix);
-    SetOrigin();
+    CFX_SpriteAnimationSequence();
+  
+    void AddSprite(CFX_Sprite& sprite, uint16_t duration, CFX_SpriteTransition transition);
+    void SetSprite(uint16_t position, CFX_Sprite& sprite);
+    void SetDuration(uint16_t duration);
+    void SetTransition(CFX_SpriteTransition transition);
 
+    virtual bool InitializeAnimation(int timestep);
+    virtual bool FinishAnimation(int timestep);
+    virtual bool UpdateAnimation(int timestep);
+    
+  private:
+    void CalculateSteps();
+
+  private:
+    uint16_t m_step;
+    uint16_t m_totalSteps;
+
+    CFX_List m_spriteList;
+    uint16_t m_duration;
+    CFX_SpriteTransition m_transition;
 };
+
+#endif // CFX_SpriteAnimationSequence_H
