@@ -68,14 +68,8 @@ void CFX_RGBLedAnimationColorBlink::SetOutputDevice(CFX_LedBase* output)
 bool CFX_RGBLedAnimationColorBlink::InitializeAnimation(int timestep)
 {
   m_previousUpdateTime = millis();
-  return true;
-}
-
-void CFX_RGBLedAnimationColorBlink::RestartAnimation()
-{
-  m_previousUpdateTime = millis();
   m_blinkon = false;
-  this->Start();
+  return true;
 }
 
 bool CFX_RGBLedAnimationColorBlink::UpdateAnimation(int timeStep)

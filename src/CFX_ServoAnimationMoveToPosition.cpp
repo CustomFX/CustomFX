@@ -55,10 +55,6 @@ void CFX_ServoAnimationMoveToPosition::MoveToPosition(int newPosition, int durat
   this->Start();
 }
 
-void CFX_ServoAnimationMoveToPosition::RestartAnimation()
-{
-}
-
 bool CFX_ServoAnimationMoveToPosition::UpdateAnimation(int timeStep)
 {
   bool returnval = false;

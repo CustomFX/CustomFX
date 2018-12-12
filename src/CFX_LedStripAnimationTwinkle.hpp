@@ -41,7 +41,7 @@ class CFX_LedStripAnimationTwinkle: public CFX_AnimationBase
     void SetBrightness(uint8_t brightness);
     void SetTimes(uint16_t minOnDelay, uint16_t maxOnDelay, uint16_t onTime);
     
-    virtual void RestartAnimation();
+    virtual bool InitializeAnimation(int timeStep);
     virtual bool UpdateAnimation(int timestep);
     virtual bool FinishAnimation(int timestep);
     private:

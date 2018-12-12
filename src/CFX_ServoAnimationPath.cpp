@@ -47,14 +47,14 @@ void CFX_ServoAnimationPath::AddPosition(int position, int duration)
   }
 }
 
-void CFX_ServoAnimationPath::RestartAnimation()
+bool CFX_ServoAnimationPath::InitializeAnimation(int timestep)
 {
   m_activeSegment = 0;
   if (m_activeSegment < m_definedSegments)
   {
     MoveToPosition(m_path[m_activeSegment][0], m_path[m_activeSegment][1]);
   }
-  this->Start();
+  return true;
 }
 
 void CFX_ServoAnimationPath::MoveToPosition(int newPosition, int duration)

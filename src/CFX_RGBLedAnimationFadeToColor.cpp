@@ -77,9 +77,10 @@ void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
   this->Start();
 }
 
-void CFX_RGBLedAnimationFadeToColor::RestartAnimation()
+bool CFX_RGBLedAnimationFadeToColor::InitializeAnimation(int timeStep)
 {
   FadeToColor(m_targetColor, m_duration);
+  return true;
 }
 
 bool CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)

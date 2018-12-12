@@ -111,8 +111,9 @@ void CFX_RGBLedAnimationFadeInOut::SetStepSizes()
   }
 }
 
-void CFX_RGBLedAnimationFadeInOut::RestartAnimation()
+bool CFX_RGBLedAnimationFadeInOut::InitializeAnimation(int timeStep)
 {
+  return true;
 }
 
 bool CFX_RGBLedAnimationFadeInOut::UpdateAnimation(int timeStep)

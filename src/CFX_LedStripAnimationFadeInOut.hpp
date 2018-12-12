@@ -36,21 +36,25 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
     
     CFX_LedStripAnimationFadeInOut();
     CFX_LedStripAnimationFadeInOut(unsigned long fadeInTime, unsigned long fadeOutTime,
-      CFX_LedStripBase* output, CFX_FadeType fadetype = CFX_FadeLeftRight);
+      CFX_LedStripBase* output, CFX_FadeType fadeInType = CFX_FadeLeftRight, 
+      CFX_FadeType fadeOutType = CFX_FadeLeftRight);
+    CFX_LedStripAnimationFadeInOut(unsigned long fadeInTime, unsigned long fadeOutTime,
+      CFX_LedStripBase* output, CFX_FadeType fadeInType, 
+      CFX_FadeType fadeOutType, CFX_Color color, uint8_t brightness);
     void SetOutputDevice(CFX_LedStripBase* output);
     
     void SetColor(CFX_Color color);
-    void SetBrightness(uint8_t brightness);
-    void SetType(CFX_FadeType type);
-    void SetFadeInTime(unsigned long fadeInTime);
+    void DisableColor(bool disable = true);
+    void SetTimes(unsigned long fadeInTime, unsigned long fadeOutTime);
     
     virtual bool InitializeAnimation(int timestep);
-    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
     
   private:
-    bool UpdateFadeIn(timeStep);
-    bool UpdateFadeOut(timeStep);
+    bool UpdateFadeIn(int timestep);
+    bool UpdateFadeOut(int timestep);
+    void UpdatePixels(uint16_t first_led, uint16_t length, 
+      uint8_t firstBrightness, uint8_t lastBrightness);
     
   private:
     CFX_LedStripBase* m_output;

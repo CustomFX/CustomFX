@@ -32,7 +32,7 @@ class CFX_LedRandomAnimation: public CFX_AnimationBase
     CFX_LedRandomAnimation(uint8_t minvalue, uint8_t maxvalue, 
       uint16_t mindelay, uint16_t maxdelay, CFX_Led* output);
     
-    virtual void RestartAnimation();
+    virtual bool InitializeAnimation(int timeStep);
     virtual bool UpdateAnimation(int timestep);
 
   private:

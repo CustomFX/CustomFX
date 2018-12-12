@@ -72,18 +72,13 @@ void CFX_LedAnimationSequence::SetInitialBrightness(uint8_t brightness)
 
 bool CFX_LedAnimationSequence::InitializeAnimation(int timestep)
 {
-  RestartAnimation();
-  return true;
-}
-
-void CFX_LedAnimationSequence::RestartAnimation()
-{
   m_activeStep = 0;
   if (m_activeStep < m_definedSteps)
   {
     SetStepSizes(m_activeStep);
     m_startBrightness = m_initialBrightness;
   }
+  return true;
 }
 
 bool CFX_LedAnimationSequence::NextStep()

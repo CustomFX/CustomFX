@@ -30,11 +30,16 @@ CFX_AnimationBase::CFX_AnimationBase()
   m_state = cfx_animation_initializing;
   m_repetitions = -1;
   m_delay = 0;
+  m_paused = false;
 }
 
 void CFX_AnimationBase::Animate(int timestep)
 {
-  if (m_delay > 0)
+  if (m_paused)
+  {
+    // animation paused, do nothing
+  }
+  else if (m_delay > 0)
   {
     if (m_delay - timestep > 0)
     {
@@ -102,6 +107,16 @@ void CFX_AnimationBase::SetDelay(long delay)
 void CFX_AnimationBase::SetRepetitions(int16_t repetitions)
 {
   m_repetitions = repetitions;
+}
+
+void CFX_AnimationBase::Pause()
+{
+  m_paused = true;
+}
+
+void CFX_AnimationBase::Resume()
+{
+  m_paused = false;
 }
 
 void CFX_AnimationBase::Start()

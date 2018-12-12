@@ -55,13 +55,15 @@ class CFX_AnimationBase
     void SetDelay(long delay);
     void SetRepetitions(int16_t repetitions);
     
+    virtual void Pause();
+    virtual void Resume();
     virtual void Start();
     virtual void Stop();
     bool IsActive() const;
-    virtual void RestartAnimation() = 0;
     
   private:
     CFX_Animation_State m_state;
+    bool m_paused;
     long m_delay;
     int16_t m_repetitions;
 };
