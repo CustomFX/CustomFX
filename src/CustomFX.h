@@ -72,6 +72,8 @@
 #include <CFX_LedStripAnimationFadeInOut.hpp>
 #include <CFX_LedStripAnimationTwinkle.hpp>
 
+#include <CFX_Sprite.hpp>
+
 #include <CFX_ServoAnimationMoveToPosition.hpp>
 #include <CFX_ServoAnimationPath.hpp>
 #include <CFX_ServoAnimationSweep.hpp>

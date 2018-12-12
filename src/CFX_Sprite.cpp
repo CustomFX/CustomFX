@@ -23,7 +23,7 @@
 
 #include <CFX_Sprite.hpp>
 
-CFX_Sprite::CFX_Sprite(byte width, byte height, byte color_depth, byte &drawing[])
+CFX_Sprite::CFX_Sprite(byte width, byte height, byte color_depth, const byte drawing[])
  : CFX_OutputBase()
 {
   m_width = width;
@@ -47,4 +47,9 @@ void CFX_Sprite::Draw(CFX_LedStrip &ledstrip) {
       //ledstrip.SetPixelColor(index, color(12, 25, 115))
     }
   }
+}
+
+void CFX_Sprite::Commit()
+{
+  
 }

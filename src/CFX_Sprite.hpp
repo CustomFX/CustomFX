@@ -35,9 +35,11 @@
 class CFX_Sprite: public CFX_OutputBase
 {
   public:
-    CFX_Sprite(byte width, byte height, byte color_depth, byte drawing[]);
+    CFX_Sprite(byte width, byte height, byte color_depth, const byte drawing[]);
     void Draw(CFX_LedStrip &ledstrip); // TODO pass matrix
     void SetOrigin(signed int newX, signed int newY);
+    
+    void Commit();
 
   private:
     byte m_drawing[];
