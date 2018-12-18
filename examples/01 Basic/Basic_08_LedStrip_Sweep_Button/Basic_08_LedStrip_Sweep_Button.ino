@@ -18,10 +18,11 @@
 CFX_LedStrip ledstrip(2, 20);    // Connect ledstrip to pin 2
 CFX_Color color(12, 25, 115);    // create color
 CFX_LedStripAnimationSweep sweep(color, 20, 350, &ledstrip); // setup sweep, speed 20 msec per led, fade out time is 350 msec
-CFX_Button button(7, 101);       // connect a button to pin 7
+CFX_Button button(7, 101, CFX_Low_Input);       // connect a button between pin 7 of the Arduino and the ground (GND)
 
 void setup()
 {
+  button.DisableDoubleClick(); // We do not need the doubleclick function
 }
 
 void handleInput(int id, int command, int value)
@@ -38,10 +39,6 @@ void handleInput(int id, int command, int value)
       {
         sweep.Start();
       }
-    }
-    else if (command == CFX_CMD_BUTTON_DOUBLE_CLICK)
-    {
-      sweep.Stop(true); // fade out and stop
     }
   }
 }

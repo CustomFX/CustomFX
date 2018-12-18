@@ -55,6 +55,7 @@ class CFX_LedStrip: public CFX_LedStripBase
     virtual void SetBrightness(uint8_t brightness);
     virtual uint8_t GetBrightness() const;
     virtual void Commit();
+    
 
   protected:
     CFX_LedStrip();

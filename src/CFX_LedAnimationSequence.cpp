@@ -82,7 +82,7 @@ void CFX_LedAnimationSequence::RestartAnimation()
   if (m_activeStep < m_definedSteps)
   {
     SetStepSizes(m_activeStep);
-    m_startBrightness = m_initialBrightness;
+    //m_startBrightness = m_initialBrightness;
   }
 }
 

@@ -48,7 +48,8 @@ void CFX_AnimationList::StartNext()
   {
     m_currentAnimation = 0;
   }
-  m_animations.Get(m_currentAnimation)->RestartAnimation();  
+  //m_animations.Get(m_currentAnimation)->RestartAnimation();  
+  m_animations.Get(m_currentAnimation)->Start();
 }
 
 void CFX_AnimationList::StartPrevious()
@@ -62,8 +63,9 @@ void CFX_AnimationList::StartPrevious()
   {
     m_currentAnimation = m_animations.Size() - 1;
   }
-  m_animations.Get(m_currentAnimation)->RestartAnimation();
+  m_animations.Get(m_currentAnimation)->Start();
 }
+
 uint16_t CFX_AnimationList::GetCurrentAnimation() const
 {
   return m_currentAnimation;

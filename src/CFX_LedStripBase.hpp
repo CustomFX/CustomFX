@@ -1,4 +1,4 @@
-#ifndef CFX_LedStripBase_H
+  #ifndef CFX_LedStripBase_H
 #define CFX_LedStripBase_H
 
 #include <CFX_LedBase.hpp>
@@ -19,6 +19,8 @@ class CFX_LedStripBase: public CFX_LedBase
     virtual void SetPixelColor(uint16_t pixel, const CFX_Color& color) = 0;
     virtual long GetPixelColorLong(uint16_t pixel) const = 0;
     virtual void Commit() = 0;
+    // helper functions
+    uint16_t NextPixel(const uint16_t pixel, const int increment) const;
 
 };
 
