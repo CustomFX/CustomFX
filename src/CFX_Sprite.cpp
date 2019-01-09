@@ -22,16 +22,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <CFX_Sprite.hpp>
+#include <CFX_ColorPalette.hpp>
+#include <CFX_Color.hpp>
 
-CFX_Sprite::CFX_Sprite(byte width, byte height, byte color_depth, const byte drawing[])
- : CFX_OutputBase()
+CFX_Sprite::CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette) : CFX_OutputBase()
 {
   m_width = width;
   m_height = height;
-  m_color_depth = color_depth;
+  m_palette = palette;
   m_x_position = 0;
   m_y_position = 0;
-//  m_drawing = drawing;
+  m_drawing = drawing;
 }
 
 void CFX_Sprite::SetOrigin(signed int newX, signed int newY) {
@@ -40,11 +41,11 @@ void CFX_Sprite::SetOrigin(signed int newX, signed int newY) {
 }
 
 void CFX_Sprite::Draw(CFX_LedStrip &ledstrip) {
+  byte depth = m_palette.GetColorDepth();
   for (int y = 0; y < m_height; y++) {
     for (int x = 0; x < m_width; x++) {
       uint16_t index = y * m_width + x;
-      byte pixel = pgm_read_byte_near(m_drawing + index);
-      //ledstrip.SetPixelColor(index, color(12, 25, 115))
+      CFX_Color color = GetColor(index, depth);
     }
   }
 }
@@ -52,4 +53,38 @@ void CFX_Sprite::Draw(CFX_LedStrip &ledstrip) {
 void CFX_Sprite::Commit()
 {
   
+}
+
+CFX_Color CFX_Sprite::GetColor(uint16_t index, byte depth) {
+	if (depth <= 2) {
+		return m_palette.GetColor(convert2(index));
+	} else if (depth <= 4) {
+		return m_palette.GetColor(convert4(index));
+	} else if (depth <= 16) {
+		return m_palette.GetColor(convert16(index));
+	} else {
+		return m_palette.GetColor(convert256(index));
+	}
+}	
+
+byte CFX_Sprite::convert2(uint16_t index) {
+  uint16_t arrayIndex = index / 8;
+  uint16_t bitIndex = index % 8;
+  return (m_drawing[arrayIndex] >> 7 - bitIndex) & 1;
+}
+
+byte CFX_Sprite::convert4(uint16_t index) {
+  uint16_t arrayIndex = index / 4;
+  uint16_t bitIndex = index % 4;
+  return (m_drawing[arrayIndex] >> 6 - bitIndex*2) & 3;
+}
+
+byte CFX_Sprite::convert16(uint16_t index) {
+  uint16_t arrayIndex = index / 2;
+  uint16_t bitIndex = index % 2;
+  return (m_drawing[arrayIndex] >> 4 - bitIndex*4) & 15;
+}
+  
+byte CFX_Sprite::convert256(uint16_t index) {
+  return m_drawing[index];
 }

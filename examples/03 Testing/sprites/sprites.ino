@@ -17,7 +17,9 @@
 
 const byte ball[] PROGMEM = {0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0};
 
-CFX_Sprite sprite(5, 5, CFX_SPRITE_BLACK_WHITE, ball);
+CFX_ColorPalette palette(4);
+
+CFX_Sprite sprite(5, 5, ball, palette);
 
 void setup() 
 {

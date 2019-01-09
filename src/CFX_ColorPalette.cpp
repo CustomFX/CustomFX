@@ -21,42 +21,33 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CFX_SPRITE_H
-#define CFX_SPRITE_H
-
-#include <CFX_OutputBase.hpp>
-#include <CFX_LedStrip.hpp>
 #include <CFX_ColorPalette.hpp>
-#include <CFX_Color.hpp>
 
-#define CFX_SPRITE_BLACK_WHITE  1
-#define CFX_SPRITE_4_COLOR      2
-#define CFX_SPRITE_16_COLOR     4
-#define CFX_SPRITE_256_COLOR    8
-
-class CFX_Sprite: public CFX_OutputBase
+CFX_ColorPalette::CFX_ColorPalette(const byte depth)
 {
-  public:
-    CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette);
-    void Draw(CFX_LedStrip &ledstrip); // TODO pass matrix
-    void SetOrigin(signed int newX, signed int newY);
-    
-    void Commit();
+  m_colors = new CFX_Color[depth];
+  m_depth = depth;
+}
 
-  private:
-    const byte* m_drawing;
-    signed int m_x_position;
-    signed int m_y_position;
-    byte m_width;
-    byte m_height;
-    CFX_ColorPalette m_palette;
-	CFX_Color GetColor(uint16_t index, byte depth);
-	byte convert2(uint16_t index);
-	byte convert4(uint16_t index);
-	byte convert16(uint16_t index);
-	byte convert256(uint16_t index);
-	
-	
-};
+CFX_ColorPalette::CFX_ColorPalette()
+{
+}
 
-#endif // CFX_SPRITE_H
+CFX_Color CFX_ColorPalette::GetColor(byte index) {
+	if (index >= m_depth) {
+		return m_colors[m_depth - 1];
+	} else if (m_depth < 0) {
+		return m_colors[0];
+	}
+	return m_colors[index];
+}
+
+void CFX_ColorPalette::SetColor(byte index, CFX_Color color) {
+	if (index >= 0 && index < m_depth) {
+		m_colors[index] = color;
+	}
+}
+
+byte CFX_ColorPalette::GetColorDepth() {
+	return m_depth;
+}

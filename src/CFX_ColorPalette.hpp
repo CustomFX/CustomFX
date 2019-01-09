@@ -20,3 +20,24 @@
 // The Custom FX library. If not, see <http://www.gnu.org/licenses/>.
 //
 ////////////////////////////////////////////////////////////////////////////////
+
+#ifndef CFX_COLOR_PALETTE_H
+#define CFX_COLOR_PALETTE_H
+
+#include <CFX_Color.hpp>
+
+class CFX_ColorPalette
+{
+  public:
+    CFX_ColorPalette(const byte depth);
+	CFX_ColorPalette();
+    CFX_Color GetColor(byte index);
+	void SetColor(byte index, CFX_Color color);
+	byte GetColorDepth();
+
+  private:
+    CFX_Color* m_colors;
+	byte m_depth;
+};
+
+#endif // CFX_COLOR_PALETTE_H
