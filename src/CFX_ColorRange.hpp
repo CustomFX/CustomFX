@@ -36,7 +36,7 @@ class CFX_ColorRange
 {
   public:
     CFX_ColorRange(int colors);
-    bool AddColor(const CFX_Color& color, uint16_t range = 100);
+    bool AddColor(const CFX_Color& color, uint16_t range = 256);
     bool SetColor(int index, const CFX_Color& color, uint16_t range);
     
     CFX_Color GetColor(uint16_t index) const;
