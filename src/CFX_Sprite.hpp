@@ -25,7 +25,7 @@
 #define CFX_SPRITE_H
 
 #include <CFX_OutputBase.hpp>
-#include <CFX_LedStrip.hpp>
+#include <CFX_RGBMatrix.hpp>
 #include <CFX_ColorPalette.hpp>
 #include <CFX_Color.hpp>
 
@@ -38,7 +38,7 @@ class CFX_Sprite: public CFX_OutputBase
 {
   public:
     CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette);
-    void Draw(CFX_LedStrip &ledstrip); // TODO pass matrix
+    void Draw(CFX_RGBMatrix &matrix); // TODO pass matrix
     void SetOrigin(signed int newX, signed int newY);
     
     void Commit();

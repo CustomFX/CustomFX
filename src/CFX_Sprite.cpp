@@ -40,12 +40,19 @@ void CFX_Sprite::SetOrigin(signed int newX, signed int newY) {
   m_y_position = newY;
 }
 
-void CFX_Sprite::Draw(CFX_LedStrip &ledstrip) {
+void CFX_Sprite::Draw(CFX_RGBMatrix &matrix) {
   byte depth = m_palette.GetColorDepth();
   for (int y = 0; y < m_height; y++) {
     for (int x = 0; x < m_width; x++) {
       uint16_t index = y * m_width + x;
       CFX_Color color = GetColor(index, depth);
+Serial.print(x);
+Serial.print(", ");
+Serial.print(y);
+Serial.print(" - ");
+Serial.println(convert2(index));
+
+      matrix.SetPixelColor(x, y, color);
     }
   }
 }

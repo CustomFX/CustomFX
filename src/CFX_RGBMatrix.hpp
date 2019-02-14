@@ -21,16 +21,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CFX_RGBLedMatrix_H
-#define CFX_RGBLedMatrix_H
+#ifndef CFX_RGBMatrix_H
+#define CFX_RGBMatrix_H
 
 #include <CFX_LedStripBase.hpp>
 #include <CFX_LedStrip.hpp>
 
-class CFX_RGBLedMatrix: public CFX_LedStrip
+class CFX_RGBMatrix: public CFX_LedStrip
 {
   public:
-    CFX_RGBLedMatrix(int pinnumber, uint16_t width, uint16_t height, int type = NEO_GRB + NEO_KHZ800);
+
+    CFX_RGBMatrix(int pinnumber, uint16_t width, uint16_t height, int type = NEO_GRB + NEO_KHZ800);
     
     virtual void SetPixelColor(uint16_t x_pos, uint16_t y_pos, const CFX_Color& color);
     virtual long GetPixelColorLong(uint16_t x_pos, uint16_t y_pos) const;
@@ -38,10 +39,16 @@ class CFX_RGBLedMatrix: public CFX_LedStrip
     virtual void SetPixelBrightness(uint16_t x_pos, uint16_t y_pos, uint8_t brightness);
     virtual uint8_t GetPixelBrightness(uint16_t x_pos, uint16_t y_pos) const;
 
+    //virtual void DisplayColorSprite(CFX_Sprite& sprite, uint16_t x_pos, uint16_t y_pos);
+    //virtual void DisplayGrayscaleSprite(CFX_Sprite& sprite, uint16_t x_pos, uint16_t y_pos);
+ 
+ private:
+    uint16_t CalculatePixel(uint16_t x_pos, uint16_t y_pos) const;
+ 
   private:
     uint16_t m_width;
     uint16_t m_height;
 };
 
 
-#endif //CFX_RGBLedMatrix_H
+#endif //CFX_RGBMatrix_H
