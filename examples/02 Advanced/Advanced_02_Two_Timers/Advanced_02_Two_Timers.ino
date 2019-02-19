@@ -26,21 +26,19 @@ void setup()
 
 void handleInput(int id, int command, int value)
 {
-  switch(id)
+  if (id == 101)
   {
-    case 101: // on_timer event, turn led on
     if (command == CFX_CMD_TIMER_EVENT)
     {
       led1.SetBrightness(255);
     }
-    break;
-
-    case 102: // off_timer event, turn led off
+  }
+  else if (id == 102)
+  {
     if (command == CFX_CMD_TIMER_EVENT)
     {
       led1.SetBrightness(0);
     }
-    break;
   }
 }
 

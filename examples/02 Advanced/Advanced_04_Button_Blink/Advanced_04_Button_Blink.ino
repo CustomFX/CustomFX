@@ -9,7 +9,7 @@
 // - double click, start blinking
 // - click and hold, fade in and out
 //
-// This file is part of the Custom FX library. This library was developed in 
+// This file is part of the Custom FX library. This library was developed in
 // order to make Arduino programming as easy as possible. For more information,
 // visit our website: http://www.customfx.nl
 //
@@ -17,72 +17,56 @@
 
 #include <CustomFX.h>
 
-CFX_Button button1(7, 101);  // Connect button to pin 10 with id 101
+CFX_Button button1(7, 101, CFX_Low_Input);  // Connect button to pin 10 with id 101
 CFX_Led led(3);              // Connect Led to pin 3
 CFX_LedAnimationBlink blink1(500, 250, &led); // blink animation
-int brightness;
-bool led_on = false;
+CFX_LedAnimationFadeInOut fader(1000, 500, 1000, 500, &led);
 
-void setup() 
+void setup()
 {
   blink1.Stop(); // the blink animation is initially off
+  fader.Stop();  // the fade animation is also initially off
 }
 
 void handleInput(int id, int command, int value)
 {
-  switch(id)
+  if (id == 101)
   {
-    case 101: // handle input events from button1
-    switch(command)
+    if (command == CFX_CMD_BUTTON_PRESSED)
     {
-      case CFX_CMD_BUTTON_CLICK: 
       blink1.Stop(); // stop blink animation is it was running
-      if (led_on) // turn led on
+    }
+    else if (command == CFX_CMD_BUTTON_RELEASED)
+    {
+      fader.Stop(); // stop the fader once you release the button
+    }
+    else if (command == CFX_CMD_BUTTON_CLICK)
+    {
+      // toggle the led brightness
+      if (led.GetBrightness() == 0)
       {
-        brightness = 0;
-        led_on = false;
+        led.SetBrightness(255);
       }
       else // turn led off
       {
-        brightness = 255;
-        led_on = true;
+        led.SetBrightness(0);
       }
-    break;
-      
-      case CFX_CMD_BUTTON_DOUBLE_CLICK: // blink
-      blink1.Start();
-      break;
-      
-      case CFX_CMD_BUTTON_CLICK_AND_HOLD: // fade led
-      blink1.Stop(); // stop blink animation is it was running
-      if (led_on)
-      {
-        // fade out
-        brightness--;
-        if (brightness < 0)
-        {
-          brightness = 0;
-          led_on = false;
-        }
-      }
-      else
-      {
-        // fade in
-        brightness++;
-        if (brightness > 255)
-        {
-          brightness = 255;
-          led_on = true;
-        }
-      }
-      break;
     }
-    led.SetBrightness(brightness);
-    break;
+    else if (command == CFX_CMD_BUTTON_DOUBLE_CLICK)
+    {
+      blink1.Start(); // start blinking on doubleclick
+    }
+    else if (command == CFX_CMD_BUTTON_CLICK_AND_HOLD)
+    {
+      if (!fader.IsActive()) // start the fade animation if it hasn't already started
+      {
+        fader.Start();
+      }
+    }
   }
 }
 
-void loop() 
+void loop()
 {
   CFX_Run();
 }

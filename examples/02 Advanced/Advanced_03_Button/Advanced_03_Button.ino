@@ -9,7 +9,7 @@
 // - click and hold: fade LED 1 on and off
 // - when pressing and releaseing the button, LED 2 will be turned on and off
 //
-// This file is part of the Custom FX library. This library was developed in 
+// This file is part of the Custom FX library. This library was developed in
 // order to make Arduino programming as easy as possible. For more information,
 // visit our website: http://www.customfx.nl
 //
@@ -23,36 +23,39 @@ CFX_Led led2(5);             // Connect second Led to pin 5
 int brightness;              // variable to store the brightness
 bool led_on = false;         // led is initially off
 
-void setup() 
+void setup()
 {
 }
 
 void handleInput(int id, int command, int value)
 {
-  switch(id)
+  if (id == 101)
   {
-    case 101: // handle input events from button1
-    switch(command)
+    if (command == CFX_CMD_BUTTON_PRESSED)
     {
-      case CFX_CMD_BUTTON_PRESSED: // turn led 2 on
-      led2.SetBrightness(255);
-      break;
-
-      case CFX_CMD_BUTTON_RELEASED: // turn led 2 off
-      led2.SetBrightness(0);
-      break;
-      
-      case CFX_CMD_BUTTON_CLICK: // turn led on
+      led2.SetBrightness(255); // turn led 2 on
+    }
+    else if (command == CFX_CMD_BUTTON_RELEASED)
+    {
+      led2.SetBrightness(0); // turn led 2 off
+    }
+    else if (command == CFX_CMD_BUTTON_CLICK)
+    {
+      // turn led 1 on
       brightness = 255;
       led_on = true;
-      break;
-      
-      case CFX_CMD_BUTTON_DOUBLE_CLICK: // turn led off
+      led1.SetBrightness(brightness);
+    }
+    else if (command == CFX_CMD_BUTTON_DOUBLE_CLICK)
+    {
+      // turn led 1 off
       brightness = 0;
       led_on = false;
-      break;
-      
-      case CFX_CMD_BUTTON_CLICK_AND_HOLD: // fade led
+      led1.SetBrightness(brightness);
+    }
+    else if (command == CFX_CMD_BUTTON_CLICK_AND_HOLD)
+    {
+      // fade led
       if (led_on)
       {
         // fade out
@@ -73,14 +76,12 @@ void handleInput(int id, int command, int value)
           led_on = true;
         }
       }
-      break;
+      led1.SetBrightness(brightness);
     }
-    led1.SetBrightness(brightness);
-    break;
   }
 }
 
-void loop() 
+void loop()
 {
   CFX_Run();
 }
