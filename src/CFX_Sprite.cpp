@@ -40,19 +40,32 @@ void CFX_Sprite::SetOrigin(signed int newX, signed int newY) {
   m_y_position = newY;
 }
 
+void CFX_Sprite::SetOrigin(CFX_Sprite originalSprite) {
+  m_x_position = originalSprite.m_x_position;
+  m_y_position = originalSprite.m_y_position;
+}
+
+void CFX_Sprite::Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix, CFX_Color clearColor) {
+	Clear(matrix, clearColor);
+    m_x_position += horizontal;
+    m_y_position += vertical;
+}
+
+void CFX_Sprite::Clear(CFX_RGBMatrix &matrix, CFX_Color color) {
+  for (int y = 0; y < m_height; y++) {
+    for (int x = 0; x < m_width; x++) {
+      matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
+    }
+  }
+}
+
 void CFX_Sprite::Draw(CFX_RGBMatrix &matrix) {
   byte depth = m_palette.GetColorDepth();
   for (int y = 0; y < m_height; y++) {
     for (int x = 0; x < m_width; x++) {
       uint16_t index = y * m_width + x;
       CFX_Color color = GetColor(index, depth);
-Serial.print(x);
-Serial.print(", ");
-Serial.print(y);
-Serial.print(" - ");
-Serial.println(convert2(index));
-
-      matrix.SetPixelColor(x, y, color);
+      matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
     }
   }
 }

@@ -21,45 +21,34 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CFX_SPRITE_H
-#define CFX_SPRITE_H
+#ifndef CFX_SPRITECONTAINER_H
+#define CFX_SPRITECONTAINER_H
 
 #include <CFX_OutputBase.hpp>
 #include <CFX_RGBMatrix.hpp>
-#include <CFX_ColorPalette.hpp>
 #include <CFX_Color.hpp>
+#include <CFX_Sprite.hpp>
 
-#define CFX_SPRITE_BLACK_WHITE  1
-#define CFX_SPRITE_4_COLOR      2
-#define CFX_SPRITE_16_COLOR     4
-#define CFX_SPRITE_256_COLOR    8
-
-class CFX_Sprite: public CFX_OutputBase
+class CFX_SpriteContainer: public CFX_OutputBase
 {
   public:
-    CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette);
+    CFX_SpriteContainer(CFX_Sprite *sprites, CFX_Color &clearColor);
     void Draw(CFX_RGBMatrix &matrix); // TODO pass matrix
     void SetOrigin(signed int newX, signed int newY);
-	void SetOrigin(CFX_Sprite originalSprite);
-    void Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix, CFX_Color clearColor);
-	void Clear(CFX_RGBMatrix &matrix, CFX_Color color);
-	
-    void Commit();
+    void Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix);
+	void Clear(CFX_RGBMatrix &matrix);
+	uint16_t GetActiveSpriteIndex();
+	void SetActiveSprite(uint16_t index, CFX_RGBMatrix &matrix);
+	 
+	void Commit();
 
   private:
-    const byte* m_drawing;
+    CFX_Sprite* m_sprites;
+	CFX_Color m_clearColor;
+	uint16_t m_activeSpriteIndex;
     signed int m_x_position;
-    signed int m_y_position;
-    byte m_width;
-    byte m_height;
-    CFX_ColorPalette m_palette;
-	CFX_Color GetColor(uint16_t index, byte depth);
-	byte convert2(uint16_t index);
-	byte convert4(uint16_t index);
-	byte convert16(uint16_t index);
-	byte convert256(uint16_t index);
-	
+    signed int m_y_position;	
 	
 };
 
-#endif // CFX_SPRITE_H
+#endif // CFX_SPRITECONTAINER_H
