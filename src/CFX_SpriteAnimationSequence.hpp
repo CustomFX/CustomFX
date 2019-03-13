@@ -26,35 +26,43 @@
 
 #include <CFX_AnimationBase.hpp>
 #include <CFX_Sprite.hpp>
+#include <CFX_RGBMatrix.hpp>
+
 #include <CFX_List.hpp>
 
 enum CFX_SpriteTransition {CFX_SpriteFadeInOut, CFX_SpriteCrossFade, CFX_SpriteAppear};
 
+struct CFX_SpriteAnimationSequenceStep
+{
+  CFX_Sprite* sprite;
+  uint16_t duration;
+  CFX_SpriteTransition transition;
+};
 
 class CFX_SpriteAnimationSequence : public CFX_AnimationBase
 {
   public:
-    CFX_SpriteAnimationSequence();
+    CFX_SpriteAnimationSequence(uint16_t steps, CFX_RGBMatrix* output);
   
-    void AddSprite(CFX_Sprite& sprite, uint16_t duration, CFX_SpriteTransition transition);
-    void SetSprite(uint16_t position, CFX_Sprite& sprite);
-    void SetDuration(uint16_t duration);
-    void SetTransition(CFX_SpriteTransition transition);
+    void AddSprite(CFX_Sprite* sprite, uint16_t duration, CFX_SpriteTransition transition);
+    void SetSprite(uint16_t step, CFX_Sprite* sprite);
+    void SetDuration(uint16_t step, uint16_t duration);
+    void SetTransition(uint16_t step, CFX_SpriteTransition transition);
 
     virtual bool InitializeAnimation(int timestep);
     virtual bool FinishAnimation(int timestep);
     virtual bool UpdateAnimation(int timestep);
+    void RestartAnimation();
     
   private:
     void CalculateSteps();
 
   private:
-    uint16_t m_step;
-    uint16_t m_totalSteps;
-
-    CFX_List m_spriteList;
-    uint16_t m_duration;
-    CFX_SpriteTransition m_transition;
+    CFX_SpriteAnimationSequenceStep* m_steps;
+    uint16_t   m_totalSteps;      // the total number of staps in the animation
+    uint16_t   m_definedSteps;    // the number of defined (non empty) steps
+    uint16_t   m_activeStep;      // the current step in the animation
+    CFX_RGBMatrix* m_matrix;
 };
 
 #endif // CFX_SpriteAnimationSequence_H
