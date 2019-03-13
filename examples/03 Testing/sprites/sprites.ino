@@ -14,8 +14,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <CustomFX.h>
 
-const byte ball[] PROGMEM = {0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0};
-const byte ball4[] PROGMEM = {0,1,1,0, 1,1,1,1, 1,1,1,1, 0,1,1,0};
+const PROGMEM byte ball[]  = {0,1,1,1,0,1,1,1, 1,1,1,1,1,1,1,1, 1,1,1,1,0,1,1,1, 0};
+const PROGMEM byte ball2[]  = {119, 255, 247, 0};
+const PROGMEM byte ball4[] = {0,1,1,0, 1,1,1,1, 1,1,1,1, 0,1,1,0};
 
 
 CFX_RGBMatrix matrix(2, 4, 4);
@@ -24,19 +25,19 @@ CFX_Color blue(0,0,255);
 CFX_Color black(0,0,0);
 
 //
-//CFX_Sprite sprite(5, 5, ball, palette);
-CFX_Sprite sprite(4, 4, ball4, palette);
+CFX_Sprite sprite(5, 5, ball2, palette);
+//CFX_Sprite sprite(4, 4, ball4, palette);
 
 void setup() 
 {
   Serial.begin(115200);
-  
+
   // put your setup code here, to run once:
   palette.SetColor(0, black);
   palette.SetColor(1, blue);
   
   sprite.Draw(matrix);
-  matrix.SetBrightness(100);
+  matrix.SetBrightness(20);
 }
 
 void handleInput(int id, int command, int value) 
