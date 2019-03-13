@@ -14,8 +14,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <CustomFX.h>
 
-const byte ball[] PROGMEM = {0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0};
-const byte ball4[] PROGMEM = {0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0};
+const PROGMEM byte ball[]  = {0,1,1,1,0,1,1,1, 1,1,1,1,1,1,1,1, 1,1,1,1,0,1,1,1, 0};
+const PROGMEM byte ball2[]  = {119, 255, 247, 0};
+const PROGMEM byte ball4[] = {0,1,1,0, 1,1,1,1, 1,1,1,1, 0,1,1,0};
 
 
 CFX_RGBMatrix matrix(2, 4, 4);
@@ -27,8 +28,8 @@ CFX_Button button_right(7, 100, CFX_Low_Input);
 CFX_Button button_left(8, 101, CFX_Low_Input);
 
 //
-//CFX_Sprite sprite(5, 5, ball, palette);
-CFX_Sprite sprite(4, 4, ball4, palette);
+CFX_Sprite sprite(5, 5, ball2, palette);
+//CFX_Sprite sprite(4, 4, ball4, palette);
 
 void setup()
 {
@@ -39,7 +40,7 @@ void setup()
   palette.SetColor(1, blue);
 
   sprite.Draw(matrix);
-  matrix.SetBrightness(100);
+  matrix.SetBrightness(20);
 }
 
 void handleInput(int id, int command, int value)

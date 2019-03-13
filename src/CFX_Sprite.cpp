@@ -77,21 +77,21 @@ CFX_Color CFX_Sprite::GetColor(uint16_t index, byte depth) {
 byte CFX_Sprite::convert2(uint16_t index) {
   uint16_t arrayIndex = index / 8;
   uint16_t bitIndex = index % 8;
-  return (m_drawing[arrayIndex] >> 7 - bitIndex) & 1;
+  return (pgm_read_word_near(m_drawing + arrayIndex) >> 7 - bitIndex) & 1;
 }
 
 byte CFX_Sprite::convert4(uint16_t index) {
   uint16_t arrayIndex = index / 4;
   uint16_t bitIndex = index % 4;
-  return (m_drawing[arrayIndex] >> 6 - bitIndex*2) & 3;
+  return (pgm_read_word_near(m_drawing + arrayIndex) >> 6 - bitIndex*2) & 3;
 }
 
 byte CFX_Sprite::convert16(uint16_t index) {
   uint16_t arrayIndex = index / 2;
   uint16_t bitIndex = index % 2;
-  return (m_drawing[arrayIndex] >> 4 - bitIndex*4) & 15;
+  return (pgm_read_word_near(m_drawing + arrayIndex) >> 4 - bitIndex*4) & 15;
 }
   
 byte CFX_Sprite::convert256(uint16_t index) {
-  return m_drawing[index];
+  return pgm_read_word_near(m_drawing + index);
 }
