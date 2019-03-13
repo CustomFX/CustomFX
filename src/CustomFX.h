@@ -75,6 +75,7 @@
 #include <CFX_RGBMatrix.hpp>
 #include <CFX_ColorPalette.hpp>
 #include <CFX_Sprite.hpp>
+#include <CFX_SpriteContainer.hpp>
 
 #include <CFX_ServoAnimationMoveToPosition.hpp>
 #include <CFX_ServoAnimationPath.hpp>
