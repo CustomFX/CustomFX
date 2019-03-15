@@ -3,7 +3,7 @@
 //
 // Advanced example 04: Button Parameters
 //
-// This example demonstrates disabling the double click option for a CFX_Button 
+// This example demonstrates disabling the double click option for a CFX_Button
 // to eliminate the lag. The example shows a sweep animation on a LED strip. the
 // example uses two buttons to control the animation. Both buttons can be used to
 // stop and start the animation. Button 1 has the double click function disabled,
@@ -11,7 +11,7 @@
 // and stop the animation, the lag in button 2 is very noticable.
 // Double clicking button 2 changes the color of the animation.
 //
-// This file is part of the Custom FX library. This library was developed in 
+// This file is part of the Custom FX library. This library was developed in
 // order to make Arduino programming as easy as possible. For more information,
 // visit our website: http://www.customfx.nl
 //
@@ -32,45 +32,38 @@ void setup()
 
 void handleInput(int id, int command, int value)
 {
-  switch (id)
+  if (id == 101) // input from button 1
   {
-    case 101: // handle input from button1
-      switch (command)
+    if (command == CFX_CMD_BUTTON_CLICK)
+    {
+      if (sweep.IsActive())
       {
-        case CFX_CMD_BUTTON_CLICK:
-          if (sweep.IsActive())
-          {
-            sweep.Stop(); // stop sweep
-          }
-          else
-          {
-            sweep.Start(); // start sweep
-          }
-          break;
-
+        sweep.Stop(); // stop sweep
       }
-      break; // end handle input button1
-
-    case 102: // handle input from button2
-      switch (command)
+      else
       {
-        case CFX_CMD_BUTTON_CLICK:
-          if (sweep.IsActive())
-          {
-            sweep.Stop(); // stop sweep
-          }
-          else
-          {
-            sweep.Start(); // start sweep
-          }
-          break;
-
-        case CFX_CMD_BUTTON_DOUBLE_CLICK:
-          color = CFX_Color(random(0, 0xffffff)); // generate new color
-          sweep.SetColor(color); // set new color
-          break;
+        sweep.Start(); // start sweep
       }
-      break; // end handle input button2
+    }
+  }
+  else if (id == 102) // input from button 2
+  {
+    if (command == CFX_CMD_BUTTON_CLICK)
+    {
+      if (sweep.IsActive())
+      {
+        sweep.Stop(); // stop sweep
+      }
+      else
+      {
+        sweep.Start(); // start sweep
+      }
+    }
+    else if (command == CFX_CMD_BUTTON_DOUBLE_CLICK)
+    {
+      color = CFX_Color(random(0, 0xffffff)); // generate new color
+      sweep.SetColor(color); // set new color
+    }
   }
 }
 

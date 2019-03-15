@@ -33,6 +33,8 @@ Start	KEYWORD2
 Stop	KEYWORD2
 IsActive	KEYWORD2
 SetRepetitions	KEYWORD2
+RestartAnimation	KEYWORD2
+SetDelay	KEYWORD2
 Red	KEYWORD2
 Green	KEYWORD2
 Blue	KEYWORD2
@@ -59,7 +61,6 @@ FadeToColor	KEYWORD2
 SetAngle	KEYWORD2
 MoveToPosition	KEYWORD2
 AddPosition	KEYWORD2
-RestartAnimation	KEYWORD2
 SetTimer	KEYWORD2
 DisableDoubleClick	KEYWORD2
 SetPixel	KEYWORD2

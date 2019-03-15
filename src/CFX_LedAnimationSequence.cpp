@@ -76,7 +76,7 @@ bool CFX_LedAnimationSequence::InitializeAnimation(int timestep)
   if (m_activeStep < m_definedSteps)
   {
     SetStepSizes(m_activeStep);
-    m_startBrightness = m_initialBrightness;
+    //m_startBrightness = m_initialBrightness;
   }
   return true;
 }

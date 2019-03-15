@@ -157,6 +157,7 @@ void CFX_LedStrip::Commit()
   {
     for (uint16_t i = 0; i< m_nrleds; i++)
     {
+      //Serial.println(m_pixelcolors[i*4+3]);
       if (m_pixelcolors[i*4+3] == 255)
       {
         m_pixels.setPixelColor(i, m_pixels.Color(m_pixelcolors[i*4+0], m_pixelcolors[i*4+1], 
@@ -175,4 +176,6 @@ void CFX_LedStrip::Commit()
     SetChanged(false);
   }
 }
+
+
 

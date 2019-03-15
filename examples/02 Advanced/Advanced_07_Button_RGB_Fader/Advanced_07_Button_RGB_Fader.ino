@@ -26,22 +26,14 @@ void setup()
 
 void handleInput(int id, int command, int value)
 {
-  switch (id)
+  if (id == 101 && command == CFX_CMD_TIMER_EVENT)
   {
-    case 101: // timer
-      if (command == CFX_CMD_TIMER_EVENT)
-      {
-        fader.FadeToColor(no_color, 900);
-      }
-      break;
-
-    case 102:
-      if (command == CFX_CMD_BUTTON_CLICK)
-      {
-        fader.FadeToColor(CFX_Color(random(0, 0xffffff)), 900); // set new color
-        timer.SetTimer(1000, false);       // start timer to fade out the LED
-      }
-      break;
+    fader.FadeToColor(no_color, 900);
+  }
+  else if (id == 102 && command == CFX_CMD_BUTTON_CLICK)
+  {
+    fader.FadeToColor(CFX_Color(random(0, 0xffffff)), 900); // set new color
+    timer.SetTimer(1000, false);       // start timer to fade out the LED
   }
 }
 

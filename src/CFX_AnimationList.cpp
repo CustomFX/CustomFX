@@ -65,6 +65,7 @@ void CFX_AnimationList::StartPrevious()
   // todo, wait for animation to finish before starting the next
   m_animations.Get(m_currentAnimation)->Start();
 }
+
 uint16_t CFX_AnimationList::GetCurrentAnimation() const
 {
   return m_currentAnimation;
