@@ -35,7 +35,7 @@ class CFX_LedRandomAnimation: public CFX_AnimationBase
     void SetBrightness(uint8_t minvalue, uint8_t maxvalue);
     void SetTimes(uint16_t mindelay, uint16_t maxdelay);
     
-    virtual void RestartAnimation();
+    virtual bool InitializeAnimation(int timeStep);
     virtual bool UpdateAnimation(int timestep);
 
   private:

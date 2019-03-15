@@ -60,7 +60,6 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint16_t startled, int8_t
 void CFX_LedStripAnimationSweep::SetOutputDevice(CFX_LedStripBase* output)
 {
   m_output = output;
-  RestartAnimation();
 }
 
 void CFX_LedStripAnimationSweep::SetTimes(unsigned long time_on, unsigned long fadeouttime)
@@ -132,12 +131,6 @@ bool CFX_LedStripAnimationSweep::FinishAnimation(int timeStep)
   {
     return true;
   }
-}
-
-void CFX_LedStripAnimationSweep::RestartAnimation()
-{
-  m_activeLed = 0;
-  this->Start();
 }
 
 bool CFX_LedStripAnimationSweep::UpdateAnimation(int timeStep)

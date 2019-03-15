@@ -48,7 +48,6 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     virtual bool InitializeAnimation(int timeStep);
     virtual bool FinishAnimation(int timeStep);
 
-    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timeStep);
 
     private:
@@ -64,7 +63,7 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     unsigned long m_fadeouttime;
     
     uint16_t m_startled;
-    int16_t m_activeLed;          // the index of the led that is the first in the sweep
+    uint16_t m_activeLed;          // the index of the led that is the first in the sweep
     unsigned long m_stoppedSteps;
     unsigned long m_onSteps;      // the number of animationsteps a led is on before the next led turns on
     unsigned long m_currentStep;  // the step index of the active led

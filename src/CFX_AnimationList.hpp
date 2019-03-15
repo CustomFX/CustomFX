@@ -38,7 +38,6 @@ class CFX_AnimationList: public CFX_AnimationBase
     void StartPrevious();
     uint16_t GetCurrentAnimation() const;
     
-    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
   private:

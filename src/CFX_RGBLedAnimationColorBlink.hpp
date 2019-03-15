@@ -42,7 +42,6 @@ class CFX_RGBLedAnimationColorBlink: public CFX_AnimationBase
     void SetOutputDevice(CFX_LedBase* output);
 
     virtual bool InitializeAnimation(int timestep);
-    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timeStep);
 
 private:

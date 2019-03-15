@@ -45,7 +45,6 @@ class CFX_LedAnimationSequence: public CFX_AnimationBase
     void SetInitialBrightness(uint8_t brightness);
     
     virtual bool InitializeAnimation(int timestep);
-    virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
 
   private:

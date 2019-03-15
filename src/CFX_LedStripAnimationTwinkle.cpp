@@ -66,7 +66,7 @@ void CFX_LedStripAnimationTwinkle::SetBrightness(uint8_t brightness)
   m_brightness = brightness;
 }
 
-void CFX_LedStripAnimationTwinkle::RestartAnimation()
+bool CFX_LedStripAnimationTwinkle::InitializeAnimation(int timeStep)
 {
   m_twinkleOn = false;
   if (m_output)
@@ -74,7 +74,7 @@ void CFX_LedStripAnimationTwinkle::RestartAnimation()
     m_output->SetBrightness(0);
   }
   NextStep();
-  this->Start();
+  return true;
 }
 
 void CFX_LedStripAnimationTwinkle::SetTimes(uint16_t minOnDelay, uint16_t maxOnDelay, uint16_t onTime)
