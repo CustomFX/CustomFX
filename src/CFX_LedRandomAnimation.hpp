@@ -30,9 +30,12 @@ class CFX_LedRandomAnimation: public CFX_AnimationBase
 {
   public:
     CFX_LedRandomAnimation(uint8_t minvalue, uint8_t maxvalue, 
-      uint16_t mindelay, uint16_t maxdelay, CFX_Led* output);
+      uint16_t mindelay, uint16_t maxdelay, CFX_LedBase* output);
+
+    void SetBrightness(uint8_t minvalue, uint8_t maxvalue);
+    void SetTimes(uint16_t mindelay, uint16_t maxdelay);
     
-    virtual void RestartAnimation();
+    virtual bool InitializeAnimation(int timeStep);
     virtual bool UpdateAnimation(int timestep);
 
   private:
@@ -40,7 +43,7 @@ class CFX_LedRandomAnimation: public CFX_AnimationBase
     void SetStepSizes(uint8_t brightness, uint16_t duration);
  
   private:
-    CFX_Led* m_output;
+    CFX_LedBase* m_output;
     uint8_t m_minvalue;
     uint8_t m_maxvalue;
     uint16_t m_mindelay;

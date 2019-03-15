@@ -44,31 +44,30 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     void SetDirection(int8_t direction);
     int8_t GetDirection() const;
     
-    virtual void Start();
-    virtual void Stop(bool fadeout = false);
-    bool IsActive() const;
-    
-    virtual void RestartAnimation();
-    virtual bool UpdateAnimation(int timestep);
-    
+    virtual bool InitializeAnimation(int timeStep);
+    virtual bool FinishAnimation(int timeStep);
+
+    virtual bool UpdateAnimation(int timeStep);
+
     private:
+    bool UpdateHead(int timeStep);
+    bool UpdateTrail(int timeStep);
     void CalculateFadeOutSteps(unsigned long fadeouttime);
  
   private:
     CFX_LedStripBase* m_output;
     CFX_Color m_color;
     bool m_useColor;
-    bool m_stopped;
     int8_t m_direction;           // indicates the direction of the sweep. 1 or -1
     unsigned long m_fadeouttime;
     
-    int16_t m_activeLed;          // the index of the led that is the first in the sweep
-    uint8_t m_stoppedSteps;
+    uint16_t m_startled;
+    uint16_t m_activeLed;          // the index of the led that is the first in the sweep
+    unsigned long m_stoppedSteps;
     unsigned long m_onSteps;      // the number of animationsteps a led is on before the next led turns on
     unsigned long m_currentStep;  // the step index of the active led
     float m_fadeOutStepSize;
     uint16_t m_trailLength;       // the length in #leds of the trail
-    uint8_t m_fadeoutsteps;
 };
 
 #endif // CFX_LEDSTRIPANIMATIONSWEEP_H

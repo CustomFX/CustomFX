@@ -57,6 +57,16 @@ void CFX_RGBLedAnimationFadeToColor::SetOutputDevice(CFX_LedBase* output)
   m_output = output;
 }
 
+void CFX_RGBLedAnimationFadeToColor::SetColor(CFX_Color color)
+{
+  m_targetColor = color;
+}
+
+void CFX_RGBLedAnimationFadeToColor::SetTimes(int duration)
+{
+  m_duration = duration;
+}
+
 void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
 {
   m_targetColor = color;
@@ -77,9 +87,10 @@ void CFX_RGBLedAnimationFadeToColor::FadeToColor(CFX_Color color, int duration)
   this->Start();
 }
 
-void CFX_RGBLedAnimationFadeToColor::RestartAnimation()
+bool CFX_RGBLedAnimationFadeToColor::InitializeAnimation(int timeStep)
 {
   FadeToColor(m_targetColor, m_duration);
+  return true;
 }
 
 bool CFX_RGBLedAnimationFadeToColor::UpdateAnimation(int timeStep)

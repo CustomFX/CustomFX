@@ -25,12 +25,24 @@
 #include <CFX_LedRandomAnimation.hpp>
 
 CFX_LedRandomAnimation::CFX_LedRandomAnimation(uint8_t minvalue, uint8_t maxvalue, 
-  uint16_t mindelay, uint16_t maxdelay, CFX_Led* output) : CFX_AnimationBase()
+  uint16_t mindelay, uint16_t maxdelay, CFX_LedBase* output) : CFX_AnimationBase()
 {
   m_output = output;
   
   m_minvalue = minvalue;
   m_maxvalue = maxvalue;
+  m_mindelay = mindelay;
+  m_maxdelay = maxdelay;
+}
+
+void CFX_LedRandomAnimation::SetBrightness(uint8_t minvalue, uint8_t maxvalue)
+{
+  m_minvalue = minvalue;
+  m_maxvalue = maxvalue;
+}
+
+void CFX_LedRandomAnimation::SetTimes(uint16_t mindelay, uint16_t maxdelay)
+{
   m_mindelay = mindelay;
   m_maxdelay = maxdelay;
 }
@@ -50,10 +62,11 @@ void CFX_LedRandomAnimation::SetStepSizes(uint8_t brightness, uint16_t duration)
     (float)(brightness - m_output->GetBrightness()) / m_totalIncrements;
 }
 
-void CFX_LedRandomAnimation::RestartAnimation()
+bool CFX_LedRandomAnimation::InitializeAnimation(int timeStep)
 {
   m_stepIncrement = 0;
   m_brightness = m_output->GetBrightness();
+  return true;
 }
 
 bool CFX_LedRandomAnimation::UpdateAnimation(int timeStep)
