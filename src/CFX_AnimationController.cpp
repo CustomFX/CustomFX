@@ -62,7 +62,12 @@ void CFX_AnimationController::UpdateAnimation()
     m_previousUpdateTime = millis();
     for (unsigned int i = 0; i < m_animations.Size(); i++)
     {
-      m_animations.Get(i)->Animate(timeelapsed);
+      CFX_AnimationBase* animation = m_animations.Get(i);
+      int event = animation->Animate(timeelapsed);
+      if (animation->GetId() > 0)
+      { 
+        handleInput(animation->GetId(), event, 0);
+      }
     }
     for (unsigned int i = 0; i < m_outputDevices.Size(); i++)
     {

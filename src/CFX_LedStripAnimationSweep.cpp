@@ -31,15 +31,15 @@ CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep()
 }
 
 CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(CFX_Color color, unsigned long time_on, 
-  unsigned long fadeouttime, CFX_LedStripBase* output)
-  : CFX_LedStripAnimationSweep(0, 1, color, time_on, fadeouttime, output)
+  unsigned long fadeouttime, CFX_LedStripBase* output, int id)
+  : CFX_LedStripAnimationSweep(0, 1, color, time_on, fadeouttime, output, id)
 {
 }
 
 
 CFX_LedStripAnimationSweep::CFX_LedStripAnimationSweep(uint16_t startled, int8_t direction, CFX_Color color,
-  unsigned long time_on, unsigned long fadeouttime, CFX_LedStripBase* output) 
-  : CFX_AnimationBase()
+  unsigned long time_on, unsigned long fadeouttime, CFX_LedStripBase* output, int id) 
+  : CFX_AnimationBase(id)
 {
   m_output = output;
   m_color = color;

@@ -24,16 +24,16 @@
 #include <CFX_LedStripAnimationFadeInOut.hpp>
 #include <CustomFX.h>
 
-CFX_LedStripAnimationFadeInOut::CFX_LedStripAnimationFadeInOut()
-  : CFX_AnimationBase()
+CFX_LedStripAnimationFadeInOut::CFX_LedStripAnimationFadeInOut(int id)
+  : CFX_AnimationBase(id)
 {
   m_output = 0;
 }
 
 CFX_LedStripAnimationFadeInOut::CFX_LedStripAnimationFadeInOut(
   unsigned long fadeInTime, unsigned long fadeOutTime, 
-  CFX_LedStripBase* output, CFX_FadeType fadetype)
-  : CFX_AnimationBase()
+  CFX_LedStripBase* output, CFX_FadeType fadetype, int id)
+  : CFX_AnimationBase(id)
 {
   m_output = output;
   m_fadeInTime = fadeInTime;
@@ -98,6 +98,26 @@ void CFX_LedStripAnimationFadeInOut::RestartAnimation()
       break;
   }
   this->Start();
+}
+
+
+bool CFX_LedStripAnimationFadeInOut::InitializeAnimation(int timestep)
+{
+  if (m_output)
+  {
+    m_step = 1;
+    switch (m_type)
+    {
+      case CFX_FadeLeftRight:
+        m_startLed = 0;
+        break;
+      
+      case CFX_FadeRightLeft:
+        m_startLed = m_output->GetNrOfOutputs() - 1;
+        break;
+    }
+  }
+  return true;
 }
 
 bool CFX_LedStripAnimationFadeInOut::UpdateAnimation(int timeStep)

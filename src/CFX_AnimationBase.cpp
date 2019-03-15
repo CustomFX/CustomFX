@@ -24,15 +24,26 @@
 #include <CFX_AnimationBase.hpp>
 #include <CFX_AnimationController.hpp>
 
-CFX_AnimationBase::CFX_AnimationBase()
+
+CFX_AnimationBase::CFX_AnimationBase() : CFX_AnimationBase(0)
+{
+}
+
+CFX_AnimationBase::CFX_AnimationBase(uint8_t id)
 {
  	CFX_AnimationController::GetInstance()->RegisterAnimation(this);
   m_state = cfx_animation_initializing;
   m_repetitions = -1;
   m_delay = 0;
+  m_id = id;
 }
 
-void CFX_AnimationBase::Animate(int timestep)
+uint8_t CFX_AnimationBase::GetId() const
+{
+	return m_id;
+}
+
+int CFX_AnimationBase::Animate(int timestep)
 {
   if (m_delay > 0)
   {
@@ -53,6 +64,7 @@ void CFX_AnimationBase::Animate(int timestep)
         if (InitializeAnimation(timestep) == true)
         {
           m_state = cfx_animation_running;
+          return CFX_EVENT_ANIMATION_STARTED;
         }
       break;
       
@@ -67,6 +79,7 @@ void CFX_AnimationBase::Animate(int timestep)
               m_state = cfx_animation_shuttingdown;
             }
           }
+          return CFX_EVENT_ANIMATION_REPEAT;
         }
       break;
       
@@ -74,6 +87,7 @@ void CFX_AnimationBase::Animate(int timestep)
         if (FinishAnimation(timestep) == true)
         {
           m_state = cfx_animation_stopped;
+          return CFX_EVENT_ANIMATION_STOPPED;
         }
       break;
       
@@ -82,6 +96,7 @@ void CFX_AnimationBase::Animate(int timestep)
       break;
     }
   }
+  return 0; // no event
 }
 
 bool CFX_AnimationBase::InitializeAnimation(int timestep)

@@ -34,9 +34,9 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
 {
   public:
     
-    CFX_LedStripAnimationFadeInOut();
+    CFX_LedStripAnimationFadeInOut(int id = 0);
     CFX_LedStripAnimationFadeInOut(unsigned long fadeInTime, unsigned long fadeOutTime,
-      CFX_LedStripBase* output, CFX_FadeType fadetype = CFX_FadeLeftRight);
+      CFX_LedStripBase* output, CFX_FadeType fadetype = CFX_FadeLeftRight, int id = 0);
     void SetOutputDevice(CFX_LedStripBase* output);
     
     void SetColor(CFX_Color color);
@@ -44,6 +44,7 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
     void SetType(CFX_FadeType type);
     void SetFadeInTime(unsigned long fadeInTime);
     
+    virtual bool InitializeAnimation(int timestep);
     virtual void RestartAnimation();
     virtual bool UpdateAnimation(int timestep);
     

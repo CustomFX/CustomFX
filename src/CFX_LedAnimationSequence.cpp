@@ -24,8 +24,8 @@
 #include <CustomFX.h>
 #include <CFX_LedAnimationSequence.hpp>
 
-CFX_LedAnimationSequence::CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* output)
-  : CFX_AnimationBase()
+CFX_LedAnimationSequence::CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* output, int id)
+  : CFX_AnimationBase(id)
 {
   m_output = output;
   m_steps = new CFX_LedAnimationSequenceStep[steps];

@@ -38,7 +38,7 @@ struct CFX_LedAnimationSequenceStep
 class CFX_LedAnimationSequence: public CFX_AnimationBase
 {
   public:
-    CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* output);
+    CFX_LedAnimationSequence(uint16_t steps, CFX_LedBase* output, int id = 0);
     
     void AddStep(uint8_t brightness, uint16_t duration, CFX_TransitionType type = CFX_Transition_Lineair);
     void ChangeStep(uint16_t step, uint8_t brightness, uint16_t duration, CFX_TransitionType type);

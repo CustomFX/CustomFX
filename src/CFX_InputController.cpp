@@ -24,8 +24,6 @@
 #include <CFX_InputController.hpp>
 #include <limits.h>
 
-// forward declaration of callback function
-void handleInput(int id, int command, int value);
 
 static CFX_InputController* s_inputControler = 0;
 

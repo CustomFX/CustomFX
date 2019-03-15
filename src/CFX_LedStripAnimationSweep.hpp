@@ -33,9 +33,10 @@ class CFX_LedStripAnimationSweep: public CFX_AnimationBase
     
     CFX_LedStripAnimationSweep();
     CFX_LedStripAnimationSweep(CFX_Color color, unsigned long time_on, unsigned long fadeouttime,
-      CFX_LedStripBase* output);
+      CFX_LedStripBase* output, int id = 0);
     CFX_LedStripAnimationSweep(uint16_t startled, int8_t direction, CFX_Color color, unsigned long time_on, 
-      unsigned long fadeouttime, CFX_LedStripBase* output);
+      unsigned long fadeouttime, CFX_LedStripBase* output, int id = 0);
+      
     void SetOutputDevice(CFX_LedStripBase* output);
 
     void SetTimes(unsigned long time_on, unsigned long fadeouttime);
