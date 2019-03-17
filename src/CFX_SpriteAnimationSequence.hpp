@@ -42,7 +42,7 @@ struct CFX_SpriteAnimationSequenceStep
 class CFX_SpriteAnimationSequence : public CFX_AnimationBase
 {
   public:
-    CFX_SpriteAnimationSequence(uint16_t steps, CFX_RGBMatrix* output);
+    CFX_SpriteAnimationSequence(uint16_t steps);//CFX_RGBMatrix* output);
   
     void AddSprite(CFX_Sprite* sprite, uint16_t duration, CFX_SpriteTransition transition);
     void SetSprite(uint16_t step, CFX_Sprite* sprite);
@@ -52,7 +52,7 @@ class CFX_SpriteAnimationSequence : public CFX_AnimationBase
     virtual bool InitializeAnimation(int timestep);
     virtual bool FinishAnimation(int timestep);
     virtual bool UpdateAnimation(int timestep);
-    void RestartAnimation();
+    
     
   private:
     void CalculateSteps();
@@ -62,7 +62,6 @@ class CFX_SpriteAnimationSequence : public CFX_AnimationBase
     uint16_t   m_totalSteps;      // the total number of staps in the animation
     uint16_t   m_definedSteps;    // the number of defined (non empty) steps
     uint16_t   m_activeStep;      // the current step in the animation
-    CFX_RGBMatrix* m_matrix;
 };
 
 #endif // CFX_SpriteAnimationSequence_H

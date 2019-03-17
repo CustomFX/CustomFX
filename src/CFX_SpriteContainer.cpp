@@ -23,41 +23,49 @@
 
 #include <CFX_SpriteContainer.hpp>
 
-CFX_SpriteContainer::CFX_SpriteContainer(CFX_Sprite *sprites, CFX_Color &clearColor) : CFX_OutputBase()
+CFX_SpriteContainer::CFX_SpriteContainer(CFX_Sprite *sprites, uint16_t sprite_count) : CFX_Sprite()
 {
 	m_sprites = sprites;
-	m_clearColor = clearColor;
-	m_activeSpriteIndex = 0;
+	//m_clearColor = clearColor;
+	//m_activeSpriteIndex = 0;
 	m_x_position = 0;
 	m_y_position = 0;
+  m_sprite_count = sprite_count;
 }
 
 void CFX_SpriteContainer::Draw(CFX_RGBMatrix &matrix)
 {
-	// TODO Position of sprite relative to container
-	m_sprites[m_activeSpriteIndex].SetOrigin(m_x_position, m_y_position);
-	m_sprites[m_activeSpriteIndex].Draw(matrix);
+	// TODO Z-order of sprite relative to container
+  if (this->IsActive())
+  {
+    for (int i = 0; i < m_sprite_count; i++)
+    {
+      m_sprites[i].Draw(matrix);
+    }
+  }
 }
 
 void CFX_SpriteContainer::SetOrigin(signed int newX, signed int newY)
 {
-	m_x_position = newX;
-	m_y_position = newY;
+  // calculate relative movement
+  Move(newX - m_x_position, newY - m_y_position);
 }
 
-void CFX_SpriteContainer::Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix)
+void CFX_SpriteContainer::Move(signed int horizontal, signed int vertical)
 {
-	Clear(matrix);
+	for (int i = 0; i < m_sprite_count; i++)
+  {
+    m_sprites[i].Move(horizontal, vertical);
+  }
 	m_x_position += horizontal;
 	m_y_position += vertical;
-	Draw(matrix);
 }
 
 void CFX_SpriteContainer::Commit()
 {
-  
+  // Nothing here. The Sprites will draw themself
 }
-
+/*
 void CFX_SpriteContainer::Clear(CFX_RGBMatrix &matrix)
 {
 	m_sprites[m_activeSpriteIndex].Clear(matrix, m_clearColor);
@@ -72,4 +80,4 @@ void CFX_SpriteContainer::SetActiveSprite(uint16_t index, CFX_RGBMatrix &matrix)
 	
 uint16_t CFX_SpriteContainer::GetActiveSpriteIndex() {
 	return m_activeSpriteIndex;
-}
+}*/

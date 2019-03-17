@@ -24,10 +24,9 @@
 #include <CustomFX.h>
 #include <CFX_SpriteAnimationSequence.hpp>
 
-CFX_SpriteAnimationSequence::CFX_SpriteAnimationSequence(uint16_t steps, CFX_RGBMatrix* output)
+CFX_SpriteAnimationSequence::CFX_SpriteAnimationSequence(uint16_t steps)//, CFX_RGBMatrix* output)
   : CFX_AnimationBase()
 {
-  m_matrix = output;
   m_steps = new CFX_SpriteAnimationSequenceStep[steps];
   
   m_totalSteps = steps;
@@ -43,6 +42,7 @@ void CFX_SpriteAnimationSequence::AddSprite(CFX_Sprite* sprite, uint16_t duratio
     m_steps[m_definedSteps].sprite = sprite;
     m_steps[m_definedSteps].transition = transition;
     m_definedSteps++;
+    sprite->SetActive(false);
   }
 }
 
@@ -75,16 +75,12 @@ bool CFX_SpriteAnimationSequence::InitializeAnimation(int timestep)
   m_activeStep = 0;
   if (m_activeStep < m_definedSteps)
   {
-    m_steps[m_activeStep].sprite->Draw(*m_matrix);
+    m_steps[m_activeStep].sprite->SetActive(true);
     this->SetDelay(m_steps[m_activeStep].duration);
   }
   return true;
 }
 
-void CFX_SpriteAnimationSequence::RestartAnimation()
-{
-
-}
 
 bool CFX_SpriteAnimationSequence::FinishAnimation(int timestep)
 {
@@ -95,17 +91,24 @@ bool CFX_SpriteAnimationSequence::FinishAnimation(int timestep)
 bool CFX_SpriteAnimationSequence::UpdateAnimation(int timeStep)
 {
   bool returnval = false;
+  
+  // disable current sprite
   if (m_activeStep < m_definedSteps)
   {
-    m_steps[m_activeStep].sprite->Draw(*m_matrix);
-    this->SetDelay(m_steps[m_activeStep].duration);
+    m_steps[m_activeStep].sprite->SetActive(false);
   }
-  
+
+  // enable next sprite
   m_activeStep++;
   if (m_activeStep == m_definedSteps)
   {
     returnval = true;
     m_activeStep = 0;
+  }
+  if (m_activeStep < m_definedSteps)
+  {
+    m_steps[m_activeStep].sprite->SetActive(true);
+    this->SetDelay(m_steps[m_activeStep].duration);
   }
   
   return returnval;

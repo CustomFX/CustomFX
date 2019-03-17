@@ -24,8 +24,11 @@
 #ifndef CFX_RGBMatrix_H
 #define CFX_RGBMatrix_H
 
+class CFX_RGBMatrix; // forward declaration
+
 #include <CFX_LedStripBase.hpp>
 #include <CFX_LedStrip.hpp>
+#include <CFX_Sprite.hpp>
 
 class CFX_RGBMatrix: public CFX_LedStrip
 {
@@ -39,8 +42,9 @@ class CFX_RGBMatrix: public CFX_LedStrip
     virtual void SetPixelBrightness(uint16_t x_pos, uint16_t y_pos, uint8_t brightness);
     virtual uint8_t GetPixelBrightness(uint16_t x_pos, uint16_t y_pos) const;
 
-    //virtual void DisplayColorSprite(CFX_Sprite& sprite, uint16_t x_pos, uint16_t y_pos);
-    //virtual void DisplayGrayscaleSprite(CFX_Sprite& sprite, uint16_t x_pos, uint16_t y_pos);
+    void SetSprites(CFX_Sprite* sprites, uint16_t sprite_count);
+
+    virtual void Commit();
  
  private:
     uint16_t CalculatePixel(uint16_t x_pos, uint16_t y_pos) const;
@@ -48,6 +52,8 @@ class CFX_RGBMatrix: public CFX_LedStrip
   private:
     uint16_t m_width;
     uint16_t m_height;
+    CFX_Sprite* m_sprites;
+    uint16_t m_sprite_count;
 };
 
 

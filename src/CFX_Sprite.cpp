@@ -27,11 +27,22 @@
 
 CFX_Sprite::CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette) : CFX_OutputBase()
 {
+  m_active = true;
   m_width = width;
   m_height = height;
   m_palette = palette;
   m_x_position = 0;
   m_y_position = 0;
+  m_drawing = drawing;
+}
+
+CFX_Sprite::CFX_Sprite() : CFX_OutputBase()
+{
+}
+
+void CFX_Sprite::SetBitmap(const byte* drawing)
+{
+  Serial.print(*drawing);
   m_drawing = drawing;
 }
 
@@ -45,34 +56,50 @@ void CFX_Sprite::SetOrigin(CFX_Sprite originalSprite) {
   m_y_position = originalSprite.m_y_position;
 }
 
-void CFX_Sprite::Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix, CFX_Color clearColor) {
-	Clear(matrix, clearColor);
-    m_x_position += horizontal;
-    m_y_position += vertical;
+void CFX_Sprite::Move(signed int horizontal, signed int vertical) 
+{
+  m_x_position += horizontal;
+  m_y_position += vertical;
 }
 
-void CFX_Sprite::Clear(CFX_RGBMatrix &matrix, CFX_Color color) {
-  for (int y = 0; y < m_height; y++) {
-    for (int x = 0; x < m_width; x++) {
-      matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
+void CFX_Sprite::Draw(CFX_RGBMatrix &matrix) 
+{
+  if (m_active == true) // draw active sprites only 
+  {
+    byte depth = m_palette.GetColorDepth();
+    for (int y = 0; y < m_height; y++) {
+      for (int x = 0; x < m_width; x++) {
+        uint16_t index = y * m_width + x;
+        CFX_Color color = GetColor(index, depth);
+        if (color != CFX_Color(0, 0, 0))
+        {
+          matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
+ /*        Serial.print(x + m_x_position);
+          Serial.print("-");
+          Serial.println(color.toLong());*/
+          //Serial.
+        }
+      }
     }
   }
 }
 
-void CFX_Sprite::Draw(CFX_RGBMatrix &matrix) {
-  byte depth = m_palette.GetColorDepth();
-  for (int y = 0; y < m_height; y++) {
-    for (int x = 0; x < m_width; x++) {
-      uint16_t index = y * m_width + x;
-      CFX_Color color = GetColor(index, depth);
-      matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
-    }
-  }
+void CFX_Sprite::SetActive(bool active)
+{
+  m_active = active;
+  if (m_active) Serial.println("active");
+  else Serial.println("not active");  
+  Serial.println(IsActive());
+}
+
+bool CFX_Sprite::IsActive() const
+{
+  return m_active;
 }
 
 void CFX_Sprite::Commit()
 {
-  
+  // sprites are Drawn with the Draw function.
 }
 
 CFX_Color CFX_Sprite::GetColor(uint16_t index, byte depth) {

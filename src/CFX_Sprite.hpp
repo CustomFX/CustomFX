@@ -24,6 +24,8 @@
 #ifndef CFX_SPRITE_H
 #define CFX_SPRITE_H
 
+class CFX_Sprite; // forward declaration
+
 #include <CFX_OutputBase.hpp>
 #include <CFX_RGBMatrix.hpp>
 #include <CFX_ColorPalette.hpp>
@@ -38,26 +40,34 @@ class CFX_Sprite: public CFX_OutputBase
 {
   public:
     CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette);
-    void Draw(CFX_RGBMatrix &matrix); // TODO pass matrix
+    CFX_Sprite();
+    void SetBitmap(const byte* drawing);
+    void Draw(CFX_RGBMatrix &matrix); 
     void SetOrigin(signed int newX, signed int newY);
-	void SetOrigin(CFX_Sprite originalSprite);
-    void Move(signed int horizontal, signed int vertical, CFX_RGBMatrix &matrix, CFX_Color clearColor);
-	void Clear(CFX_RGBMatrix &matrix, CFX_Color color);
+	  void SetOrigin(CFX_Sprite originalSprite);
+    void Move(signed int horizontal, signed int vertical);
+	      
+    void SetActive(bool active);
+    bool IsActive() const;
 	
     void Commit();
 
-  private:
+  private: // private functions
+    CFX_Color GetColor(uint16_t index, byte depth);
+    byte convert2(uint16_t index);
+    byte convert4(uint16_t index);
+    byte convert16(uint16_t index);
+    byte convert256(uint16_t index);
+  
+  private: // private members
+    bool m_active;
     const byte* m_drawing;
     signed int m_x_position;
     signed int m_y_position;
     byte m_width;
     byte m_height;
     CFX_ColorPalette m_palette;
-	CFX_Color GetColor(uint16_t index, byte depth);
-	byte convert2(uint16_t index);
-	byte convert4(uint16_t index);
-	byte convert16(uint16_t index);
-	byte convert256(uint16_t index);
+	
 	
 	
 };
