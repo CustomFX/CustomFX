@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -27,28 +27,28 @@
 #include <CFX_AnimationBase.hpp>
 #include <CFX_LedStripBase.hpp>
 
-enum CFX_FadeType { CFX_FadeLeftRight, CFX_FadeRightLeft, CFX_FadeCenterOut, CFX_FadeOutCenter };
+enum CFX_FadeType { CFX_FadeLeftRight, CFX_FadeRightLeft, CFX_FadeCenterOut, CFX_FadeCenterIn };
 
 
 class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
 {
   public:
-    
     CFX_LedStripAnimationFadeInOut(int id = 0);
-    CFX_LedStripAnimationFadeInOut(unsigned long fadeInTime, unsigned long fadeOutTime,
+    CFX_LedStripAnimationFadeInOut(unsigned long fadeTime,
       CFX_LedStripBase* output, CFX_FadeType fadetype = CFX_FadeLeftRight, int id = 0);
-      //CFX_LedStripBase* output, CFX_FadeType fadeInType = CFX_FadeLeftRight, 
-      //CFX_FadeType fadeOutType = CFX_FadeLeftRight);
 
     CFX_LedStripAnimationFadeInOut(unsigned long fadeInTime, unsigned long fadeOutTime,
       CFX_LedStripBase* output, CFX_FadeType fadeInType, 
-      CFX_FadeType fadeOutType, CFX_Color color, uint8_t brightness);
+      CFX_FadeType fadeOutType, CFX_Color color, uint8_t brightness, int id = 0);
 
     void SetOutputDevice(CFX_LedStripBase* output);
     
     void SetColor(CFX_Color color);
+    void SetBrightness(uint8_t brightness);
     void DisableColor(bool disable = true);
     void SetTimes(unsigned long fadeInTime, unsigned long fadeOutTime);
+    void SetFadeTypes(CFX_FadeType fadeintype, CFX_FadeType fadeouttype);
+    void SetFadeoutDelay(uint16_t delay);
     
     virtual bool InitializeAnimation(int timestep);
 
@@ -57,8 +57,8 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
   private:
     bool UpdateFadeIn(int timestep);
     bool UpdateFadeOut(int timestep);
-    void UpdatePixels(uint16_t first_led, uint16_t length, 
-      uint8_t firstBrightness, uint8_t lastBrightness);
+      
+    void SetPixels(uint16_t start, uint16_t length, uint8_t brightness);
     
   private:
     CFX_LedStripBase* m_output;
@@ -78,6 +78,7 @@ class CFX_LedStripAnimationFadeInOut: public CFX_AnimationBase
     uint16_t m_step;
     unsigned long m_fadeInTime;
     unsigned long m_fadeOutTime;
+    uint16_t m_fadeoutDelay;
     };
 
 #endif // CFX_LedStripAnimationFadeInOut_H

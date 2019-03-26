@@ -62,8 +62,14 @@ uint16_t CFX_LedStrip::GetNrOfOutputs() const
 
 const CFX_Color CFX_LedStrip::GetPixelColor(uint16_t pixel) const
 {
-  uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
-  return CFX_Color(m_pixelcolors[pix*4+0], m_pixelcolors[pix*4+1], m_pixelcolors[pix*4+2]);
+  if (m_nrleds > 0 && pixel < m_nrleds)
+  {
+    return CFX_Color(m_pixelcolors[pixel*4+0], m_pixelcolors[pixel*4+1], m_pixelcolors[pixel*4+2]);
+  }
+  else
+  {
+    return CFX_Color(0,0,0);
+  }
 }
 
 long CFX_LedStrip::GetPixelColorLong(uint16_t pixel) const
@@ -73,11 +79,13 @@ long CFX_LedStrip::GetPixelColorLong(uint16_t pixel) const
 
 void CFX_LedStrip::SetPixelColor(uint16_t pixel, const CFX_Color& color)
 {
-  uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
-  m_pixelcolors[pix*4+0] = color.Red();
-  m_pixelcolors[pix*4+1] = color.Green();
-  m_pixelcolors[pix*4+2] = color.Blue();
-  SetChanged(true);
+  if (m_nrleds > 0 && pixel < m_nrleds)
+  {
+    m_pixelcolors[pixel*4+0] = color.Red();
+    m_pixelcolors[pixel*4+1] = color.Green();
+    m_pixelcolors[pixel*4+2] = color.Blue();
+    SetChanged(true);
+  }
 }
 
 const CFX_Color CFX_LedStrip::GetColor() const
@@ -122,16 +130,14 @@ void CFX_LedStrip::SetBrightness(uint8_t brightness)
 
 uint8_t CFX_LedStrip::GetBrightness() const
 {
-  if (m_nrleds > 0) return GetPixelBrightness(0);
-  else return 0;
+  return GetPixelBrightness(0);
 }
 
 void CFX_LedStrip::SetPixelBrightness(uint16_t pixel, uint8_t brightness)
 {
-  if (m_nrleds > 0) 
+  if (m_nrleds > 0 && pixel < m_nrleds) 
   {
-    uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
-    m_pixelcolors[pix*4+3] = brightness;
+    m_pixelcolors[pixel*4+3] = brightness;
     SetChanged(true);
   }
 }
@@ -140,8 +146,7 @@ uint8_t CFX_LedStrip::GetPixelBrightness(uint16_t pixel) const
 {
   if (m_nrleds > 0) 
   {
-    uint16_t pix = constrain(pixel, 0, m_nrleds - 1);
-    return m_pixelcolors[pix*4+3];
+    return m_pixelcolors[pixel*4+3];
   }
   else
   {
