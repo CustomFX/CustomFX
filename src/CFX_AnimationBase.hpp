@@ -30,6 +30,10 @@
 // include description files for other libraries used (if any)
 #include "HardwareSerial.h"
 
+#define CFX_EVENT_ANIMATION_STARTED   100
+#define CFX_EVENT_ANIMATION_STOPPED   101
+#define CFX_EVENT_ANIMATION_REPEAT    102
+
 enum CFX_Animation_State {
   cfx_animation_initializing, 
   cfx_animation_running, 
@@ -40,7 +44,9 @@ class CFX_AnimationBase
 {
   public:
     CFX_AnimationBase();
+    CFX_AnimationBase(uint8_t id);
 
+    virtual uint8_t GetId() const;
     // initialize animation
     virtual bool InitializeAnimation(int timestep);
     
@@ -50,7 +56,7 @@ class CFX_AnimationBase
     // update animation. Returns true if animation reached the end
     virtual bool UpdateAnimation(int timestep) = 0;
     
-    void Animate(int timestep);
+    int Animate(int timestep);
     
     void SetDelay(long delay);
     void SetRepetitions(int16_t repetitions);
@@ -62,6 +68,7 @@ class CFX_AnimationBase
     bool IsActive() const;
     
   private:
+    uint8_t m_id;
     CFX_Animation_State m_state;
     bool m_paused;
     long m_delay;

@@ -31,6 +31,9 @@
 #define ANIMATION_UPDATE_INTERVAL 10
 #endif
 
+// declaration of callback function
+void handleInput(int id, int command, int value);
+
 #include <CFX_Color.hpp>
 #include <CFX_ColorRange.hpp>
 
