@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -24,9 +24,10 @@
 #include <CustomFX.h>
 #include <CFX_SpriteAnimationSequence.hpp>
 
-CFX_SpriteAnimationSequence::CFX_SpriteAnimationSequence(uint16_t steps)//, CFX_RGBMatrix* output)
-  : CFX_AnimationBase()
+CFX_SpriteAnimationSequence::CFX_SpriteAnimationSequence(uint16_t steps, CFX_Sprite* sprite, int id)
+  : CFX_AnimationBase(id)
 {
+  m_sprite = sprite;
   m_steps = new CFX_SpriteAnimationSequenceStep[steps];
   
   m_totalSteps = steps;
@@ -34,23 +35,22 @@ CFX_SpriteAnimationSequence::CFX_SpriteAnimationSequence(uint16_t steps)//, CFX_
   m_activeStep = 0;
 }
 
-void CFX_SpriteAnimationSequence::AddSprite(CFX_Sprite* sprite, uint16_t duration, CFX_SpriteTransition transition)
+void CFX_SpriteAnimationSequence::AddBitmap(const byte* bitmap, uint16_t duration, CFX_SpriteTransition transition)
 {
   if (m_definedSteps < m_totalSteps)
   {
     m_steps[m_definedSteps].duration = duration;
-    m_steps[m_definedSteps].sprite = sprite;
+    m_steps[m_definedSteps].bitmap = bitmap;
     m_steps[m_definedSteps].transition = transition;
     m_definedSteps++;
-    sprite->SetActive(false);
   }
 }
 
-void CFX_SpriteAnimationSequence::SetSprite(uint16_t step, CFX_Sprite* sprite)
+void CFX_SpriteAnimationSequence::SetBitmap(uint16_t step, const byte* bitmap)
 {
   if (step < m_totalSteps)
   {
-    m_steps[step].sprite = sprite;
+    m_steps[step].bitmap = bitmap;
   }
 }
 
@@ -75,12 +75,16 @@ bool CFX_SpriteAnimationSequence::InitializeAnimation(int timestep)
   m_activeStep = 0;
   if (m_activeStep < m_definedSteps)
   {
-    m_steps[m_activeStep].sprite->SetActive(true);
+    m_sprite->SetBitmap(m_steps[m_activeStep].bitmap);
     this->SetDelay(m_steps[m_activeStep].duration);
   }
   return true;
 }
 
+void CFX_SpriteAnimationSequence::RestartAnimation()
+{
+
+}
 
 bool CFX_SpriteAnimationSequence::FinishAnimation(int timestep)
 {
@@ -91,24 +95,17 @@ bool CFX_SpriteAnimationSequence::FinishAnimation(int timestep)
 bool CFX_SpriteAnimationSequence::UpdateAnimation(int timeStep)
 {
   bool returnval = false;
-  
-  // disable current sprite
   if (m_activeStep < m_definedSteps)
   {
-    m_steps[m_activeStep].sprite->SetActive(false);
+    m_sprite->SetBitmap(m_steps[m_activeStep].bitmap);
+    this->SetDelay(m_steps[m_activeStep].duration);
   }
-
-  // enable next sprite
+  
   m_activeStep++;
   if (m_activeStep == m_definedSteps)
   {
     returnval = true;
     m_activeStep = 0;
-  }
-  if (m_activeStep < m_definedSteps)
-  {
-    m_steps[m_activeStep].sprite->SetActive(true);
-    this->SetDelay(m_steps[m_activeStep].duration);
   }
   
   return returnval;

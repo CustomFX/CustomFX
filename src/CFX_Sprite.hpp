@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-2018 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -36,16 +36,21 @@ class CFX_Sprite; // forward declaration
 #define CFX_SPRITE_16_COLOR     4
 #define CFX_SPRITE_256_COLOR    8
 
-class CFX_Sprite: public CFX_OutputBase
+class CFX_Sprite//: public CFX_OutputBase
 {
   public:
     CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette);
     CFX_Sprite();
     void SetBitmap(const byte* drawing);
-    void Draw(CFX_RGBMatrix &matrix); 
-    void SetOrigin(signed int newX, signed int newY);
-	  void SetOrigin(CFX_Sprite originalSprite);
-    void Move(signed int horizontal, signed int vertical);
+    virtual void Draw(CFX_RGBMatrix* matrix); 
+    virtual void SetOrigin(signed int newX, signed int newY);
+	  virtual void SetOrigin(CFX_Sprite originalSprite);
+    virtual void Move(signed int horizontal, signed int vertical);
+    virtual void Mirror();
+    virtual void Flip();
+    
+    virtual signed int GetXPosition() const;
+    virtual signed int GetYPosition() const;
 	      
     void SetActive(bool active);
     bool IsActive() const;
@@ -67,7 +72,8 @@ class CFX_Sprite: public CFX_OutputBase
     byte m_width;
     byte m_height;
     CFX_ColorPalette m_palette;
-	
+    bool m_mirrorred;
+    bool m_flipped;
 	
 	
 };

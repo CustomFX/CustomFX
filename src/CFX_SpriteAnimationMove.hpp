@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-2018 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -26,28 +26,28 @@
 
 #include <CFX_AnimationBase.hpp>
 #include <CFX_Sprite.hpp>
+#include <CFX_RGBMatrix.hpp>
 
 class CFX_SpriteAnimationMove : public CFX_AnimationBase
 {
   public:
-    CFX_SpriteAnimationMove(int16_t deltaX, int16_t deltaY, uint16_t duration, CFX_Sprite &sprite);
+    CFX_SpriteAnimationMove(float deltaX, float deltaY, CFX_Sprite* sprite);
+    void Move(float deltaX, float deltaY);
     
     virtual bool InitializeAnimation(int timestep);
     virtual bool FinishAnimation(int timestep);
     virtual bool UpdateAnimation(int timestep);
-
-  private:
-    void CalculateSteps();
+    
     
   private:
-    uint16_t m_step;
-    uint16_t m_totalSteps;
-
-    CFX_Sprite& m_sprite;
-    uint16_t m_duration;
-    int16_t m_deltaX, m_deltaY;
-    float m_incrementX, m_incrementY;
-
+    
+  private:
+    float m_xpos;
+    float m_ypos;
+    float m_deltaX;
+    float m_deltaY;
+    CFX_Sprite* m_sprite;
+    
 };
 
 #endif // CFX_SpriteAnimationMove_H

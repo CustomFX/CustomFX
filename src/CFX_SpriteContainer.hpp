@@ -32,24 +32,18 @@
 class CFX_SpriteContainer: public CFX_Sprite
 {
   public:
-    CFX_SpriteContainer(CFX_Sprite *sprites, uint16_t sprite_count);
-    void Draw(CFX_RGBMatrix &matrix); 
+    CFX_SpriteContainer();
+    void AddSprite(CFX_Sprite* sprite);
+    void Draw(CFX_RGBMatrix* matrix); 
     void SetOrigin(signed int newX, signed int newY);
     void Move(signed int horizontal, signed int vertical);
-    /*void Clear(CFX_RGBMatrix &matrix);
-    uint16_t GetActiveSpriteIndex();
-    void SetActiveSprite(uint16_t index, CFX_RGBMatrix &matrix);
-     */
     void Commit();
 
   private: // private functions
     
     
   private: // private members
-    CFX_Sprite* m_sprites;
-    uint16_t m_sprite_count;
-	  //CFX_Color m_clearColor;
-	  //uint16_t m_activeSpriteIndex;
+    CFX_List<CFX_Sprite*> m_sprites;
     signed int m_x_position;
     signed int m_y_position;	
 	

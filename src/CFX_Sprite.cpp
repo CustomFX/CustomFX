@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-2018 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -25,9 +25,11 @@
 #include <CFX_ColorPalette.hpp>
 #include <CFX_Color.hpp>
 
-CFX_Sprite::CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette) : CFX_OutputBase()
+CFX_Sprite::CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPalette& palette)// : CFX_OutputBase()
 {
   m_active = true;
+  m_mirrorred = false;
+  m_flipped = false;
   m_width = width;
   m_height = height;
   m_palette = palette;
@@ -36,13 +38,15 @@ CFX_Sprite::CFX_Sprite(byte width, byte height, const byte* drawing, CFX_ColorPa
   m_drawing = drawing;
 }
 
-CFX_Sprite::CFX_Sprite() : CFX_OutputBase()
+CFX_Sprite::CFX_Sprite()
 {
+  m_active = true;
+  m_mirrorred = false;
+  m_flipped = false;
 }
 
 void CFX_Sprite::SetBitmap(const byte* drawing)
 {
-  Serial.print(*drawing);
   m_drawing = drawing;
 }
 
@@ -62,22 +66,45 @@ void CFX_Sprite::Move(signed int horizontal, signed int vertical)
   m_y_position += vertical;
 }
 
-void CFX_Sprite::Draw(CFX_RGBMatrix &matrix) 
+void CFX_Sprite::Mirror() 
+{
+  m_mirrorred = !m_mirrorred;
+}
+
+void CFX_Sprite::Flip() 
+{
+  m_flipped = !m_flipped;
+}
+
+
+signed int CFX_Sprite::GetXPosition() const
+{
+  return m_x_position;
+}
+
+signed int CFX_Sprite::GetYPosition() const
+{
+  return m_y_position;
+}
+	  
+
+void CFX_Sprite::Draw(CFX_RGBMatrix* matrix) 
 {
   if (m_active == true) // draw active sprites only 
   {
     byte depth = m_palette.GetColorDepth();
     for (int y = 0; y < m_height; y++) {
       for (int x = 0; x < m_width; x++) {
+        int xpos = x;
+        if (m_mirrorred) xpos = m_width - x;
+        int ypos = y;
+        if (m_flipped) ypos = m_height - y;
+        
         uint16_t index = y * m_width + x;
         CFX_Color color = GetColor(index, depth);
         if (color != CFX_Color(0, 0, 0))
         {
-          matrix.SetPixelColor(x + m_x_position, y + m_y_position, color);
- /*        Serial.print(x + m_x_position);
-          Serial.print("-");
-          Serial.println(color.toLong());*/
-          //Serial.
+          matrix->SetPixelColor(xpos + m_x_position, ypos + m_y_position, color);
         }
       }
     }
@@ -87,9 +114,6 @@ void CFX_Sprite::Draw(CFX_RGBMatrix &matrix)
 void CFX_Sprite::SetActive(bool active)
 {
   m_active = active;
-  if (m_active) Serial.println("active");
-  else Serial.println("not active");  
-  Serial.println(IsActive());
 }
 
 bool CFX_Sprite::IsActive() const

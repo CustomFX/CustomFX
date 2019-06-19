@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-2018 Custom FX. All right reserved.
+// Copyright (c) 2016-2019 Custom FX. All right reserved.
 //
 // This file is part of the Custom FX library. This library was developed in 
 // order to make Arduino programming as easy as possible. For more information,
@@ -21,50 +21,51 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <CFX_SpriteContainer.hpp>
+#include <CustomFX.h>
+#include <CFX_SpriteAnimationMove.hpp>
 
-CFX_SpriteContainer::CFX_SpriteContainer() : CFX_Sprite()
+CFX_SpriteAnimationMove::CFX_SpriteAnimationMove(float deltaX, float deltaY, CFX_Sprite* sprite)
+  : CFX_AnimationBase()
 {
-	m_x_position = 0;
-	m_y_position = 0;
+  // delta's are per second
+  m_deltaX = (deltaX * ANIMATION_UPDATE_INTERVAL) / 1000; 
+  m_deltaY = (deltaY * ANIMATION_UPDATE_INTERVAL) / 1000; 
+  m_sprite = sprite;
 }
 
-void CFX_SpriteContainer::AddSprite(CFX_Sprite* sprite)
+void CFX_SpriteAnimationMove::Move(float deltaX, float deltaY)
 {
-  m_sprites.Add(sprite);
+  m_deltaX = (deltaX * ANIMATION_UPDATE_INTERVAL) / 1000; 
+  m_deltaY = (deltaY * ANIMATION_UPDATE_INTERVAL) / 1000; 
 }
 
-void CFX_SpriteContainer::Draw(CFX_RGBMatrix* matrix)
+bool CFX_SpriteAnimationMove::InitializeAnimation(int timestep)
 {
-	// TODO Z-order of sprite relative to container
-  if (this->IsActive())
+  if (m_sprite)
   {
-    for (uint16_t i = 0; i < m_sprites.Size(); i++)
-    {
-      CFX_Sprite* sprite = m_sprites.Get(i);
-      sprite->Draw(matrix);
-    }
+    m_xpos = m_sprite->GetXPosition();
+    m_ypos = m_sprite->GetYPosition();
   }
+  return true;
 }
 
-void CFX_SpriteContainer::SetOrigin(signed int newX, signed int newY)
+
+bool CFX_SpriteAnimationMove::FinishAnimation(int timestep)
 {
-  // calculate relative movement
-  Move(newX - m_x_position, newY - m_y_position);
+  return true;
 }
 
-void CFX_SpriteContainer::Move(signed int horizontal, signed int vertical)
+
+bool CFX_SpriteAnimationMove::UpdateAnimation(int timeStep)
 {
-  for (uint16_t i = 0; i < m_sprites.Size(); i++)
+  bool returnval = false;
+
+  if (m_sprite)
   {
-    CFX_Sprite* sprite = m_sprites.Get(i);
-    sprite->Move(horizontal, vertical);
+    m_xpos += m_deltaX;
+    m_ypos += m_deltaY;
+    m_sprite->SetOrigin((signed int)m_xpos, (signed int)m_ypos);
   }
-	m_x_position += horizontal;
-	m_y_position += vertical;
-}
-
-void CFX_SpriteContainer::Commit()
-{
-  // nothing to do here. Thes sprites are drawn with draw memberfunction
+  
+  return returnval;
 }

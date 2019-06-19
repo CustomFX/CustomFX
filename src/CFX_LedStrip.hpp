@@ -46,6 +46,7 @@ class CFX_LedStrip: public CFX_LedStripBase
     virtual void SetPixelBrightness(uint16_t pixel, uint8_t brightness);
     virtual uint8_t GetPixelBrightness(uint16_t pixel) const;
   
+    virtual void Clear();
     
     // inherited
     virtual const CFX_Color GetColor() const;

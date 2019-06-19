@@ -29,12 +29,13 @@ class CFX_RGBMatrix; // forward declaration
 #include <CFX_LedStripBase.hpp>
 #include <CFX_LedStrip.hpp>
 #include <CFX_Sprite.hpp>
+#include <CFX_List.hpp>
 
 class CFX_RGBMatrix: public CFX_LedStrip
 {
   public:
 
-    CFX_RGBMatrix(int pinnumber, uint16_t width, uint16_t height, int type = NEO_GRB + NEO_KHZ800);
+    CFX_RGBMatrix(int pinnumber, uint16_t width, uint16_t height, int type = NEO_GRB + NEO_KHZ800, bool zigzag = false);
     
     virtual void SetPixelColor(uint16_t x_pos, uint16_t y_pos, const CFX_Color& color);
     virtual long GetPixelColorLong(uint16_t x_pos, uint16_t y_pos) const;
@@ -42,7 +43,7 @@ class CFX_RGBMatrix: public CFX_LedStrip
     virtual void SetPixelBrightness(uint16_t x_pos, uint16_t y_pos, uint8_t brightness);
     virtual uint8_t GetPixelBrightness(uint16_t x_pos, uint16_t y_pos) const;
 
-    void SetSprites(CFX_Sprite* sprites, uint16_t sprite_count);
+    void AddSprite(CFX_Sprite* sprite);
 
     virtual void Commit();
  
@@ -52,8 +53,8 @@ class CFX_RGBMatrix: public CFX_LedStrip
   private:
     uint16_t m_width;
     uint16_t m_height;
-    CFX_Sprite* m_sprites;
-    uint16_t m_sprite_count;
+    CFX_List<CFX_Sprite*> m_sprites;
+    bool m_zigzag;
 };
 
 

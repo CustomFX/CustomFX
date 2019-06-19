@@ -154,6 +154,12 @@ uint8_t CFX_LedStrip::GetPixelBrightness(uint16_t pixel) const
   }
 }
 
+void CFX_LedStrip::Clear()
+{
+  uint16_t numBytes = (uint16_t)m_nrleds * 4;
+  memset(m_pixelcolors, 0, numBytes);
+}
+
 void CFX_LedStrip::Commit()
 {
   if (!m_initialised) Init();
