@@ -70,6 +70,12 @@ void CFX_LedAnimationSequence::SetInitialBrightness(uint8_t brightness)
   m_initialBrightness = brightness;
 }    
 
+void CFX_LedAnimationSequence::SetOutputDevice(CFX_LedBase* output)
+{
+  m_output = output;
+}
+
+
 bool CFX_LedAnimationSequence::InitializeAnimation(int timestep)
 {
   m_activeStep = 0;

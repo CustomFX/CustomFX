@@ -43,6 +43,7 @@ class CFX_LedAnimationSequence: public CFX_AnimationBase
     void AddStep(uint8_t brightness, uint16_t duration, CFX_TransitionType type = CFX_Transition_Lineair);
     void ChangeStep(uint16_t step, uint8_t brightness, uint16_t duration, CFX_TransitionType type);
     void SetInitialBrightness(uint8_t brightness);
+    void SetOutputDevice(CFX_LedBase* output);
     
     virtual bool InitializeAnimation(int timestep);
     virtual bool UpdateAnimation(int timestep);
